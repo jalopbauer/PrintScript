@@ -1,0 +1,21 @@
+package token
+
+enum class TokenName {
+    SUM,
+    SUB,
+    MULT,
+    DIV,
+    NUMBER_TYPE,
+    STRING_TYPE,
+    SEMICOLON,
+    LET,
+    TYPE_ASSIGNATION,
+    VALUE_ASSIGNATION,
+    VARIABLE,
+    NUMBER_LITERAL,
+    STRING_LITERAL,
+    PRINT,
+    LEFT_PARENTHESIS,
+    RIGHT_PARENTHESIS
+}
+
