@@ -1,3 +1,3 @@
 package token
 
-class Token(tokenIdentifier: TokenIdentifier, value: String, line:Line)
+class Token(val tokenIdentifier: TokenIdentifier, val value: String, val line:Line)

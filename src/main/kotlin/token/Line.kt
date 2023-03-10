@@ -1,3 +1,3 @@
 package token
 
-class Line(number: Int, position:Int)
+class Line(val number: Int, val position:Int)
