@@ -1,6 +1,10 @@
 package token
 
-class TokenIdentifier(val tokenName: TokenName, val regex: Regex)
+class TokenIdentifier(val tokenName: TokenName, val regex: Regex) {
+    fun identify(string: String): Boolean {
+        return regex.containsMatchIn(string)
+    }
+}
 
 // Assignations
 var TYPE_ASSIGNATION_TOKEN: TokenIdentifier =
