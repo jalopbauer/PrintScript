@@ -11,7 +11,7 @@ interface Lexer<T :LexerInput> {
 
 class LineLexer(private val tokenIdentifiers: List<TokenIdentifier>): Lexer<Line> {
     override fun buildTokenList(lexerInput: Line): List<Token> {
-        val possibleTokens = lexerInput.line.split(" ")
+        val possibleTokens = splitLineIntoTokens(lexerInput.line)
         return possibleTokens.foldIndexed(listOf()) {
                 index, tokens, possibleToken -> tokens + Token(identifyToken(possibleToken), possibleToken, token.Line(lexerInput.lineNumber, index))
         }
