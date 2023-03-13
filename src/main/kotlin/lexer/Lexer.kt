@@ -2,7 +2,6 @@ package lexer
 
 import token.Token
 import token.TokenIdentifier
-import token.Line
 
 interface Lexer<T :LexerInput> {
 
@@ -12,7 +11,7 @@ interface Lexer<T :LexerInput> {
 
 class LineLexer: Lexer<Line> {
     override fun buildTokenList(line: Line): List<Token> {
-        return splitLine(line)
+        return splitLine(line.line)
     }
 
     // split line en tokens
