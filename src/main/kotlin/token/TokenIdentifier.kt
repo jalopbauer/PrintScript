@@ -27,6 +27,8 @@ class TokenIdentifier(val tokenName: TokenName, val regex: Regex) {
             TokenIdentifier(TokenName.NUMBER_TYPE, Regex("number"))
         var STRING_TYPE_TOKEN: TokenIdentifier =
             TokenIdentifier(TokenName.STRING_TYPE, Regex("string"))
+        var UNDEFINED: TokenIdentifier =
+            TokenIdentifier(TokenName.UNDEFINED, Regex(""))
 
         // Literals AKA possible values
         var NUMBER_LITERAL_TOKEN: TokenIdentifier =

@@ -16,6 +16,7 @@ enum class TokenName {
     STRING_LITERAL,
     PRINT,
     LEFT_PARENTHESIS,
-    RIGHT_PARENTHESIS
+    RIGHT_PARENTHESIS,
+    UNDEFINED
 }
 
