@@ -9,29 +9,14 @@ interface Lexer<T :LexerInput> {
 
 }
 
-class LineLexer(tokenIdentifier: List<TokenIdentifier>): Lexer<Line> {
+class LineLexer(private val tokenIdentifiers: List<TokenIdentifier>): Lexer<Line> {
     override fun buildTokenList(lexerInput: Line): List<Token> {
-        return splitLine(lexerInput.line)
-    }
-
-    // split line en tokens
-
-    private fun splitLine(line: String): List<Token> {
-        val tokens = mutableListOf<Token>()
-        var line = line
-        while (line.isNotEmpty()) {
-            val token = identifyToken(line)
-            tokens.add(token)
-            line = line.removePrefix(token.value)
+        val possibleTokens = lexerInput.line.split(" ")
+        return possibleTokens.foldIndexed(listOf()) {
+                index, tokens, possibleToken -> tokens + Token(identifyToken(possibleToken), possibleToken, token.Line(lexerInput.lineNumber, index))
         }
-        return tokens
     }
-
-    // identifica el token usando el identifier
-    private fun identifyToken(line: String): Token {
-        val tokenIdentifier = TokenIdentifier.values().find { it.identify(line) }
-        val value = tokenIdentifier?.regex?.find(line)?.value ?: ""
-        return Token(tokenIdentifier!!, value, this)
+    private fun identifyToken(possibleToken: String): TokenIdentifier {
+        return tokenIdentifiers.find { tokenIdentifier -> tokenIdentifier.identify(possibleToken) }?: TokenIdentifier.UNDEFINED
     }
-
 }
