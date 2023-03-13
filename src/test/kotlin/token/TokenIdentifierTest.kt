@@ -1,5 +1,6 @@
+package token
+
 import org.junit.jupiter.api.Test
-import token.*
 
 class TokenIdentifierTest {
     private fun stringExpectedToBeContained(string: String, tokenIdentifier: TokenIdentifier) {
