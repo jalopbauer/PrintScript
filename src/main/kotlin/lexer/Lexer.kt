@@ -9,9 +9,9 @@ interface Lexer<T :LexerInput> {
 
 }
 
-class LineLexer: Lexer<Line> {
-    override fun buildTokenList(line: Line): List<Token> {
-        return splitLine(line.line)
+class LineLexer(tokenIdentifier: List<TokenIdentifier>): Lexer<Line> {
+    override fun buildTokenList(lexerInput: Line): List<Token> {
+        return splitLine(lexerInput.line)
     }
 
     // split line en tokens
