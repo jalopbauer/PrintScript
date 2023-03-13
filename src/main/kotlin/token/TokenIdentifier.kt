@@ -51,6 +51,8 @@ class TokenIdentifier(val tokenName: TokenName, val regex: Regex) {
             TokenIdentifier(TokenName.SEMICOLON, Regex(";"))
         var LET_TOKEN: TokenIdentifier =
             TokenIdentifier(TokenName.LET, Regex("let"))
+        var SPACE: TokenIdentifier =
+            TokenIdentifier(TokenName.SPACE, Regex(" "))
     }
 }
 

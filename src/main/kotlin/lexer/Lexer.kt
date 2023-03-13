@@ -9,7 +9,9 @@ interface Lexer<T :LexerInput> {
 
 }
 
-class LineLexer(private val tokenIdentifiers: List<TokenIdentifier>): Lexer<Line> {
+// TODO split always in certain token identifiers: ":", "=", ";", " "
+
+class LineLexer(private val tokenIdentifiers: List<TokenIdentifier>, private val splitterTokenIdentifiers: List<TokenIdentifier>): Lexer<Line> {
     override fun buildTokenList(lexerInput: Line): List<Token> {
         val possibleTokens = splitLineIntoTokens(lexerInput.line)
         return possibleTokens.foldIndexed(listOf()) {
@@ -19,4 +21,5 @@ class LineLexer(private val tokenIdentifiers: List<TokenIdentifier>): Lexer<Line
     private fun identifyToken(possibleToken: String): TokenIdentifier {
         return tokenIdentifiers.find { tokenIdentifier -> tokenIdentifier.identify(possibleToken) }?: TokenIdentifier.UNDEFINED
     }
+
 }
