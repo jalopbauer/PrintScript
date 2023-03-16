@@ -1,8 +1,12 @@
 package token
 
 class TokenIdentifier(val tokenName: TokenName, val regex: Regex) {
-    fun identify(string: String): Boolean {
-        return regex.containsMatchIn(string)
+    fun identify(string: String, positionInLine: Int): Boolean {
+        return false
+    }
+
+    fun finalPositionExclusive(line: String, positionInLine: Int): Int {
+        TODO("Not yet implemented")
     }
 
     companion object {

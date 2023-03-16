@@ -2,7 +2,6 @@ package lexer
 
 import token.Token
 import token.TokenIdentifier
-import token.Line
 
 interface Lexer<T :LexerInput> {
 
@@ -10,29 +9,18 @@ interface Lexer<T :LexerInput> {
 
 }
 
-class LineLexer: Lexer<Line> {
-    override fun buildTokenList(line: Line): List<Token> {
-        return splitLine(line)
+class LineLexer(private val tokenIdentifiers: List<TokenIdentifier>): Lexer<Line> {
+    override fun buildTokenList(lexerInput: Line): List<Token> {
+        return splitIntoTokens(lexerInput).reversed()
     }
 
-    // split line en tokens
-
-    private fun splitLine(line: String): List<Token> {
-        val tokens = mutableListOf<Token>()
-        var line = line
-        while (line.isNotEmpty()) {
-            val token = identifyToken(line)
-            tokens.add(token)
-            line = line.removePrefix(token.value)
+    private fun splitIntoTokens(line: Line, positionInLine: Int = 0 ): List<Token> {
+        return if (line.value.isEmpty()) listOf()
+        else {
+            val tokenIdentifier = tokenIdentifiers.first { tknIdentifier -> tknIdentifier.identify(line.value, positionInLine) }
+            val finalPositionExclusive = tokenIdentifier.finalPositionExclusive(line.value, positionInLine)
+            val tokenValue = line.value.substring(positionInLine, finalPositionExclusive)
+            val token = Token(tokenIdentifier.tokenName, tokenValue, line.number, finalPositionExclusive)
+            listOf(token) + token
         }
-        return tokens
-    }
-
-    // identifica el token usando el identifier
-    private fun identifyToken(line: String): Token {
-        val tokenIdentifier = TokenIdentifier.values().find { it.identify(line) }
-        val value = tokenIdentifier?.regex?.find(line)?.value ?: ""
-        return Token(tokenIdentifier!!, value, this)
-    }
-
-}
+    }}

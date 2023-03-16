@@ -3,11 +3,11 @@ import token.*
 
 class TokenIdentifierTest {
     private fun stringExpectedToBeContained(string: String, tokenIdentifier: TokenIdentifier) {
-        assert(tokenIdentifier.identify(string))
+        assert(tokenIdentifier.identify(string, positionInLine))
     }
 
     private fun stringNotExpectedToBeContained(string: String, tokenIdentifier: TokenIdentifier) {
-        assert(!tokenIdentifier.identify(string))
+        assert(!tokenIdentifier.identify(string, positionInLine))
     }
 
     private fun tokenIdentifierTest(tokenIdentifierTestInput: TokenIdentifierTestInput) {
