@@ -21,6 +21,6 @@ class LineLexer(private val tokenIdentifiers: List<TokenIdentifier>): Lexer<Line
             val finalPositionExclusive = tokenIdentifier.finalPositionExclusive(line.value, positionInLine)
             val tokenValue = line.value.substring(positionInLine, finalPositionExclusive)
             val token = Token(tokenIdentifier.tokenName, tokenValue, line.number, finalPositionExclusive)
-            listOf(token) + token
+            return splitIntoTokens(line,finalPositionExclusive) + token
         }
     }}
