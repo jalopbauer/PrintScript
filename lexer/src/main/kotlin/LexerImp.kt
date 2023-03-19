@@ -11,7 +11,7 @@ class LexerImp: Lexer  {
     override fun buildTokenList(sentence: String): List<Token> {
         var line: Int = 0
         var list: ArrayList<Token> = ArrayList();
-        var splitSentence: List<String> = sentence.split(Regex(" |(?<=[:;])|(?=[:;])")).dropLast(1)
+        var splitSentence: List<String> = sentence.split(Regex(" |(?<=[:;()])|(?=[:;()])")).dropLast(1)
         for (item in splitSentence) {
             var tokenName: TokenName = findIdentifier(item)
             var position: Int = sentence.indexOf(item);

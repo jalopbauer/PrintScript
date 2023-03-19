@@ -13,6 +13,7 @@ class LexetTest {
 
     val line = "let test: string = 'test';"
     val eqline = "let test: number = 1 + 1 / 2 - 1;"
+    val printline = "println('test');"
     val lineRepeated = "let test: string = 'test';let test: string = 'test';"
 
 
@@ -63,6 +64,18 @@ class LexetTest {
         assertEquals(TokenName.SUB, tokenList[10].tokenIdentifier)
         assertEquals(TokenName.NUMBER_LITERAL, tokenList[11].tokenIdentifier)
         assertEquals(TokenName.SEMICOLON, tokenList[12].tokenIdentifier)
+    }
+
+    @Test
+    fun TokenListHasCorrectNameForPrint(){
+        var lexer: Lexer = LexerImp()
+        var tokenList: List<Token> = lexer.buildTokenList(printline)
+        assertEquals(5, tokenList.size)
+        assertEquals(TokenName.PRINT, tokenList[0].tokenIdentifier)
+        assertEquals(TokenName.LEFT_PARENTHESIS, tokenList[1].tokenIdentifier)
+        assertEquals(TokenName.STRING_LITERAL, tokenList[2].tokenIdentifier)
+        assertEquals(TokenName.RIGHT_PARENTHESIS, tokenList[3].tokenIdentifier)
+        assertEquals(TokenName.SEMICOLON, tokenList[4].tokenIdentifier)
     }
 
     @Test
