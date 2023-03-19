@@ -13,6 +13,8 @@ class LexetTest {
 
     val line = "let test: string = 'test';"
     val eqline = "let test: number = 1 + 1 / 2 - 1;"
+    val lineRepeated = "let test: string = 'test';let test: string = 'test';"
+
 
     @Test
     fun CreateEmptyTokenList() {
@@ -74,5 +76,14 @@ class LexetTest {
         assertEquals(17, tokenList[4].position)
         assertEquals(19, tokenList[5].position)
         assertEquals(25, tokenList[6].position)
+    }
+
+    @Test
+    fun TokensAreInCorrectLine(){
+        var lexer: Lexer = LexerImp()
+        var tokenList: List<Token> = lexer.buildTokenList(lineRepeated)
+        assertEquals(0, tokenList[0].lineNumber)
+        assertEquals(0, tokenList[0].lineNumber)
+        assertEquals(1, tokenList[7].lineNumber)
     }
 }
