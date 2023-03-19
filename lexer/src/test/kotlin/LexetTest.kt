@@ -42,7 +42,6 @@ class LexetTest {
         assertEquals(TokenName.ASSIGNATION, tokenList[4].tokenIdentifier)
         assertEquals(TokenName.STRING_LITERAL, tokenList[5].tokenIdentifier)
         assertEquals(TokenName.SEMICOLON, tokenList[6].tokenIdentifier)
-
     }
 
     @Test
@@ -62,5 +61,18 @@ class LexetTest {
         assertEquals(TokenName.SUB, tokenList[10].tokenIdentifier)
         assertEquals(TokenName.NUMBER_LITERAL, tokenList[11].tokenIdentifier)
         assertEquals(TokenName.SEMICOLON, tokenList[12].tokenIdentifier)
+    }
+
+    @Test
+    fun TokensAreInCorrectPosition(){
+        var lexer: Lexer = LexerImp()
+        var tokenList: List<Token> = lexer.buildTokenList(line)
+        assertEquals(0, tokenList[0].position)
+        assertEquals(4, tokenList[1].position)
+        assertEquals(8, tokenList[2].position)
+        assertEquals(10, tokenList[3].position)
+        assertEquals(17, tokenList[4].position)
+        assertEquals(19, tokenList[5].position)
+        assertEquals(25, tokenList[6].position)
     }
 }

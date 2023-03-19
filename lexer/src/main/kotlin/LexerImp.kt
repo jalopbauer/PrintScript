@@ -13,7 +13,8 @@ class LexerImp: Lexer  {
         var splitSentence: List<String> = sentence.split(Regex(" |(?<=[:;])|(?=[:;])")).dropLast(1)
         for (item in splitSentence) {
             var tokenName: TokenName = findIdentifier(item)
-            list.add(Token(tokenName, item,0,1))
+            var position: Int = sentence.indexOf(item);
+            list.add(Token(tokenName, item,0,position))
         }
 
         return list;
