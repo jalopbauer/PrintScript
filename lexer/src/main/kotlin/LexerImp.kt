@@ -1,56 +1,54 @@
 package lexer
 
-import lexer.Exceptions.IllegalStringException
+//import lexer.Exceptions.IllegalStringException
 import token.Token
-import token.TokenIdentifier
 import token.TokenName
-import java.util.Collections.emptyList
 import kotlin.text.*
 
 class LexerImp: Lexer  {
     override fun buildTokenList(sentence: String): List<Token> {
-        var line: Int = 0
-        var list: ArrayList<Token> = ArrayList();
-        var splitSentence: List<String> = sentence.split(Regex(" |(?<=[:;()])|(?=[:;()])")).dropLast(1)
+        var line = 0
+        val list: ArrayList<Token> = ArrayList()
+        val splitSentence: List<String> = sentence.split(Regex(" |(?<=[:;()])|(?=[:;()])")).dropLast(1)
         for (item in splitSentence) {
-            var tokenName: TokenName = findIdentifier(item)
-            var position: Int = sentence.indexOf(item);
+            val tokenName: TokenName = findIdentifier(item)
+            val position: Int = sentence.indexOf(item)
             list.add(Token(tokenName, item,line,position))
-            if (item.equals(";")) {
+            if (item == ";") {
                 line++
             }
         }
 
-        return list;
+        return list
     }
 
     //TODO hay una forma de hacerlo mas prolijo pero no me acuerdo
     private fun findIdentifier(item: String): TokenName {
 
         //let
-        if (item.equals("let")){
+        if (item == "let"){
             return TokenName.LET
         }
         //variable
 
         //declaration
-        if (item.equals(":")){
+        if (item == ":"){
             return TokenName.DECLARATION
         }
         //string
-        if (item.equals("string")){
+        if (item == "string"){
             return TokenName.STRING_TYPE
         }
         //number
-        if (item.equals("number")){
+        if (item == "number"){
             return TokenName.NUMBER_TYPE
         }
         //assignation
-        if (item.equals("=")){
+        if (item == "="){
             return TokenName.ASSIGNATION
         }
         //literalString
-        if (item[0].code.equals(39) && item[item.length-1].code.equals(39)){
+        if (item[0].code == 39 && item[item.length-1].code == 39){
             return TokenName.STRING_LITERAL
         }
         //literalNumber
@@ -58,41 +56,40 @@ class LexerImp: Lexer  {
             return TokenName.NUMBER_LITERAL
         }
         //sum
-        if (item.equals("+")){
+        if (item == "+"){
             return TokenName.SUM
         }
         //sub
-        if (item.equals("-")){
+        if (item == "-"){
             return TokenName.SUB
         }
         //mul
-        if (item.equals("*")){
+        if (item == "*"){
             return TokenName.MULT
         }
         //div
-        if (item.equals("/")){
+        if (item == "/"){
             return TokenName.DIV
         }
         //print
-        if (item.equals("println")){
+        if (item == "println"){
             return TokenName.PRINT
         }
         //(
-        if (item.equals("(")){
+        if (item == "("){
             return TokenName.LEFT_PARENTHESIS
         }
         //)
-        if (item.equals(")")){
+        if (item == ")"){
             return TokenName.RIGHT_PARENTHESIS
         }
         //;
-        if (item.equals(";")){
+        if (item == ";"){
             return TokenName.SEMICOLON
         }
         //Si no reconoce ninguna se rompe
         return TokenName.VARIABLE
-        throw IllegalStringException("The string " + item + " doesn't match any Token")
-
+//        throw IllegalStringException("The string " + item + " doesn't match any Token")
     }
 
 }
