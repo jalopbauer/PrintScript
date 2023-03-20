@@ -27,16 +27,8 @@ class LexerImp: Lexer  {
     private fun findIdentifier(item: String): TokenName {
 
         val possibleToken = PrintScript().identify(item)
-        return possibleToken ?: (
-            if  (item.toIntOrNull() != null){
-                return TokenName.NUMBER_LITERAL
-            } else {
-                //Si no reconoce ninguna se rompe
-                return TokenName.VARIABLE
+        return possibleToken ?: TokenName.VARIABLE
                 //        throw IllegalStringException("The string " + item + " doesn't match any Token")
-
-            }
-        )
     }
 
 }

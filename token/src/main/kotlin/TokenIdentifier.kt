@@ -25,24 +25,31 @@ class BetweenValueIdentifier(private val borderValue: Char, private val tokenNam
 
         }
     }
-
 }
 
 class PrintScript: TokenIdentifier {
     private val tokenIdentifiers = listOf(
             StringEqualsTokenName()
-        ,   SingleQouteStringLiteral()
+        ,   SingleQuoteStringLiteral()
+        ,   NumberLiteralIdentifier()
     )
     override fun identify(string: String): TokenName? {
         return ListIdentifier(tokenIdentifiers).identify(string)
     }
 }
 
-class SingleQouteStringLiteral: TokenIdentifier {
+class SingleQuoteStringLiteral: TokenIdentifier {
     override fun identify(string: String): TokenName? {
         return BetweenValueIdentifier('\'', TokenName.STRING_LITERAL).identify(string)
     }
 }
+
+class NumberLiteralIdentifier: TokenIdentifier {
+    override fun identify(string: String): TokenName? {
+        return string.toIntOrNull()?.let { TokenName.NUMBER_LITERAL}
+    }
+}
+
 class StringEqualsTokenName: TokenIdentifier {
     override fun identify(string: String): TokenName? {
         return stringTokenNameMap[string]
