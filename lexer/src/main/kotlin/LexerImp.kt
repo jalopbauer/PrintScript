@@ -1,6 +1,7 @@
 package lexer
 
 import lexer.Exceptions.IllegalStringException
+import token.PrintScript
 import token.Token
 import token.TokenName
 import kotlin.text.*
@@ -17,79 +18,9 @@ class LexerImp: Lexer  {
         return result.second
     }
 
-    //TODO hay una forma de hacerlo mas prolijo pero no me acuerdo
     private fun findIdentifier(item: String): TokenName {
-
-        //let
-        if (item.equals("let")){
-            return TokenName.LET
-        }
-        //declaration
-        if (item.equals(":")){
-            return TokenName.DECLARATION
-        }
-        //string
-        if (item.equals("string")){
-            return TokenName.STRING_TYPE
-        }
-        //number
-        if (item.equals("number")){
-            return TokenName.NUMBER_TYPE
-        }
-        //assignation
-        if (item.equals("=")){
-            return TokenName.ASSIGNATION
-        }
-        //literalString
-        if (item.matches(Regex("[\"][A-Za-z]+[\"]|['][A-Za-z]+[']"))){
-            return TokenName.STRING_LITERAL
-        }
-        //literalNumber
-        if (item.toIntOrNull() != null){
-            return TokenName.NUMBER_LITERAL
-        }
-        //sum
-        if (item.equals("+")){
-            return TokenName.SUM
-        }
-        //sub
-        if (item.equals("-")){
-            return TokenName.SUB
-        }
-        //mul
-        if (item.equals("*")){
-            return TokenName.MULT
-        }
-        //div
-        if (item.equals("/")){
-            return TokenName.DIV
-        }
-        //print
-        if (item.equals("println")){
-            return TokenName.PRINT
-        }
-        //(
-        if (item.equals("(")){
-            return TokenName.LEFT_PARENTHESIS
-        }
-        //)
-        if (item.equals(")")){
-            return TokenName.RIGHT_PARENTHESIS
-        }
-        //;
-        if (item.equals(";")){
-            return TokenName.SEMICOLON
-        }
-        //variable
-        if (item.matches(Regex("[a-z][a-zA-Z]+"))){
-            return TokenName.VARIABLE
-        }
-        //Si no reconoce ninguna se rompe
-        throw IllegalStringException("The string $item doesn't match any Token")
-
-//        val possibleToken = PrintScript().identify(item)
-//        return possibleToken ?: TokenName.VARIABLE
-                //        throw IllegalStringException("The string " + item + " doesn't match any Token")
+        val possibleToken = PrintScript().identify(item)
+        return possibleToken ?: throw IllegalStringException("The string " + item + " doesn't match any Token")
     }
 
 }

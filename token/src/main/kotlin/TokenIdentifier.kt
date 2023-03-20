@@ -32,10 +32,19 @@ class PrintScript: TokenIdentifier {
             StringEqualsTokenName()
         ,   SingleQuoteStringLiteral()
         ,   NumberLiteralIdentifier()
+        ,   VariableIdentifier()
     )
     override fun identify(string: String): TokenName? {
         return ListIdentifier(tokenIdentifiers).identify(string)
     }
+}
+
+class VariableIdentifier: TokenIdentifier {
+    override fun identify(string: String): TokenName? {
+        return if (string.matches(Regex("[a-z][a-zA-Z]+"))) TokenName.VARIABLE
+        else null
+    }
+
 }
 
 class SingleQuoteStringLiteral: TokenIdentifier {
