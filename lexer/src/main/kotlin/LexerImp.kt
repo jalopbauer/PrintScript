@@ -2,24 +2,22 @@ package lexer
 
 import lexer.Exceptions.IllegalStringException
 import token.Token
-import token.TokenIdentifier
 import token.TokenName
-import java.util.Collections.emptyList
 import kotlin.text.*
 
 class LexerImp: Lexer  {
     override fun buildTokenList(sentence: String): List<Token> {
-        var line: Int = 0
-        var list: ArrayList<Token> = ArrayList();
-        var splitSentence: List<String> = sentence.split(Regex(" |(?<=[:;()])|(?=[:;()])"))
+        var line = 0
+        val list = mutableListOf<Token>()
+        val splitSentence: List<String> = sentence.split(Regex(" |(?<=[:;()])|(?=[:;()])"))
         if (splitSentence[splitSentence.size-1] == ""){
             splitSentence.dropLast(1)
         }
         for (item in splitSentence) {
-            var tokenName: TokenName = findIdentifier(item)
-            var position: Int = sentence.indexOf(item);
-            list.add(Token(tokenName, item,line,position))
-            if (item.equals(";")) {
+            val tokenName: TokenName = findIdentifier(item)
+            val position: Int = sentence.indexOf(item)
+            list += (Token(tokenName, item,line,position))
+            if (item == ";") {
                 line++
             }
         }
@@ -95,10 +93,10 @@ class LexerImp: Lexer  {
             return TokenName.VARIABLE
         }
         //Si no reconoce ninguna se rompe
-        throw IllegalStringException("The string " + item + " doesn't match any Token")
+        throw IllegalStringException("The string $item doesn't match any Token")
 
-        val possibleToken = PrintScript().identify(item)
-        return possibleToken ?: TokenName.VARIABLE
+//        val possibleToken = PrintScript().identify(item)
+//        return possibleToken ?: TokenName.VARIABLE
                 //        throw IllegalStringException("The string " + item + " doesn't match any Token")
     }
 
