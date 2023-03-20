@@ -22,7 +22,7 @@ class LexerImp: Lexer  {
             }
         }
 
-        return list;
+        return list
     }
 
     //TODO hay una forma de hacerlo mas prolijo pero no me acuerdo
