@@ -20,7 +20,7 @@ class LexerImp: Lexer  {
 
     private fun findIdentifier(item: String): TokenName {
         val possibleToken = PrintScript().identify(item)
-        return possibleToken ?: throw IllegalStringException("The string " + item + " doesn't match any Token")
+        return possibleToken ?: throw IllegalStringException("The string $item doesn't match any Token")
     }
 
 }
