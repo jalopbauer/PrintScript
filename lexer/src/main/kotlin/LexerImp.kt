@@ -31,8 +31,6 @@ class LexerImp: Lexer  {
         if (item.equals("let")){
             return TokenName.LET
         }
-        //variable
-
         //declaration
         if (item.equals(":")){
             return TokenName.DECLARATION
@@ -89,8 +87,11 @@ class LexerImp: Lexer  {
         if (item.equals(";")){
             return TokenName.SEMICOLON
         }
+        //variable
+        if (item.matches(Regex("[a-z][a-zA-Z]+"))){
+            return TokenName.VARIABLE
+        }
         //Si no reconoce ninguna se rompe
-        return TokenName.VARIABLE
         throw IllegalStringException("The string " + item + " doesn't match any Token")
 
     }

@@ -12,9 +12,9 @@ class TokenIdentifier(val tokenName: TokenName, val regex: Regex) {
     companion object {
         // Assignations
         val TYPE_ASSIGNATION_TOKEN: TokenIdentifier =
-            TokenIdentifier(TokenName.TYPE_ASSIGNATION, Regex(":"))
+            TokenIdentifier(TokenName.DECLARATION, Regex(":"))
         var VALUE_ASSIGNATION_TOKEN: TokenIdentifier =
-            TokenIdentifier(TokenName.VALUE_ASSIGNATION, Regex("="))
+            TokenIdentifier(TokenName.ASSIGNATION, Regex("="))
 
         // Operations
         var SUM_OPERATION_TOKEN: TokenIdentifier =
