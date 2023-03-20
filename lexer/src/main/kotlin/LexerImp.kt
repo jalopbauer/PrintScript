@@ -1,7 +1,7 @@
 package lexer
 
 //import lexer.Exceptions.IllegalStringException
-import token.StringEqualsTokenName
+import token.PrintScript
 import token.Token
 import token.TokenName
 import kotlin.text.*
@@ -26,11 +26,9 @@ class LexerImp: Lexer  {
     //TODO hay una forma de hacerlo mas prolijo pero no me acuerdo
     private fun findIdentifier(item: String): TokenName {
 
-        val possibleToken: TokenName? = StringEqualsTokenName().identify(item)
+        val possibleToken = PrintScript().identify(item)
         return possibleToken ?: (
-            if (item[0].code == 39 && item[item.length-1].code == 39){
-                return TokenName.STRING_LITERAL
-            } else if  (item.toIntOrNull() != null){
+            if  (item.toIntOrNull() != null){
                 return TokenName.NUMBER_LITERAL
             } else {
                 //Si no reconoce ninguna se rompe
