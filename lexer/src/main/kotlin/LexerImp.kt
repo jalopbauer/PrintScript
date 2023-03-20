@@ -9,10 +9,7 @@ class LexerImp: Lexer  {
     override fun buildTokenList(sentence: String): List<Token> {
         var line = 0
         val list = mutableListOf<Token>()
-        val splitSentence: List<String> = sentence.split(Regex(" |(?<=[:;()])|(?=[:;()])"))
-        if (splitSentence[splitSentence.size-1] == ""){
-            splitSentence.dropLast(1)
-        }
+        val splitSentence: List<String> = sentence.split(Regex(" |(?<=[:;()])|(?=[:;()])")).dropLast(1)
         for (item in splitSentence) {
             val tokenName: TokenName = findIdentifier(item)
             val position: Int = sentence.indexOf(item)
@@ -49,7 +46,7 @@ class LexerImp: Lexer  {
             return TokenName.ASSIGNATION
         }
         //literalString
-        if (item[0].code.equals(39) && item[item.length-1].code.equals(39)){
+        if (item.matches(Regex("[\"][A-Za-z]+[\"]|['][A-Za-z]+[']"))){
             return TokenName.STRING_LITERAL
         }
         //literalNumber

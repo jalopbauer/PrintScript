@@ -15,8 +15,8 @@ class LexetTest {
     val eqline = "let test: number = 1 + 1 / 2 - 1;"
     val printline = "println('test');"
     val lineRepeated = "let test: string = 'test';let test: string = 'test';"
-    val invalidTokenOne = "Test"
-    val invalidTokenTwo = "err0r"
+    val invalidTokenOne = "let Test: 'error'"
+    val invalidTokenTwo = "let err0r = jaja"
 
 
     @Test
