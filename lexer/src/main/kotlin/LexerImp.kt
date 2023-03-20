@@ -1,6 +1,7 @@
 package lexer
 
 //import lexer.Exceptions.IllegalStringException
+import token.StringEqualsTokenName
 import token.Token
 import token.TokenName
 import kotlin.text.*
@@ -25,71 +26,19 @@ class LexerImp: Lexer  {
     //TODO hay una forma de hacerlo mas prolijo pero no me acuerdo
     private fun findIdentifier(item: String): TokenName {
 
-        //let
-        if (item == "let"){
-            return TokenName.LET
-        }
-        //variable
+        val possibleToken: TokenName? = StringEqualsTokenName().identify(item)
+        return possibleToken ?: (
+            if (item[0].code == 39 && item[item.length-1].code == 39){
+                return TokenName.STRING_LITERAL
+            } else if  (item.toIntOrNull() != null){
+                return TokenName.NUMBER_LITERAL
+            } else {
+                //Si no reconoce ninguna se rompe
+                return TokenName.VARIABLE
+                //        throw IllegalStringException("The string " + item + " doesn't match any Token")
 
-        //declaration
-        if (item == ":"){
-            return TokenName.DECLARATION
-        }
-        //string
-        if (item == "string"){
-            return TokenName.STRING_TYPE
-        }
-        //number
-        if (item == "number"){
-            return TokenName.NUMBER_TYPE
-        }
-        //assignation
-        if (item == "="){
-            return TokenName.ASSIGNATION
-        }
-        //literalString
-        if (item[0].code == 39 && item[item.length-1].code == 39){
-            return TokenName.STRING_LITERAL
-        }
-        //literalNumber
-        if (item.toIntOrNull() != null){
-            return TokenName.NUMBER_LITERAL
-        }
-        //sum
-        if (item == "+"){
-            return TokenName.SUM
-        }
-        //sub
-        if (item == "-"){
-            return TokenName.SUB
-        }
-        //mul
-        if (item == "*"){
-            return TokenName.MULT
-        }
-        //div
-        if (item == "/"){
-            return TokenName.DIV
-        }
-        //print
-        if (item == "println"){
-            return TokenName.PRINT
-        }
-        //(
-        if (item == "("){
-            return TokenName.LEFT_PARENTHESIS
-        }
-        //)
-        if (item == ")"){
-            return TokenName.RIGHT_PARENTHESIS
-        }
-        //;
-        if (item == ";"){
-            return TokenName.SEMICOLON
-        }
-        //Si no reconoce ninguna se rompe
-        return TokenName.VARIABLE
-//        throw IllegalStringException("The string " + item + " doesn't match any Token")
+            }
+        )
     }
 
 }
