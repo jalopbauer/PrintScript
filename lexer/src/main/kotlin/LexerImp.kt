@@ -7,19 +7,14 @@ import kotlin.text.*
 
 class LexerImp: Lexer  {
     override fun buildTokenList(sentence: String): List<Token> {
-        var line = 0
-        val list = mutableListOf<Token>()
         val splitSentence: List<String> = sentence.split(Regex(" |(?<=[:;()])|(?=[:;()])")).dropLast(1)
-        for (item in splitSentence) {
+        val result = splitSentence.fold(Pair(0, listOf<Token>()) ) { acc, item ->
             val tokenName: TokenName = findIdentifier(item)
             val position: Int = sentence.indexOf(item)
-            list += (Token(tokenName, item,line,position))
-            if (item == ";") {
-                line++
-            }
+            val line = acc.first
+            Pair(if (item == ";") line + 1 else line, acc.second + Token(tokenName, item, line, position))
         }
-
-        return list
+        return result.second
     }
 
     //TODO hay una forma de hacerlo mas prolijo pero no me acuerdo
