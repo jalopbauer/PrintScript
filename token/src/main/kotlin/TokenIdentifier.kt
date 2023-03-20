@@ -1,58 +1,75 @@
 package token
 
-class TokenIdentifier(val tokenName: TokenName, val regex: Regex) {
-    fun identify(string: String, positionInLine: Int): Boolean {
-        return false
-    }
+interface TokenIdentifier {
 
-    fun finalPositionExclusive(line: String, positionInLine: Int): Int {
-        TODO("Not yet implemented")
-    }
+    fun identify(string: String): TokenName?
 
-    companion object {
-        // Assignations
-        val TYPE_ASSIGNATION_TOKEN: TokenIdentifier =
-            TokenIdentifier(TokenName.DECLARATION, Regex(":"))
-        var VALUE_ASSIGNATION_TOKEN: TokenIdentifier =
-            TokenIdentifier(TokenName.ASSIGNATION, Regex("="))
+}
 
-        // Operations
-        var SUM_OPERATION_TOKEN: TokenIdentifier =
-            TokenIdentifier(TokenName.SUM, Regex("\\+"))
-        var SUB_OPERATION_TOKEN: TokenIdentifier =
-            TokenIdentifier(TokenName.SUB, Regex("-"))
-        var MULT_OPERATION_TOKEN: TokenIdentifier =
-            TokenIdentifier(TokenName.MULT, Regex("\\*"))
-        var DIV_OPERATION_TOKEN: TokenIdentifier =
-            TokenIdentifier(TokenName.DIV, Regex("/"))
-
-        // Types
-        var NUMBER_TYPE_TOKEN: TokenIdentifier =
-            TokenIdentifier(TokenName.NUMBER_TYPE, Regex("number"))
-        var STRING_TYPE_TOKEN: TokenIdentifier =
-            TokenIdentifier(TokenName.STRING_TYPE, Regex("string"))
-
-        // Literals AKA possible values
-        var NUMBER_LITERAL_TOKEN: TokenIdentifier =
-            TokenIdentifier(TokenName.NUMBER_LITERAL, Regex("([0-9]+.[0-9]+)|[0-9]+"))
-        var STRING_LITERAL_TOKEN: TokenIdentifier =
-            TokenIdentifier(TokenName.STRING_LITERAL, Regex("('(.)*')|(\"(.)*\")"))
-
-        // Functions
-        var PRINTLN_TOKEN: TokenIdentifier =
-            TokenIdentifier(TokenName.PRINT, Regex("println"))
-
-        // Other
-        var LEFT_PARENTHESIS_TOKEN: TokenIdentifier =
-            TokenIdentifier(TokenName.LEFT_PARENTHESIS, Regex("\\("))
-        var RIGHT_PARENTHESIS_TOKEN: TokenIdentifier =
-            TokenIdentifier(TokenName.RIGHT_PARENTHESIS, Regex("\\)"))
-        var VARIABLE_TOKEN: TokenIdentifier =
-            TokenIdentifier(TokenName.VARIABLE, Regex(".*"))
-        var SEMICOLON_TOKEN: TokenIdentifier =
-            TokenIdentifier(TokenName.SEMICOLON, Regex(";"))
-        var LET_TOKEN: TokenIdentifier =
-            TokenIdentifier(TokenName.LET, Regex("let"))
+class ListIdentifier(private val tokenIdentifiers: List<TokenIdentifier>): TokenIdentifier {
+    override fun identify(string: String): TokenName? {
+        return try {
+            tokenIdentifiers.first { tokenIdentifier -> tokenIdentifier.identify(string) != null }.identify(string)
+        } catch (_: Exception) {
+            null
+        }
     }
 }
 
+class BetweenValueIdentifier(private val borderValue: Char, private val tokenName: TokenName): TokenIdentifier {
+    override fun identify(string: String): TokenName? {
+        return if (string.first() == borderValue && string.last() == borderValue) {
+            tokenName
+        } else {
+            null
+
+        }
+    }
+}
+
+class PrintScript: TokenIdentifier {
+    private val tokenIdentifiers = listOf(
+            StringEqualsTokenName()
+        ,   SingleQuoteStringLiteral()
+        ,   NumberLiteralIdentifier()
+    )
+    override fun identify(string: String): TokenName? {
+        return ListIdentifier(tokenIdentifiers).identify(string)
+    }
+}
+
+class SingleQuoteStringLiteral: TokenIdentifier {
+    override fun identify(string: String): TokenName? {
+        return BetweenValueIdentifier('\'', TokenName.STRING_LITERAL).identify(string)
+    }
+}
+
+class NumberLiteralIdentifier: TokenIdentifier {
+    override fun identify(string: String): TokenName? {
+        return string.toIntOrNull()?.let { TokenName.NUMBER_LITERAL}
+    }
+}
+
+class StringEqualsTokenName: TokenIdentifier {
+    override fun identify(string: String): TokenName? {
+        return stringTokenNameMap[string]
+    }
+
+    companion object {
+        val stringTokenNameMap: Map<String, TokenName> = mapOf(
+            "let" to TokenName.LET,
+            ":" to TokenName.DECLARATION,
+            "string" to TokenName.STRING_TYPE,
+            "number" to TokenName.NUMBER_TYPE,
+            "=" to TokenName.ASSIGNATION,
+            "+" to TokenName.SUM,
+            "-" to TokenName.SUB,
+            "*" to TokenName.MULT,
+            "/" to TokenName.DIV,
+            "(" to TokenName.LEFT_PARENTHESIS,
+            ")" to TokenName.RIGHT_PARENTHESIS,
+            ";" to TokenName.SEMICOLON,
+            "println" to TokenName.PRINT
+        )
+    }
+}

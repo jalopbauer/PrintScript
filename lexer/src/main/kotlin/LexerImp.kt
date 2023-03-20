@@ -97,6 +97,9 @@ class LexerImp: Lexer  {
         //Si no reconoce ninguna se rompe
         throw IllegalStringException("The string " + item + " doesn't match any Token")
 
+        val possibleToken = PrintScript().identify(item)
+        return possibleToken ?: TokenName.VARIABLE
+                //        throw IllegalStringException("The string " + item + " doesn't match any Token")
     }
 
 }
