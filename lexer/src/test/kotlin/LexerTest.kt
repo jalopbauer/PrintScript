@@ -10,10 +10,10 @@ import token.TokenName
 
 class LexerTest {
 
-    val line = "let test: string = 'test'"
-    val eqline = "let test: number = 1 + 1 / 2 - 1"
-    val printline = "println('test')"
-    val lineRepeated = "let test: string = 'test'let test: string = 'test'"
+    val line = "let test: string = 'test';"
+    val eqline = "let test: number = 1 + 1 / 2 - 1;"
+    val printline = "println('test');"
+    val lineRepeated = "let test: string = 'test';let test: string = 'test';"
     val invalidTokenOne = "let Test: 'error'"
     val invalidTokenTwo = "let err0r = jaja"
 
