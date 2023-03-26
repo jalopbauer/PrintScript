@@ -7,6 +7,6 @@ plugins {
 }
 
 dependencies {
-    implementation project(path: ':ast')
+    implementation project(path: ':sentence')
     implementation project(path: ':token')
 }
