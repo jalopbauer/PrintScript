@@ -5,6 +5,27 @@ interface SentenceBuilder {
     fun build(tokenList: List<Token>): Sentence?
 }
 
+class PrintScriptBuilder: SentenceBuilder {
+    override fun build(tokenList: List<Token>): Sentence? {
+        return ListBuilder(listOf(
+                DeclarationAssignationBuilder()
+            ,   DeclarationBuilder()
+            ,   AssignationBuilder()
+            ,   PrintlnBuilder()
+        )).build(tokenList)
+    }
+}
+
+class ListBuilder(private val builders: List<SentenceBuilder>): SentenceBuilder {
+    override fun build(tokenList: List<Token>): Sentence? {
+        return builders.fold(null) {
+            acc, sentenceBuilder ->
+            return if (acc == null) sentenceBuilder.build(tokenList)
+            else                    acc
+        }
+    }
+
+}
 class DeclarationBuilder: SentenceBuilder {
     override fun build(tokenList: List<Token>): Declaration? {
         return  if (tokenList.size < 5)                                        null
