@@ -3,11 +3,11 @@ import token.TokenName
 
 interface SentenceBuilder {
     fun build(tokenList: List<Token>): Sentence?
-    fun TypeCheckString(): Boolean{
+    fun TypeCheckString(): Boolean {
         return false
     }
 
-    fun TypeCheckNumber(): Boolean{
+    fun TypeCheckNumber(): Boolean {
         return false
     }
 }
@@ -36,7 +36,6 @@ class ListBuilder(private val builders: List<SentenceBuilder>) : SentenceBuilder
             }
         }
     }
-
 }
 class DeclarationBuilder : SentenceBuilder {
     override fun build(tokenList: List<Token>): Declaration? {
@@ -56,7 +55,6 @@ class DeclarationBuilder : SentenceBuilder {
             Declaration(tokenList.component2(), tokenList.component4())
         }
     }
-
 }
 
 class PrintlnBuilder : SentenceBuilder {
@@ -108,4 +106,3 @@ class DeclarationAssignationBuilder : SentenceBuilder {
         return tokenList.drop(0).drop(2).drop(3)
     }
 }
-
