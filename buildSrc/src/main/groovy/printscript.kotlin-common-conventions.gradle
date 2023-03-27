@@ -27,3 +27,14 @@ tasks.named('test') {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
 }
+
+tasks.register('installGitHook', Copy) {
+    description = 'Install git hook to run ktlint before commit'
+    from(new File(rootProject.rootDir, 'pre-commit'))
+    into { new File(rootProject.rootDir, '.git/hooks') }
+    fileMode 0777
+}
+
+tasks.named('build') {
+    dependsOn 'installGitHook'
+}
