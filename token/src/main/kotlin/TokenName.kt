@@ -21,4 +21,3 @@ enum class TokenName {
     TYPE_ASSIGNATION,
     VALUE_ASSIGNATION
 }
-
