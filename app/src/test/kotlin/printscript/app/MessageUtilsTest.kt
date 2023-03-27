@@ -4,9 +4,8 @@
 package printscript.app
 
 import MessageUtils
-import org.junit.jupiter.api.Test
-
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 
 class MessageUtilsTest {
     @Test fun testGetMessage() {

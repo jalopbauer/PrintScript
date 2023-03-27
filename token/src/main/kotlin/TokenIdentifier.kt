@@ -3,10 +3,9 @@ package token
 interface TokenIdentifier {
 
     fun identify(string: String): TokenName?
-
 }
 
-class ListIdentifier(private val tokenIdentifiers: List<TokenIdentifier>): TokenIdentifier {
+class ListIdentifier(private val tokenIdentifiers: List<TokenIdentifier>) : TokenIdentifier {
     override fun identify(string: String): TokenName? {
         return try {
             tokenIdentifiers.first { tokenIdentifier -> tokenIdentifier.identify(string) != null }.identify(string)
@@ -16,50 +15,51 @@ class ListIdentifier(private val tokenIdentifiers: List<TokenIdentifier>): Token
     }
 }
 
-class BetweenValueIdentifier(private val borderValue: Char, private val tokenName: TokenName): TokenIdentifier {
+class BetweenValueIdentifier(private val borderValue: Char, private val tokenName: TokenName) : TokenIdentifier {
     override fun identify(string: String): TokenName? {
         return if (string.first() == borderValue && string.last() == borderValue) {
             tokenName
         } else {
             null
-
         }
     }
 }
 
-class PrintScript: TokenIdentifier {
+class PrintScript : TokenIdentifier {
     private val tokenIdentifiers = listOf(
-            StringEqualsTokenName()
-        ,   SingleQuoteStringLiteral()
-        ,   NumberLiteralIdentifier()
-        ,   VariableIdentifier()
+        StringEqualsTokenName(),
+        SingleQuoteStringLiteral(),
+        NumberLiteralIdentifier(),
+        VariableIdentifier()
     )
     override fun identify(string: String): TokenName? {
         return ListIdentifier(tokenIdentifiers).identify(string)
     }
 }
 
-class VariableIdentifier: TokenIdentifier {
+class VariableIdentifier : TokenIdentifier {
     override fun identify(string: String): TokenName? {
-        return if (string.matches(Regex("[a-z][a-zA-Z]+"))) TokenName.VARIABLE
-        else null
+        return if (string.matches(Regex("[a-z][a-zA-Z]+"))) {
+            TokenName.VARIABLE
+        } else {
+            null
+        }
     }
-
 }
 
-class SingleQuoteStringLiteral: TokenIdentifier {
+class SingleQuoteStringLiteral : TokenIdentifier {
     override fun identify(string: String): TokenName? {
         return BetweenValueIdentifier('\'', TokenName.STRING_LITERAL).identify(string)
     }
 }
 
-class NumberLiteralIdentifier: TokenIdentifier {
+class NumberLiteralIdentifier : TokenIdentifier {
     override fun identify(string: String): TokenName? {
-        return string.toIntOrNull()?.let { TokenName.NUMBER_LITERAL}
+        return string.toIntOrNull()?.let { TokenName.NUMBER_LITERAL }
     }
 }
 
-class StringEqualsTokenName: TokenIdentifier {
+class StringEqualsTokenName : TokenIdentifier {
     override fun identify(string: String): TokenName? {
         return stringTokenNameMap[string]
     }

@@ -2,11 +2,10 @@
 import lexer.Exceptions.IllegalStringException
 import lexer.Lexer
 import lexer.LexerImp
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import token.Token
 import token.TokenName
-
 
 class LexerTest {
 
@@ -17,7 +16,6 @@ class LexerTest {
     val invalidTokenOne = "let Test: 'error'"
     val invalidTokenTwo = "let err0r = jaja"
 
-
     @Test
     fun createEmptyTokenList() {
         val lexer: Lexer = LexerImp()
@@ -26,17 +24,17 @@ class LexerTest {
     }
 
     @Test
-    fun divideSentenceInTokenList(){
+    fun divideSentenceInTokenList() {
         val lexer: Lexer = LexerImp()
         val tokenList: List<Token> = lexer.buildTokenList(line)
-        for (item in tokenList){
+        for (item in tokenList) {
             println(item.value)
         }
         assertEquals(7, tokenList.size)
     }
 
     @Test
-    fun tokenListHasCorrectTokenName(){
+    fun tokenListHasCorrectTokenName() {
         val lexer: Lexer = LexerImp()
         val tokenList: List<Token> = lexer.buildTokenList(line)
         assertEquals(TokenName.LET, tokenList[0].tokenName)
@@ -49,7 +47,7 @@ class LexerTest {
     }
 
     @Test
-    fun tokenListHasCorrectTokenNameForEquation(){
+    fun tokenListHasCorrectTokenNameForEquation() {
         val lexer: Lexer = LexerImp()
         val tokenList: List<Token> = lexer.buildTokenList(eqline)
         assertEquals(TokenName.LET, tokenList[0].tokenName)
@@ -68,7 +66,7 @@ class LexerTest {
     }
 
     @Test
-    fun tokenListHasCorrectNameForPrint(){
+    fun tokenListHasCorrectNameForPrint() {
         val lexer: Lexer = LexerImp()
         val tokenList: List<Token> = lexer.buildTokenList(printline)
         assertEquals(5, tokenList.size)
@@ -80,7 +78,7 @@ class LexerTest {
     }
 
     @Test
-    fun tokensAreInCorrectPosition(){
+    fun tokensAreInCorrectPosition() {
         val lexer: Lexer = LexerImp()
         val tokenList: List<Token> = lexer.buildTokenList(line)
         assertEquals(0, tokenList[0].position)
@@ -93,7 +91,7 @@ class LexerTest {
     }
 
     @Test
-    fun tokensAreInCorrectLine(){
+    fun tokensAreInCorrectLine() {
         val lexer: Lexer = LexerImp()
         val tokenList: List<Token> = lexer.buildTokenList(lineRepeated)
         assertEquals(0, tokenList[0].lineNumber)
@@ -102,12 +100,12 @@ class LexerTest {
     }
 
     @Test
-    fun invalidTokenShouldThrowException(){
+    fun invalidTokenShouldThrowException() {
         val lexer: Lexer = LexerImp()
-        org.junit.jupiter.api.assertThrows<IllegalStringException>{
+        org.junit.jupiter.api.assertThrows<IllegalStringException> {
             lexer.buildTokenList(invalidTokenOne)
         }
-        org.junit.jupiter.api.assertThrows<IllegalStringException>{
+        org.junit.jupiter.api.assertThrows<IllegalStringException> {
             lexer.buildTokenList(invalidTokenTwo)
         }
     }
