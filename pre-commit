@@ -1,5 +1,5 @@
 #!/bin/sh
-./gradlew ktlintCheck ktlintFormat --daemon --parallel --continue
+./gradlew ktlintFormat ktlintCheck --daemon --parallel --continue
 if [ $? -ne 0 ]; then
     echo "ktlint check failed. Commit aborted."
     exit 1
