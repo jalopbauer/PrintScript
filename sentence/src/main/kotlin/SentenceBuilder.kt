@@ -3,6 +3,13 @@ import token.TokenName
 
 interface SentenceBuilder {
     fun build(tokenList: List<Token>): Sentence?
+    fun TypeCheckString(): Boolean{
+        return false
+    }
+
+    fun TypeCheckNumber(): Boolean{
+        return false
+    }
 }
 
 class PrintScriptBuilder: SentenceBuilder {
@@ -14,6 +21,8 @@ class PrintScriptBuilder: SentenceBuilder {
             ,   PrintlnBuilder()
         )).build(tokenList)
     }
+
+
 }
 
 class ListBuilder(private val builders: List<SentenceBuilder>): SentenceBuilder {
@@ -34,7 +43,7 @@ class DeclarationBuilder: SentenceBuilder {
         else    if (tokenList.component3().tokenName != TokenName.DECLARATION) null
         else    if (tokenList.component4().tokenName != TokenName.STRING_TYPE
                 || tokenList.component4().tokenName != TokenName.NUMBER_TYPE)  null
-        else                                                                   Declaration(tokenList.component2(), tokenList.component4())
+        else    Declaration(tokenList.component2(), tokenList.component4())
     }
 
 }
@@ -52,9 +61,13 @@ class PrintlnBuilder: SentenceBuilder {
 class AssignationBuilder: SentenceBuilder {
     override fun build(tokenList: List<Token>): Assignation? {
         return  if (tokenList.size < 3)                                        null
-        else    if (tokenList.component1().tokenName != TokenName.VARIABLE)    null
+        else    if (tokenList.component1().tokenName != TokenName.VARIABLE ||
+                    tokenList.component1().tokenName == TokenName.STRING_TYPE||
+                    tokenList.component1().tokenName == TokenName.NUMBER_TYPE||
+                    tokenList.component1().tokenName == TokenName.PRINT )      null
         else    if (tokenList.component2().tokenName != TokenName.ASSIGNATION) null
-        else                                                                   Assignation(tokenList.subList(2, tokenList.size - 2))
+        else    if (!(TypeCheckString()||TypeCheckNumber()))                   null
+        else    Assignation(tokenList.subList(2, tokenList.size - 2))
     }
 }
 
