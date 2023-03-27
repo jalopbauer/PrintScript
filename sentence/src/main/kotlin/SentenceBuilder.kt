@@ -3,6 +3,13 @@ import token.TokenName
 
 interface SentenceBuilder {
     fun build(tokenList: List<Token>): Sentence?
+    fun TypeCheckString(): Boolean{
+        return false
+    }
+
+    fun TypeCheckNumber(): Boolean{
+        return false
+    }
 }
 
 class PrintScriptBuilder : SentenceBuilder {
@@ -29,6 +36,7 @@ class ListBuilder(private val builders: List<SentenceBuilder>) : SentenceBuilder
             }
         }
     }
+
 }
 class DeclarationBuilder : SentenceBuilder {
     override fun build(tokenList: List<Token>): Declaration? {
@@ -48,6 +56,7 @@ class DeclarationBuilder : SentenceBuilder {
             Declaration(tokenList.component2(), tokenList.component4())
         }
     }
+
 }
 
 class PrintlnBuilder : SentenceBuilder {
@@ -74,6 +83,8 @@ class AssignationBuilder : SentenceBuilder {
             null
         } else if (tokenList.component2().tokenName != TokenName.ASSIGNATION) {
             null
+        } else if (!(TypeCheckString()||TypeCheckNumber())) {
+            null
         } else {
             Assignation(tokenList.subList(2, tokenList.size - 2))
         }
@@ -97,3 +108,4 @@ class DeclarationAssignationBuilder : SentenceBuilder {
         return tokenList.drop(0).drop(2).drop(3)
     }
 }
+
