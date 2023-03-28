@@ -8,7 +8,7 @@ interface Parser {
 class ParserImpl(private val sentenceBuilder: SentenceBuilder) : Parser {
     override fun parse(nextToken: Token, previousRelevantTokens: List<Token>): ParserResponse {
         val tokens = previousRelevantTokens + nextToken
-        return if (nextToken.tokenName == TokenName.SEMICOLON) {
+        return if (nextToken.tokenName() == TokenName.SEMICOLON) {
             val sentence = sentenceBuilder.build(tokens)
             if (sentence != null) {
                 ValidSentence(sentence)
