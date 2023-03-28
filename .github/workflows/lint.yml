@@ -14,4 +14,4 @@ jobs:
         with:
           fetch-depth: 1
       - name: Run Ktlint
-        uses: jlleitschuh/ktlint-gradle@master
+        uses: jlleitschuh/ktlint-gradle@main
