@@ -4,7 +4,7 @@ interface Token {
     fun lineNumber(): Int
     fun position(): Int
 }
-data class TokenWithoutValue(val tokenName: TokenName, private val lineNumber: Int, private val position: Int): Token {
+data class TokenWithoutValue(val tokenName: TokenName, private val lineNumber: Int, private val position: Int) : Token {
     override fun tokenName(): TokenName {
         return tokenName
     }
@@ -15,7 +15,7 @@ data class TokenWithoutValue(val tokenName: TokenName, private val lineNumber: I
         return position
     }
 }
-data class StringLiteralToken(val value: String, private val lineNumber: Int, private val position: Int): Token {
+data class StringLiteralToken(val value: String, private val lineNumber: Int, private val position: Int) : Token {
     override fun tokenName(): TokenName {
         return TokenName.STRING_LITERAL
     }
@@ -29,7 +29,7 @@ data class StringLiteralToken(val value: String, private val lineNumber: Int, pr
     }
 }
 
-data class ErrorToken(private val lineNumber: Int, private val position: Int): Token {
+data class ErrorToken(private val lineNumber: Int, private val position: Int) : Token {
     override fun tokenName(): TokenName {
         return TokenName.ERROR
     }
@@ -43,7 +43,7 @@ data class ErrorToken(private val lineNumber: Int, private val position: Int): T
     }
 }
 
-data class NumberLiteralToken(val value: Number, private val lineNumber: Int, private val position: Int): Token {
+data class NumberLiteralToken(val value: Number, private val lineNumber: Int, private val position: Int) : Token {
     override fun tokenName(): TokenName {
         return TokenName.NUMBER_LITERAL
     }
@@ -57,7 +57,7 @@ data class NumberLiteralToken(val value: Number, private val lineNumber: Int, pr
     }
 }
 
-data class VariableLiteralToken(val value: String, private val lineNumber: Int, private val position: Int): Token {
+data class VariableLiteralToken(val value: String, private val lineNumber: Int, private val position: Int) : Token {
     override fun tokenName(): TokenName {
         return TokenName.VARIABLE
     }
