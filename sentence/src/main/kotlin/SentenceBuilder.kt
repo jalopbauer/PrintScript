@@ -3,12 +3,44 @@ import token.TokenName
 
 interface SentenceBuilder {
     fun build(tokenList: List<Token>): Sentence?
-    fun TypeCheckString(): Boolean {
-        return false
+    fun typeCheckString(tokens: List<Token>): Boolean {
+        if (tokens.size % 2 == 0) {
+            return false
+        }
+        var tokenCounter = 1
+        for (token in tokens) {
+            if (tokenCounter % 2 == 0) {
+                if (token.tokenName != TokenName.SUM) {
+                    return false
+                }
+            } else if (token.tokenName != TokenName.STRING_LITERAL) {
+                return false
+            }
+            tokenCounter++
+        }
+        return true
     }
 
-    fun TypeCheckNumber(): Boolean {
-        return false
+    // No me mates jorge, hago lo que puedo
+    fun typeCheckNumber(tokens: List<Token>): Boolean {
+        if (tokens.size % 2 == 0) {
+            return false
+        }
+        val tokencounter = 1
+        for (token in tokens) {
+            if (tokencounter % 2 == 0) {
+                if (token.tokenName != TokenName.SUM ||
+                    token.tokenName != TokenName.SUB ||
+                    token.tokenName != TokenName.MULT ||
+                    token.tokenName != TokenName.DIV
+                ) {
+                    return false
+                } else if (token.tokenName != TokenName.NUMBER_LITERAL) {
+                    return false
+                }
+            }
+        }
+        return true
     }
 }
 
@@ -81,7 +113,7 @@ class AssignationBuilder : SentenceBuilder {
             null
         } else if (tokenList.component2().tokenName != TokenName.ASSIGNATION) {
             null
-        } else if (!(TypeCheckString()||TypeCheckNumber())) {
+        } else if (!(typeCheckString(tokenList.subList(2, tokenList.size-1))||typeCheckNumber(tokenList.subList(2, tokenList.size-1)))) {
             null
         } else {
             Assignation(tokenList.subList(2, tokenList.size - 2))
