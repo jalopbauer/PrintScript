@@ -73,14 +73,14 @@ class DeclarationBuilder : SentenceBuilder {
     override fun build(tokenList: List<Token>): Declaration? {
         return if (tokenList.size < 5) {
             null
-        } else if (tokenList.component1().tokenName != TokenName.LET) {
+        } else if (tokenList.component1().tokenName() != TokenName.LET) {
             null
-        } else if (tokenList.component2().tokenName != TokenName.VARIABLE) {
+        } else if (tokenList.component2().tokenName() != TokenName.VARIABLE) {
             null
-        } else if (tokenList.component3().tokenName != TokenName.DECLARATION) {
+        } else if (tokenList.component3().tokenName() != TokenName.DECLARATION) {
             null
-        } else if (tokenList.component4().tokenName != TokenName.STRING_TYPE ||
-            tokenList.component4().tokenName != TokenName.NUMBER_TYPE
+        } else if (tokenList.component4().tokenName() != TokenName.STRING_TYPE ||
+            tokenList.component4().tokenName() != TokenName.NUMBER_TYPE
         ) {
             null
         } else {
@@ -93,11 +93,11 @@ class PrintlnBuilder : SentenceBuilder {
     override fun build(tokenList: List<Token>): Println? {
         return if (tokenList.size < 5) {
             null
-        } else if (tokenList.component1().tokenName != TokenName.PRINT) {
+        } else if (tokenList.component1().tokenName() != TokenName.PRINT) {
             null
-        } else if (tokenList.component2().tokenName != TokenName.LEFT_PARENTHESIS) {
+        } else if (tokenList.component2().tokenName() != TokenName.LEFT_PARENTHESIS) {
             null
-        } else if (tokenList[tokenList.size - 2].tokenName != TokenName.RIGHT_PARENTHESIS) {
+        } else if (tokenList[tokenList.size - 2].tokenName() != TokenName.RIGHT_PARENTHESIS) {
             null
         } else {
             Println(tokenList.subList(2, tokenList.size - 2))
@@ -109,9 +109,9 @@ class AssignationBuilder : SentenceBuilder {
     override fun build(tokenList: List<Token>): Assignation? {
         return if (tokenList.size < 3) {
             null
-        } else if (tokenList.component1().tokenName != TokenName.VARIABLE) {
+        } else if (tokenList.component1().tokenName() != TokenName.VARIABLE) {
             null
-        } else if (tokenList.component2().tokenName != TokenName.ASSIGNATION) {
+        } else if (tokenList.component2().tokenName() != TokenName.ASSIGNATION) {
             null
         } else if (!(typeCheckString(tokenList.subList(2, tokenList.size-1))||typeCheckNumber(tokenList.subList(2, tokenList.size-1)))) {
             null
