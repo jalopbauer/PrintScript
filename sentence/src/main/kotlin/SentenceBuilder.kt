@@ -10,10 +10,10 @@ interface SentenceBuilder {
         var tokenCounter = 1
         for (token in tokens) {
             if (tokenCounter % 2 == 0) {
-                if (token.tokenName != TokenName.SUM) {
+                if (token.tokenName() != TokenName.SUM) {
                     return false
                 }
-            } else if (token.tokenName != TokenName.STRING_LITERAL) {
+            } else if (token.tokenName() != TokenName.STRING_LITERAL) {
                 return false
             }
             tokenCounter++
@@ -29,13 +29,13 @@ interface SentenceBuilder {
         val tokencounter = 1
         for (token in tokens) {
             if (tokencounter % 2 == 0) {
-                if (token.tokenName != TokenName.SUM ||
-                    token.tokenName != TokenName.SUB ||
-                    token.tokenName != TokenName.MULT ||
-                    token.tokenName != TokenName.DIV
+                if (token.tokenName() != TokenName.SUM ||
+                    token.tokenName() != TokenName.SUB ||
+                    token.tokenName() != TokenName.MULT ||
+                    token.tokenName() != TokenName.DIV
                 ) {
                     return false
-                } else if (token.tokenName != TokenName.NUMBER_LITERAL) {
+                } else if (token.tokenName() != TokenName.NUMBER_LITERAL) {
                     return false
                 }
             }

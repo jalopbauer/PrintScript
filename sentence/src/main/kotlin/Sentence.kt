@@ -7,8 +7,8 @@ data class Declaration(val variableName: Token, val variableType: Token) : Sente
     override fun getAst(): AbstractSyntaxTree {
         return Node(
             ":",
-            NodeValue(variableName.value),
-            NodeValue(variableType.value)
+            NodeValue(variableName.tokenName().name),
+            NodeValue(variableType.tokenName().name)
         )
     }
 }
