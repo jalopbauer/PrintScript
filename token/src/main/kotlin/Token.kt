@@ -70,3 +70,59 @@ data class VariableLiteralToken(val value: String, private val lineNumber: Int, 
         return position
     }
 }
+
+data class OperatorHighToken(val tokenName: TokenName, private val lineNumber: Int, private val position: Int) : Token {
+    override fun tokenName(): TokenName {
+        return tokenName
+    }
+
+    override fun lineNumber(): Int {
+        return lineNumber
+    }
+
+    override fun position(): Int {
+        return position
+    }
+}
+
+data class OperatorLowToken(val tokenName: TokenName, private val lineNumber: Int, private val position: Int) : Token {
+    override fun tokenName(): TokenName {
+        return tokenName
+    }
+
+    override fun lineNumber(): Int {
+        return lineNumber
+    }
+
+    override fun position(): Int {
+        return position
+    }
+}
+
+data class OpenBracketToken(val tokenName: TokenName, private val lineNumber: Int, private val position: Int) : Token {
+    override fun tokenName(): TokenName {
+        return tokenName
+    }
+
+    override fun lineNumber(): Int {
+        return lineNumber
+    }
+
+    override fun position(): Int {
+        return position
+    }
+}
+
+data class ClosedBracketToken(val tokenName: TokenName, private val lineNumber: Int, private val position: Int) : Token {
+    override fun tokenName(): TokenName {
+        return tokenName
+    }
+
+    override fun lineNumber(): Int {
+        return lineNumber
+    }
+
+    override fun position(): Int {
+        return position
+    }
+}
