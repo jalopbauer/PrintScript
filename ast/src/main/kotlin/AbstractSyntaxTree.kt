@@ -1,7 +1,4 @@
-
-
 sealed interface AbstractSyntaxTree
-
-data class Node(val value: String, val lNode: AbstractSyntaxTree, val rNode: AbstractSyntaxTree) : AbstractSyntaxTree
-
-data class NodeValue(val value: String) : AbstractSyntaxTree
+data class ValuedNode<T>(val value: NodeValue<T>, val lNode: AbstractSyntaxTree, val rNode: AbstractSyntaxTree) : AbstractSyntaxTree
+data class ValuedSingleNode<T>(val value: NodeValue<T>, val node: AbstractSyntaxTree) : AbstractSyntaxTree
+data class NodeValue<T>(val value: T) : AbstractSyntaxTree
