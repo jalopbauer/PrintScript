@@ -15,3 +15,8 @@ data class NodeValue<T>(val value: T) : AbstractSyntaxTree<T> {
     override fun value(): T =
         value
 }
+
+data class SumStringNode(val lNode: AbstractSyntaxTree<String>, val rNode: AbstractSyntaxTree<String>) : AbstractSyntaxTree<String> {
+    override fun value(): String =
+        lNode.value() + rNode.value()
+}
