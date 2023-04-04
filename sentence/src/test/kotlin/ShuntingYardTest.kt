@@ -1,6 +1,12 @@
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import token.*
+import token.ClosedBracketToken
+import token.NumberLiteralToken
+import token.OpenBracketToken
+import token.OperatorHighToken
+import token.OperatorLowToken
+import token.Token
+import token.TokenName
 
 class ShuntingYardTest {
 

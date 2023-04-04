@@ -1,9 +1,15 @@
-import token.*
+import token.ClosedBracketToken
+import token.NumberLiteralToken
+import token.OpenBracketToken
+import token.OperatorHighToken
+import token.OperatorLowToken
+import token.Token
+import token.TokenName
 
 class ShuntingYardImpl : ShuntingYard {
     override fun check(tokens: List<Token>): List<Token> {
-        var stack = ArrayDeque<Token>()
-        var queue = ArrayDeque<Token>()
+        val stack = ArrayDeque<Token>()
+        val queue = ArrayDeque<Token>()
 
         for (token in tokens) {
             when (token) {
