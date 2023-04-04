@@ -1,63 +1,40 @@
 import token.Token
 import token.TokenName
+import token.VariableLiteralToken
 
-interface SentenceBuilder {
+interface SentenceValidator {
     fun build(tokenList: List<Token>): Sentence?
-    fun typeCheckString(tokens: List<Token>): Boolean {
-        if (tokens.size % 2 == 0) {
-            return false
-        }
-        var tokenCounter = 1
-        for (token in tokens) {
-            if (tokenCounter % 2 == 0) {
-                if (token.tokenName() != TokenName.SUM) {
-                    return false
-                }
-            } else if (token.tokenName() != TokenName.STRING_LITERAL) {
-                return false
+    fun typeCheckString(tokens: List<Token>): Boolean =
+        !tokens
+            .any {
+                it.tokenName() != TokenName.SUM ||
+                    it.tokenName() != TokenName.STRING_LITERAL
             }
-            tokenCounter++
-        }
-        return true
-    }
 
-    // No me mates jorge, hago lo que puedo
-    fun typeCheckNumber(tokens: List<Token>): Boolean {
-        if (tokens.size % 2 == 0) {
-            return false
-        }
-        val tokencounter = 1
-        for (token in tokens) {
-            if (tokencounter % 2 == 0) {
-                if (token.tokenName() != TokenName.SUM ||
-                    token.tokenName() != TokenName.SUB ||
-                    token.tokenName() != TokenName.MULT ||
-                    token.tokenName() != TokenName.DIV
-                ) {
-                    return false
-                } else if (token.tokenName() != TokenName.NUMBER_LITERAL) {
-                    return false
-                }
+    fun typeCheckNumber(tokens: List<Token>): Boolean =
+        !tokens
+            .any {
+                it.tokenName() != TokenName.SUM ||
+                    it.tokenName() != TokenName.SUB ||
+                    it.tokenName() != TokenName.MULT ||
+                    it.tokenName() != TokenName.DIV ||
+                    it.tokenName() != TokenName.NUMBER_LITERAL
             }
-        }
-        return true
-    }
 }
-
-class PrintScriptBuilder : SentenceBuilder {
+class PrintScriptValidator : SentenceValidator {
     override fun build(tokenList: List<Token>): Sentence? {
-        return ListBuilder(
+        return ListValidator(
             listOf(
-                DeclarationAssignationBuilder(),
-                DeclarationBuilder(),
-                AssignationBuilder(),
-                PrintlnBuilder()
+                DeclarationAssignationValidator(),
+                DeclarationValidator(),
+                AssignationValidator(),
+                PrintLnValidator()
             )
         ).build(tokenList)
     }
 }
 
-class ListBuilder(private val builders: List<SentenceBuilder>) : SentenceBuilder {
+class ListValidator(private val builders: List<SentenceValidator>) : SentenceValidator {
     override fun build(tokenList: List<Token>): Sentence? {
         return builders.fold(null) {
                 acc, sentenceBuilder ->
@@ -69,7 +46,7 @@ class ListBuilder(private val builders: List<SentenceBuilder>) : SentenceBuilder
         }
     }
 }
-class DeclarationBuilder : SentenceBuilder {
+class DeclarationValidator : SentenceValidator {
     override fun build(tokenList: List<Token>): Declaration? {
         return if (tokenList.size < 5) {
             null
@@ -84,12 +61,12 @@ class DeclarationBuilder : SentenceBuilder {
         ) {
             null
         } else {
-            Declaration(tokenList.component2(), tokenList.component4())
+            Declaration(tokenList.component2() as VariableLiteralToken, tokenList.component4())
         }
     }
 }
 
-class PrintlnBuilder : SentenceBuilder {
+class PrintLnValidator : SentenceValidator {
     override fun build(tokenList: List<Token>): Println? {
         return if (tokenList.size < 5) {
             null
@@ -105,7 +82,7 @@ class PrintlnBuilder : SentenceBuilder {
     }
 }
 
-class AssignationBuilder : SentenceBuilder {
+class AssignationValidator : SentenceValidator {
     override fun build(tokenList: List<Token>): Assignation? {
         return if (tokenList.size < 3) {
             null
@@ -121,12 +98,12 @@ class AssignationBuilder : SentenceBuilder {
     }
 }
 
-class DeclarationAssignationBuilder : SentenceBuilder {
+class DeclarationAssignationValidator : SentenceValidator {
     override fun build(tokenList: List<Token>): Sentence? {
-        DeclarationBuilder().build(tokenList)
+        DeclarationValidator().build(tokenList)
             ?.let {
                     declaration ->
-                AssignationBuilder().build(tokenListWithoutLetVariableType(tokenList))
+                AssignationValidator().build(tokenListWithoutLetVariableType(tokenList))
                     ?.let {
                             assignation ->
                         return DeclarationAssignation(declaration, assignation)
