@@ -1,5 +1,4 @@
 import token.Token
-import token.TokenName
 import token.VariableLiteralToken
 
 sealed interface Sentence {
@@ -7,11 +6,7 @@ sealed interface Sentence {
 }
 data class Declaration(val variableName: VariableLiteralToken, val variableType: Token) : Sentence {
     override fun getAst(): AbstractSyntaxTree<*> {
-        return ValuedNode(
-            NodeValue(TokenName.DECLARATION),
-            NodeValue(variableName.value),
-            NodeValue(variableType.tokenName())
-        )
+        TODO("Not yet implemented")
     }
 }
 data class Println(val stringValue: StringValue) : Sentence {
