@@ -28,7 +28,7 @@ class SentenceCheckerImpl() : SentenceChecker {
             (tokens.component3().tokenName() == TokenName.VARIABLE || checkString(tokens.subList(2, (tokens.size - 2))))
         ) {
             return PrintlnType
-        } else if (tokens.size == 7 &&
+        } else if (tokens.size >= 7 &&
             tokens.component1().tokenName() == TokenName.LET &&
             tokens.component2().tokenName() == TokenName.VARIABLE &&
             tokens.component3().tokenName() == TokenName.DECLARATION &&
@@ -60,15 +60,41 @@ class SentenceCheckerImpl() : SentenceChecker {
     }
 
     private fun checkOperation(tokens: List<Token>): Boolean {
-        // numero le siguen un operador o un parentesis cerrado
-        // operador le siguen un numero o un parentesis abierto, tengo operadores high value y low value
-        // parentesis abierto le sigue un numero
-        // perentesis cerrado le sigue un operador
+        // numero tiene antes un operador o un parentesis abierto
+        // operador tiene atras un numero o un parentesis cerrao
+        // parentesis abierto tiene atras un operador
+        // perentesis cerrado tiene atras un numero
         var previousToken = tokens[0].tokenName()
         if (tokens.size == 1) {
             return previousToken == TokenName.NUMBER_LITERAL
         }
-
-        return false
+        for (token in tokens.subList(1, tokens.size)) {
+            when (token.tokenName()) {
+                TokenName.NUMBER_LITERAL -> if (!(
+                    previousToken == TokenName.LEFT_PARENTHESIS ||
+                        previousToken == TokenName.SUM ||
+                        previousToken == TokenName.SUB ||
+                        previousToken == TokenName.MULT ||
+                        previousToken == TokenName.DIV
+                    )
+                ) { return false }
+                TokenName.SUM, TokenName.SUB, TokenName.MULT, TokenName.DIV -> if (!(
+                    previousToken == TokenName.NUMBER_LITERAL ||
+                        previousToken == TokenName.RIGHT_PARENTHESIS
+                    )
+                ) { return false }
+                TokenName.LEFT_PARENTHESIS -> if (!(
+                    previousToken == TokenName.SUM ||
+                        previousToken == TokenName.SUB ||
+                        previousToken == TokenName.MULT ||
+                        previousToken == TokenName.DIV
+                    )
+                ) { return false }
+                TokenName.RIGHT_PARENTHESIS -> if (previousToken != TokenName.NUMBER_LITERAL) { return false }
+                else -> return false
+            }
+            previousToken = token.tokenName()
+        }
+        return true
     }
 }
