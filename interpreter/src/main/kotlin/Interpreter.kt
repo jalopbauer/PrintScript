@@ -11,3 +11,13 @@ class PrintlnInterpreter : Interpreter<PrintlnResponse, PrintLnInterpreterState>
         }
     }
 }
+
+class DeclarationInterpreter : Interpreter<DeclarationResponse, DeclarationInterpreterState> {
+    override fun interpret(abstractSyntaxTree: AbstractSyntaxTree<*>, interpreterState: DeclarationInterpreterState): DeclarationResponse? {
+        return if (abstractSyntaxTree is DeclarationAst) {
+            interpreterState.add(abstractSyntaxTree.value())
+        } else {
+            null
+        }
+    }
+}
