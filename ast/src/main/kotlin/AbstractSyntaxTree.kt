@@ -1,10 +1,9 @@
+
+
 sealed interface AbstractSyntaxTree<T> {
     fun value(): T
 }
-data class ValuedNode<T>(val value: T, val lNode: AbstractSyntaxTree<*>, val rNode: AbstractSyntaxTree<*>) : AbstractSyntaxTree<T> {
-    override fun value(): T =
-        value
-}
+interface ValuedNode<T> : AbstractSyntaxTree<T>
 
 data class ValuedSingleNode<T>(val value: T, val node: AbstractSyntaxTree<*>) : AbstractSyntaxTree<T> {
     override fun value(): T =
@@ -18,5 +17,10 @@ data class NodeValue<T>(val value: T) : AbstractSyntaxTree<T> {
 
 data class SumStringNode(val lNode: AbstractSyntaxTree<String>, val rNode: AbstractSyntaxTree<String>) : AbstractSyntaxTree<String> {
     override fun value(): String =
+        lNode.value() + rNode.value()
+}
+
+data class SumNumberNode(val lNode: AbstractSyntaxTree<Int>, val rNode: AbstractSyntaxTree<Int>) : AbstractSyntaxTree<Int> {
+    override fun value(): Int =
         lNode.value() + rNode.value()
 }
