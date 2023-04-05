@@ -1,11 +1,9 @@
 import token.Token
-import token.TokenName
-import token.VariableLiteralToken
 
 interface SentenceValidator {
     fun build(tokenList: List<Token>): Sentence?
 }
-//class PrintScriptValidator : SentenceValidator {
+// class PrintScriptValidator : SentenceValidator {
 //    override fun build(tokenList: List<Token>): Sentence? {
 //        return ListValidator(
 //            listOf(
@@ -16,9 +14,9 @@ interface SentenceValidator {
 //            )
 //        ).build(tokenList)
 //    }
-//}
+// }
 //
-//class ListValidator(private val builders: List<SentenceValidator>) : SentenceValidator {
+// class ListValidator(private val builders: List<SentenceValidator>) : SentenceValidator {
 //    override fun build(tokenList: List<Token>): Sentence? {
 //        return builders.fold(null) {
 //                acc, sentenceBuilder ->
@@ -29,8 +27,8 @@ interface SentenceValidator {
 //            }
 //        }
 //    }
-//}
-//class DeclarationValidator : SentenceValidator {
+// }
+// class DeclarationValidator : SentenceValidator {
 //    override fun build(tokenList: List<Token>): Declaration? {
 //        return if (tokenList.size < 5) {
 //            null
@@ -48,9 +46,9 @@ interface SentenceValidator {
 //            Declaration(tokenList.component2() as VariableLiteralToken, tokenList.component4())
 //        }
 //    }
-//}
+// }
 //
-//class PrintLnValidator : SentenceValidator {
+// class PrintLnValidator : SentenceValidator {
 //    override fun build(tokenList: List<Token>): Println? {
 //        return if (tokenList.size < 5) {
 //            null
@@ -65,9 +63,9 @@ interface SentenceValidator {
 //                ?.let { Println(it) }
 //        }
 //    }
-//}
+// }
 //
-//class AssignationValidator : SentenceValidator {
+// class AssignationValidator : SentenceValidator {
 //    override fun build(tokenList: List<Token>): Assignation? {
 //        return if (tokenList.size < 3) {
 //            null
@@ -83,9 +81,9 @@ interface SentenceValidator {
 //                    ?.let { Assignation(it) }
 //        }
 //    }
-//}
+// }
 //
-//class DeclarationAssignationValidator : SentenceValidator {
+// class DeclarationAssignationValidator : SentenceValidator {
 //    override fun build(tokenList: List<Token>): Sentence? {
 //        DeclarationValidator().build(tokenList)
 //            ?.let {
@@ -101,9 +99,9 @@ interface SentenceValidator {
 //    private fun tokenListWithoutLetVariableType(tokenList: List<Token>): List<Token> {
 //        return tokenList.drop(0).drop(2).drop(3)
 //    }
-//}
+// }
 //
-//class StringSentenceValidator : SentenceValidator {
+// class StringSentenceValidator : SentenceValidator {
 //    override fun build(tokenList: List<Token>): StringValue? {
 //        return if (!tokenList
 //            .any {
@@ -116,9 +114,9 @@ interface SentenceValidator {
 //            null
 //        }
 //    }
-//}
+// }
 //
-//class NumberSentenceValidator : SentenceValidator {
+// class NumberSentenceValidator : SentenceValidator {
 //    override fun build(tokenList: List<Token>): NumberValue? {
 //        return if (!tokenList
 //            .any {
@@ -134,4 +132,4 @@ interface SentenceValidator {
 //            null
 //        }
 //    }
-//}
+// }
