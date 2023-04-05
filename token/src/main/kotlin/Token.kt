@@ -43,7 +43,7 @@ data class ErrorToken(private val lineNumber: Int, private val position: Int) : 
     }
 }
 
-data class NumberLiteralToken(val value: Number, private val lineNumber: Int, private val position: Int) : Token {
+data class NumberLiteralToken(val value: Int, private val lineNumber: Int, private val position: Int) : Token {
     override fun tokenName(): TokenName {
         return TokenName.NUMBER_LITERAL
     }
