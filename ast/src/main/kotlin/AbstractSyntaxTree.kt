@@ -10,9 +10,13 @@ data class PrintlnAst(val value: PrintlnAstParameter) : AbstractSyntaxTree<Strin
 
 interface PrintlnAstParameter : AbstractSyntaxTree<String>
 
-data class DeclarationAst(val variableNameNode: VariableNameNode) : AbstractSyntaxTree<String> {
+data class DeclarationAst(val variableNameNode: VariableNameNode, val variableType: VariableTypeNode) : AbstractSyntaxTree<String> {
     override fun value(): String =
-        variableNameNode.value()
+        ":"
+}
+class VariableTypeNode(private val variableType: String) : AbstractSyntaxTree<String> {
+    override fun value(): String =
+        variableType
 }
 
 data class VariableNameNode(val variableName: String) : AbstractSyntaxTree<String>, PrintlnAstParameter {
