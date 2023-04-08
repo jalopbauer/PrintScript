@@ -6,7 +6,7 @@ class PrintlnBuilder : AstBuilder<PrintlnValidListOfTokens> {
     override fun build(validListOfTokens: PrintlnValidListOfTokens): AbstractSyntaxTree<*> {
         return when (validListOfTokens.printlnValidParameter) {
             is VariableParameter -> PrintlnAst(VariableNameNode(validListOfTokens.printlnValidParameter.variableToken.value))
-            is NumberLiteralParameter -> PrintlnAst(NumberLiteralNode(validListOfTokens.printlnValidParameter.numberLiteralToken.value))
+            is NumberLiteralParameter -> PrintlnAst(NumberLiteralStringNode(NumberLiteralNode(validListOfTokens.printlnValidParameter.numberLiteralToken.value)))
             is StringLiteralOrStringConcat -> PrintlnAst(StringLiteralOrStringConcatAstBuilder().build(validListOfTokens.printlnValidParameter))
         }
     }

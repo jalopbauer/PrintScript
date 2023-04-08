@@ -1,23 +1,21 @@
-interface Interpreter<T : InterpreterResponse, U : InterpreterState> {
-    fun interpret(abstractSyntaxTree: AbstractSyntaxTree<*>, interpreterState: U): T?
+interface Interpreter<T : AbstractSyntaxTree<*>> {
+    fun interpret(abstractSyntaxTree: T, interpreterState: InterpreterState): InterpreterResponse?
 }
 
-class PrintlnInterpreter : Interpreter<PrintlnResponse, PrintLnInterpreterState> {
-    override fun interpret(abstractSyntaxTree: AbstractSyntaxTree<*>, interpreterState: PrintLnInterpreterState): PrintlnResponse? {
-        return if (abstractSyntaxTree is PrintlnAst) {
-            interpreterState.add(abstractSyntaxTree.value())
+class PrintlnInterpreter : Interpreter<AbstractSyntaxTree<*>> {
+    override fun interpret(abstractSyntaxTree: AbstractSyntaxTree<*>, interpreterState: InterpreterState): InterpreterResponse? =
+        if (abstractSyntaxTree is PrintlnAst) {
+            PrintlnParameterInterpreter().interpret(abstractSyntaxTree.value(), interpreterState)
         } else {
             null
         }
-    }
 }
 
-class DeclarationInterpreter : Interpreter<DeclarationResponse, DeclarationInterpreterState> {
-    override fun interpret(abstractSyntaxTree: AbstractSyntaxTree<*>, interpreterState: DeclarationInterpreterState): DeclarationResponse? {
-        return if (abstractSyntaxTree is DeclarationAst) {
-            interpreterState.add(abstractSyntaxTree.value())
-        } else {
-            null
+class PrintlnParameterInterpreter : Interpreter<PrintlnAstParameter> {
+    override fun interpret(abstractSyntaxTree: PrintlnAstParameter, interpreterState: InterpreterState): InterpreterResponse =
+        when (abstractSyntaxTree) {
+            is VariableNameNode -> interpreterState.addVariableValueToPrintln(abstractSyntaxTree.value())
+            is NumberLiteralStringNode -> interpreterState.addValueToPrintln(abstractSyntaxTree.number.value())
+            is StringNode -> interpreterState.addValueToPrintln(abstractSyntaxTree.value())
         }
-    }
 }
