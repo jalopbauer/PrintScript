@@ -1,6 +1,10 @@
 
 sealed interface AbstractSyntaxTree
 
+sealed interface LeftRightValuedNode<T, U> : AbstractSyntaxTree {
+    fun leftValue(): T
+    fun rightValue(): U
+}
 sealed interface ValuedNode<T> : AbstractSyntaxTree {
     fun value(): T
 }
@@ -30,4 +34,17 @@ sealed interface StringNode : ValuedNode<String>
 class StringLiteralNode(private val value: String) : StringNode, PrintlnAstParameter {
     override fun value(): String =
         value
+}
+
+class DeclarationAst(private val variableNameNode: VariableNameNode, private val typeNode: TypeNode) : LeftRightValuedNode<VariableNameNode, TypeNode> {
+    override fun leftValue(): VariableNameNode =
+        variableNameNode
+
+    override fun rightValue(): TypeNode =
+        typeNode
+}
+
+class TypeNode(private val typeName: String) : ValuedNode<String> {
+    override fun value(): String =
+        typeName
 }

@@ -18,3 +18,12 @@ class PrintlnParameterInterpreter : Interpreter<PrintlnAstParameter> {
             is NumberLiteralStringNode, is StringNode -> interpreterState.addValueToPrintln(abstractSyntaxTree.value())
         }
 }
+
+class DeclarationInterpreter : Interpreter<AbstractSyntaxTree> {
+    override fun interpret(abstractSyntaxTree: AbstractSyntaxTree, interpreterState: InterpreterState): InterpreterResponse? =
+        if (abstractSyntaxTree is DeclarationAst) {
+            interpreterState.initializeVariable(abstractSyntaxTree.leftValue().value(), abstractSyntaxTree.rightValue().value())
+        } else {
+            null
+        }
+}
