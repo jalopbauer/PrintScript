@@ -15,7 +15,6 @@ class PrintlnParameterInterpreter : Interpreter<PrintlnAstParameter> {
     override fun interpret(abstractSyntaxTree: PrintlnAstParameter, interpreterState: InterpreterState): InterpreterResponse =
         when (abstractSyntaxTree) {
             is VariableNameNode -> interpreterState.addVariableValueToPrintln(abstractSyntaxTree.value())
-            is NumberLiteralStringNode -> interpreterState.addValueToPrintln(abstractSyntaxTree.number.value())
-            is StringNode -> interpreterState.addValueToPrintln(abstractSyntaxTree.value())
+            is NumberLiteralStringNode, is StringNode -> interpreterState.addValueToPrintln(abstractSyntaxTree.value())
         }
 }
