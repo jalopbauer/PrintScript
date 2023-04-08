@@ -3,8 +3,8 @@ interface Parser<T> {
     fun parse(tokensInCodeBlock: List<Token>): T?
 }
 
-interface AstParser<T : ValidListOfTokens> : Parser<AbstractSyntaxTree<*>> {
-    override fun parse(tokensInCodeBlock: List<Token>): AbstractSyntaxTree<*>? =
+interface AstParser<T : ValidListOfTokens> : Parser<AbstractSyntaxTree> {
+    override fun parse(tokensInCodeBlock: List<Token>): AbstractSyntaxTree? =
         parserAstValidator().validate(tokensInCodeBlock)?.let { parserAstBuilder().build(it) }
     fun parserAstBuilder(): AstBuilder<T>
     fun parserAstValidator(): AstValidator<T>

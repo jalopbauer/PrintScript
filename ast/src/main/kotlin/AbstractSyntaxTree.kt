@@ -1,32 +1,33 @@
 
+sealed interface AbstractSyntaxTree
 
-sealed interface AbstractSyntaxTree<T> {
+sealed interface ValuedNode<T> : AbstractSyntaxTree {
     fun value(): T
 }
-class PrintlnAst(val value: PrintlnAstParameter) : AbstractSyntaxTree<PrintlnAstParameter> {
+class PrintlnAst(private val value: PrintlnAstParameter) : ValuedNode<PrintlnAstParameter> {
     override fun value(): PrintlnAstParameter =
         value
 }
 
-sealed interface PrintlnAstParameter : AbstractSyntaxTree<String>
+sealed interface PrintlnAstParameter : ValuedNode<String>
 
-class VariableNameNode(val variableName: String) : AbstractSyntaxTree<String>, PrintlnAstParameter {
+class VariableNameNode(private val variableName: String) : ValuedNode<String>, PrintlnAstParameter {
     override fun value(): String =
         variableName
 }
 
-class NumberLiteralNode(val number: Int) : AbstractSyntaxTree<Int> {
+class NumberLiteralNode(val number: Int) : ValuedNode<Int> {
     override fun value(): Int =
         number
 }
 
-class NumberLiteralStringNode(val number: NumberLiteralNode) : AbstractSyntaxTree<String>, PrintlnAstParameter {
+class NumberLiteralStringNode(private val number: NumberLiteralNode) : ValuedNode<String>, PrintlnAstParameter {
     override fun value(): String =
         number.number.toString()
 }
 
-sealed interface StringNode : AbstractSyntaxTree<String>
-class StringLiteralNode(val value: String) : StringNode, PrintlnAstParameter {
+sealed interface StringNode : ValuedNode<String>
+class StringLiteralNode(private val value: String) : StringNode, PrintlnAstParameter {
     override fun value(): String =
         value
 }

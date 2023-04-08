@@ -1,9 +1,9 @@
-interface Interpreter<T : AbstractSyntaxTree<*>> {
+interface Interpreter<T : AbstractSyntaxTree> {
     fun interpret(abstractSyntaxTree: T, interpreterState: InterpreterState): InterpreterResponse?
 }
 
-class PrintlnInterpreter : Interpreter<AbstractSyntaxTree<*>> {
-    override fun interpret(abstractSyntaxTree: AbstractSyntaxTree<*>, interpreterState: InterpreterState): InterpreterResponse? =
+class PrintlnInterpreter : Interpreter<AbstractSyntaxTree> {
+    override fun interpret(abstractSyntaxTree: AbstractSyntaxTree, interpreterState: InterpreterState): InterpreterResponse? =
         if (abstractSyntaxTree is PrintlnAst) {
             PrintlnParameterInterpreter().interpret(abstractSyntaxTree.value(), interpreterState)
         } else {
