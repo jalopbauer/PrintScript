@@ -22,15 +22,26 @@ class DeclarationAst(private val variableNameNode: VariableNameNode, private val
         typeNode
 }
 
+class AssignationAst<T>(private val variableNameNode: VariableNameNode, private val assignationParameter: AssignationParameterNode<T>) : LeftRightValuedNode<VariableNameNode, AssignationParameterNode<T>> {
+    override fun leftValue(): VariableNameNode =
+        variableNameNode
+
+    override fun rightValue(): AssignationParameterNode<T> =
+        assignationParameter
+}
+
+sealed interface AssignationParameterNode<T> : ValuedNode<T>
+
 // Value interfaces
-sealed interface StringNode : ValuedNode<String>
+sealed interface StringNode : AssignationParameterNode<String>
+sealed interface NumberNode : AssignationParameterNode<Int>
 
 // Literals
 class StringLiteralNode(private val value: String) : StringNode, PrintlnAstParameter {
     override fun value(): String =
         value
 }
-class NumberLiteralNode(val number: Int) : ValuedNode<Int> {
+class NumberLiteralNode(val number: Int) : NumberNode, AssignationParameterNode<Int> {
     override fun value(): Int =
         number
 }
@@ -38,7 +49,7 @@ class NumberLiteralStringNode(private val number: NumberLiteralNode) : ValuedNod
     override fun value(): String =
         number.number.toString()
 }
-class VariableNameNode(private val variableName: String) : ValuedNode<String>, PrintlnAstParameter {
+class VariableNameNode(private val variableName: String) : ValuedNode<String>, PrintlnAstParameter, AssignationParameterNode<String> {
     override fun value(): String =
         variableName
 }

@@ -27,3 +27,22 @@ class DeclarationInterpreter : Interpreter<AbstractSyntaxTree> {
             null
         }
 }
+
+class AssignationInterpreter : Interpreter<AbstractSyntaxTree> {
+    override fun interpret(abstractSyntaxTree: AbstractSyntaxTree, interpreterState: InterpreterState): InterpreterResponse? =
+        if (abstractSyntaxTree is AssignationAst<*>) {
+            AssignationParameterInterpreter().interpret(abstractSyntaxTree, interpreterState)
+        } else {
+            null
+        }
+}
+
+class AssignationParameterInterpreter : Interpreter<AssignationAst<*>> {
+    override fun interpret(abstractSyntaxTree: AssignationAst<*>, interpreterState: InterpreterState): InterpreterResponse =
+        when (val assignationParameterNode = abstractSyntaxTree.rightValue()) {
+            is NumberNode -> interpreterState.setValueToVariable(abstractSyntaxTree.leftValue(), assignationParameterNode)
+            is StringNode -> interpreterState.setValueToVariable(abstractSyntaxTree.leftValue(), assignationParameterNode)
+            is VariableNameNode -> interpreterState.setValueToVariable(abstractSyntaxTree.leftValue(), assignationParameterNode)
+            else -> AssignationParameterNotValidError()
+        }
+}
