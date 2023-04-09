@@ -20,10 +20,10 @@ class PrintlnParameterInterpreter : Interpreter<PrintlnAstParameter, PrintlnInte
         }
 }
 
-class DeclarationInterpreter : Interpreter<AbstractSyntaxTree, PrintScriptInterpreterState> {
-    override fun interpret(abstractSyntaxTree: AbstractSyntaxTree, interpreterState: PrintScriptInterpreterState): InterpreterResponse? =
+class DeclarationInterpreter : Interpreter<AbstractSyntaxTree, DeclarationInterpreterState> {
+    override fun interpret(abstractSyntaxTree: AbstractSyntaxTree, interpreterState: DeclarationInterpreterState): InterpreterResponse? =
         if (abstractSyntaxTree is DeclarationAst) {
-            interpreterState.initializeVariable(abstractSyntaxTree.leftValue().value(), abstractSyntaxTree.rightValue().value())
+            interpreterState.initializeVariable(abstractSyntaxTree.leftValue(), abstractSyntaxTree.rightValue())
         } else {
             null
         }

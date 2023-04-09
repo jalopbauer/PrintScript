@@ -10,6 +10,9 @@ class AssignationParameterNotValidError : Error {
 
 interface InterpreterState : InterpreterResponse
 
+interface DeclarationInterpreterState : InterpreterState {
+    fun initializeVariable(value: VariableNameNode, type: TypeNode): InterpreterResponse
+}
 interface PrintlnInterpreterState : InterpreterState {
     fun println(value: VariableNameNode): InterpreterResponse
     fun println(value: NumberLiteralStringNode): InterpreterResponse
@@ -20,6 +23,4 @@ interface AssignationInterpreterState : InterpreterState {
     fun setValueToVariable(variableNameNode: VariableNameNode, value: StringNode): InterpreterResponse
     fun setValueToVariable(variableNameNode: VariableNameNode, value: VariableNameNode): InterpreterResponse
 }
-interface PrintScriptInterpreterState : InterpreterState, PrintlnInterpreterState, AssignationInterpreterState {
-    fun initializeVariable(value: String, value1: String): InterpreterResponse
-}
+interface PrintScriptInterpreterState : InterpreterState, PrintlnInterpreterState, AssignationInterpreterState, DeclarationInterpreterState
