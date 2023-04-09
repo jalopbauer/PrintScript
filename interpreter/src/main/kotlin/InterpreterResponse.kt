@@ -9,6 +9,7 @@ class AssignationParameterNotValidError : Error {
 }
 
 interface InterpreterState : InterpreterResponse
+interface AssignationDeclarationInterpreterState : DeclarationInterpreterState, AssignationInterpreterState
 
 interface DeclarationInterpreterState : InterpreterState {
     fun initializeVariable(value: VariableNameNode, type: TypeNode): InterpreterResponse

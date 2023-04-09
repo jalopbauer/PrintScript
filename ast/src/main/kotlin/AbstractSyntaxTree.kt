@@ -14,6 +14,7 @@ class PrintlnAst(private val value: PrintlnAstParameter) : ValuedNode<PrintlnAst
         value
 }
 sealed interface PrintlnAstParameter : ValuedNode<String>
+
 class DeclarationAst(private val variableNameNode: VariableNameNode, private val typeNode: TypeNode) : LeftRightValuedNode<VariableNameNode, TypeNode> {
     override fun leftValue(): VariableNameNode =
         variableNameNode
@@ -28,6 +29,14 @@ class AssignationAst<T>(private val variableNameNode: VariableNameNode, private 
 
     override fun rightValue(): AssignationParameterNode<T> =
         assignationParameter
+}
+
+class AssignationDeclarationAst<T>(private val assignation: AssignationAst<T>, private val declaration: DeclarationAst) : LeftRightValuedNode<AssignationAst<T>, DeclarationAst> {
+    override fun leftValue(): AssignationAst<T> =
+        assignation
+
+    override fun rightValue(): DeclarationAst =
+        declaration
 }
 
 sealed interface AssignationParameterNode<T> : ValuedNode<T>

@@ -47,3 +47,22 @@ class AssignationParameterInterpreter : Interpreter<AssignationAst<*>, Assignati
             else -> AssignationParameterNotValidError()
         }
 }
+
+class AssignationDeclarationInterpreter : Interpreter<AbstractSyntaxTree, AssignationDeclarationInterpreterState> {
+    override fun interpret(
+        abstractSyntaxTree: AbstractSyntaxTree,
+        interpreterState: AssignationDeclarationInterpreterState
+    ): InterpreterResponse? =
+        if (abstractSyntaxTree is AssignationDeclarationAst<*>) {
+            val declarationAst = abstractSyntaxTree.rightValue()
+            val declarationInterpreterResponse = interpreterState.initializeVariable(declarationAst.leftValue(), declarationAst.rightValue())
+            if (declarationInterpreterResponse is InterpreterState) {
+                val assignationAst = abstractSyntaxTree.leftValue()
+                AssignationParameterInterpreter().interpret(assignationAst, interpreterState)
+            } else {
+                declarationInterpreterResponse
+            }
+        } else {
+            null
+        }
+}
