@@ -8,11 +8,14 @@ class AssignationParameterNotValidError : Error {
         "AssignationParameterNotValidError"
 }
 
-interface InterpreterState : InterpreterResponse {
-    fun addVariableValueToPrintln(value: String): InterpreterResponse
-    fun addValueToPrintln(value: String): InterpreterResponse
-    fun initializeVariable(value: String, value1: String): InterpreterResponse
+interface InterpreterState : InterpreterResponse
+interface AssignationInterpreterState : InterpreterState {
     fun setValueToVariable(variableNameNode: VariableNameNode, value: NumberNode): InterpreterResponse
     fun setValueToVariable(variableNameNode: VariableNameNode, value: StringNode): InterpreterResponse
     fun setValueToVariable(variableNameNode: VariableNameNode, value: VariableNameNode): InterpreterResponse
+}
+interface PrintScriptInterpreterState : InterpreterState, AssignationInterpreterState {
+    fun addVariableValueToPrintln(value: String): InterpreterResponse
+    fun addValueToPrintln(value: String): InterpreterResponse
+    fun initializeVariable(value: String, value1: String): InterpreterResponse
 }
