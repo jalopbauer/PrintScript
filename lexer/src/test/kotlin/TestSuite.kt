@@ -5,16 +5,14 @@ import java.io.InputStream
 interface Transformer<U : TestValue<*>> {
     fun to(from: String): U
 }
-interface CsvReader<T : TestValue<*>, U : Transformer<T>> {
+class CsvReader<T : TestValue<*>, U : Transformer<T>> (private val transformer: U) {
     fun read(inputStream: InputStream): List<T> {
         val reader = inputStream.bufferedReader()
         return reader.lineSequence()
             .filter { it.isNotBlank() }
-            .map { transformer().to(it) }
+            .map { transformer.to(it) }
             .toList()
     }
-
-    fun transformer(): U
 }
 interface TestValue<T> {
     fun hasError(comparedTo: T): String?
