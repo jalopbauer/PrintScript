@@ -8,4 +8,5 @@ plugins {
 
 dependencies {
     implementation project(path: ':token')
+    testImplementation project(path: ':testSuite')
 }

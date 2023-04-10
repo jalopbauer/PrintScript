@@ -1,7 +1,6 @@
 import lexer.LexerImp
 import org.junit.jupiter.api.Test
 import token.Token
-
 class LexerTester {
     @Test
     fun test() {
@@ -23,7 +22,8 @@ class LexerTokenResultTransformer : Transformer<LexerTokenResult> {
         }
 }
 
-class LexerTokenResult(private val tokenName: String, private val lineNumber: Int, private val position: Int) : TestValue<Token> {
+class LexerTokenResult(private val tokenName: String, private val lineNumber: Int, private val position: Int) :
+    TestValue<Token> {
     override fun hasError(comparedTo: Token): String? {
         val errorMessages = listOfNotNull(
             tokenNameErrorString(comparedTo),
