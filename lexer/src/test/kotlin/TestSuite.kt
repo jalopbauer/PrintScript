@@ -21,8 +21,8 @@ interface TestValue<T> {
     fun errorMessage(expected: String, actual: String): String =
         "Expected $expected != $actual"
 }
-class Tester<T, U : TestValue<T>, V : Transformer<U>> (private val csvReader: CsvReader<U, V>) {
-    fun test(path: String, expectedValues: List<T>) {
+class Tester<T, U : TestValue<T>, V : Transformer<U>> (private val csvReader: CsvReader<U, V>, private val expectedValues: List<T>) {
+    fun test(path: String) {
         val inputStream = FileInputStream(path)
         val readCsv = csvReader.read(inputStream)
         inputStream.close()
@@ -32,4 +32,9 @@ class Tester<T, U : TestValue<T>, V : Transformer<U>> (private val csvReader: Cs
             assertNotNull(actual.hasError(expected))
         }
     }
+}
+
+class ListTest(private val tester: Tester<*, *, *>, private val paths: List<String>) {
+    fun test() =
+        paths.forEach { tester.test(it) }
 }
