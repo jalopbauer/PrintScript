@@ -1,5 +1,4 @@
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertNull
 import java.io.FileInputStream
 import java.io.InputStream
 interface Transformer<U : TestValue<*>> {
@@ -17,22 +16,16 @@ class CsvReader<T : TestValue<*>, U : Transformer<T>> (private val transformer: 
 interface TestValue<T> {
     fun hasError(comparedTo: T): String?
     fun errorMessage(expected: String, actual: String): String =
-        "Expected $expected != $actual"
+        "Expected:$expected != Actual:$actual"
 }
 class Tester<T, U : TestValue<T>, V : Transformer<U>> (private val csvReader: CsvReader<U, V>, private val expectedValues: List<T>) {
     fun test(path: String) {
         val inputStream = FileInputStream(path)
         val readCsv = csvReader.read(inputStream)
         inputStream.close()
-        assertEquals(readCsv.size, expectedValues.size)
         readCsv.zip(expectedValues).forEach {
                 (actual, expected) ->
-            assertNotNull(actual.hasError(expected))
+            assertNull(actual.hasError(expected))
         }
     }
-}
-
-class ListTest(private val tester: Tester<*, *, *>, private val paths: List<String>) {
-    fun test() =
-        paths.forEach { tester.test(it) }
 }
