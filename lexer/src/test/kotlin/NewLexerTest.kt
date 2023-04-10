@@ -1,21 +1,18 @@
 import lexer.LexerImp
 import org.junit.jupiter.api.Test
 import token.Token
-import java.io.File
 
 class LexerTester {
     @Test
     fun test() {
-        val lexerTokenResultTransformer = LexerTokenResultTransformer()
-        val csvReader = CsvReader(lexerTokenResultTransformer)
-        val lexerImp = LexerImp()
-        ((1..5) + 7).forEach { number ->
-            val line = File("src/test/resources/$number/input").useLines { it.firstOrNull() }
-            line?.let {
-                val buildTokenList = lexerImp.buildTokenList(it)
-                Tester(csvReader, buildTokenList).test("src/test/resources/$number/tokenResult")
-            }
-        }
+        ListTester(
+            LexerTesterBuilder(),
+            LexerExpectedValuesBuilder(),
+            LexerTestFolderPathBuilder(),
+            "src/test/resources/",
+            "tokenResult",
+            "input"
+        ).test()
     }
 }
 class LexerTokenResultTransformer : Transformer<LexerTokenResult> {
@@ -59,4 +56,15 @@ class LexerTokenResult(private val tokenName: String, private val lineNumber: In
         } else {
             null
         }
+}
+
+class LexerExpectedValuesBuilder : ExpectedValuesBuilder<Token> {
+    override fun build(s: String): List<Token> = LexerImp().buildTokenList(s)
+}
+class LexerTestFolderPathBuilder : TestFolderPathBuilder {
+    override fun build(): List<String> = ((1..5) + 7).map { it.toString() }
+}
+class LexerTesterBuilder : TesterBuilder<Token, Tester<Token, LexerTokenResult, LexerTokenResultTransformer>> {
+    override fun build(expectedValues: List<Token>): Tester<Token, LexerTokenResult, LexerTokenResultTransformer> =
+        Tester(CsvReader(LexerTokenResultTransformer()), expectedValues)
 }
