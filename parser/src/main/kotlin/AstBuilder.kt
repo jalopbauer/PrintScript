@@ -17,3 +17,21 @@ class StringLiteralOrStringConcatAstBuilder : AstBuilder<StringLiteralOrStringCo
         TODO("Not yet implemented")
     }
 }
+
+class DeclarationBuilder : AstBuilder<DeclarationValidListOfTokens> {
+    override fun build(validListOfTokens: DeclarationValidListOfTokens): AbstractSyntaxTree<*> {
+        TODO("Not yet implemented")
+    }
+}
+
+class AssignationBuilder : AstBuilder<AssignationValidListOfTokens> {
+    override fun build(validListOfTokens: AssignationValidListOfTokens): AbstractSyntaxTree<*> {
+        TODO("Not yet implemented")
+    }
+}
+
+class DeclarationAssignationBuilder : AstBuilder<DeclarationAssignationValidListOfTokens> {
+    override fun build(validListOfTokens: DeclarationAssignationValidListOfTokens): AbstractSyntaxTree<*> {
+        TODO("Not yet implemented")
+    }
+}
