@@ -9,7 +9,7 @@ class LexerTester {
         val lexerTokenResultTransformer = LexerTokenResultTransformer()
         val csvReader = CsvReader(lexerTokenResultTransformer)
         val lexerImp = LexerImp()
-        (7..7).forEach { number ->
+        ((1..5) + 7).forEach { number ->
             val line = File("src/test/resources/$number/input").useLines { it.firstOrNull() }
             line?.let {
                 val buildTokenList = lexerImp.buildTokenList(it)
