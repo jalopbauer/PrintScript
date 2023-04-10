@@ -9,4 +9,5 @@ plugins {
 dependencies {
     implementation project(path: ':ast')
     implementation project(path: ':token')
+    testImplementation project(path: ':testSuite')
 }
