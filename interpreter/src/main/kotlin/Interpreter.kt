@@ -2,8 +2,32 @@ interface Interpreter<T : AbstractSyntaxTree, U : InterpreterState> {
     fun interpret(abstractSyntaxTree: T, interpreterState: U): InterpreterResponse?
 }
 
-class PrintlnInterpreter : Interpreter<AbstractSyntaxTree, PrintlnInterpreterState> {
-    override fun interpret(abstractSyntaxTree: AbstractSyntaxTree, interpreterState: PrintlnInterpreterState): InterpreterResponse? =
+class PrintScriptInterpreter : Interpreter<AbstractSyntaxTree, PrintScriptInterpreterState> {
+
+    private val list = listOf<Interpreter<AbstractSyntaxTree, PrintScriptInterpreterState>>(
+        PrintlnInterpreter(),
+        DeclarationInterpreter(),
+        AssignationInterpreter(),
+        AssignationDeclarationInterpreter()
+
+    )
+    override fun interpret(
+        abstractSyntaxTree: AbstractSyntaxTree,
+        interpreterState: PrintScriptInterpreterState
+    ): InterpreterResponse =
+        ListInterpreter(list).interpret(abstractSyntaxTree, interpreterState)
+}
+
+class ListInterpreter<T : AbstractSyntaxTree, U : InterpreterState>(private val interpreters: List<Interpreter<T, U>>) : Interpreter<T, U> {
+    override fun interpret(abstractSyntaxTree: T, interpreterState: U): InterpreterResponse {
+        val out: InterpreterResponse? = null
+        return interpreters.fold(out) { _, interpreter ->
+            interpreter.interpret(abstractSyntaxTree, interpreterState)
+        } ?: AstStructureNotDefinedError()
+    }
+}
+class PrintlnInterpreter<U : PrintlnInterpreterState> : Interpreter<AbstractSyntaxTree, U> {
+    override fun interpret(abstractSyntaxTree: AbstractSyntaxTree, interpreterState: U): InterpreterResponse? =
         if (abstractSyntaxTree is PrintlnAst) {
             PrintlnParameterInterpreter().interpret(abstractSyntaxTree.value(), interpreterState)
         } else {
@@ -20,8 +44,8 @@ class PrintlnParameterInterpreter : Interpreter<PrintlnAstParameter, PrintlnInte
         }
 }
 
-class DeclarationInterpreter : Interpreter<AbstractSyntaxTree, DeclarationInterpreterState> {
-    override fun interpret(abstractSyntaxTree: AbstractSyntaxTree, interpreterState: DeclarationInterpreterState): InterpreterResponse? =
+class DeclarationInterpreter<U : DeclarationInterpreterState> : Interpreter<AbstractSyntaxTree, U> {
+    override fun interpret(abstractSyntaxTree: AbstractSyntaxTree, interpreterState: U): InterpreterResponse? =
         if (abstractSyntaxTree is DeclarationAst) {
             interpreterState.initializeVariable(abstractSyntaxTree.leftValue(), abstractSyntaxTree.rightValue())
         } else {
@@ -29,8 +53,8 @@ class DeclarationInterpreter : Interpreter<AbstractSyntaxTree, DeclarationInterp
         }
 }
 
-class AssignationInterpreter : Interpreter<AbstractSyntaxTree, AssignationInterpreterState> {
-    override fun interpret(abstractSyntaxTree: AbstractSyntaxTree, interpreterState: AssignationInterpreterState): InterpreterResponse? =
+class AssignationInterpreter<U : AssignationInterpreterState> : Interpreter<AbstractSyntaxTree, U> {
+    override fun interpret(abstractSyntaxTree: AbstractSyntaxTree, interpreterState: U): InterpreterResponse? =
         if (abstractSyntaxTree is AssignationAst<*>) {
             AssignationParameterInterpreter().interpret(abstractSyntaxTree, interpreterState)
         } else {
@@ -48,10 +72,10 @@ class AssignationParameterInterpreter : Interpreter<AssignationAst<*>, Assignati
         }
 }
 
-class AssignationDeclarationInterpreter : Interpreter<AbstractSyntaxTree, AssignationDeclarationInterpreterState> {
+class AssignationDeclarationInterpreter<U : AssignationDeclarationInterpreterState> : Interpreter<AbstractSyntaxTree, U> {
     override fun interpret(
         abstractSyntaxTree: AbstractSyntaxTree,
-        interpreterState: AssignationDeclarationInterpreterState
+        interpreterState: U
     ): InterpreterResponse? =
         if (abstractSyntaxTree is AssignationDeclarationAst<*>) {
             val declarationAst = abstractSyntaxTree.rightValue()
