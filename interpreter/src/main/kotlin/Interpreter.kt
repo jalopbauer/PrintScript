@@ -1,23 +1,68 @@
-interface Interpreter<T : InterpreterResponse, U : InterpreterState> {
-    fun interpret(abstractSyntaxTree: AbstractSyntaxTree<*>, interpreterState: U): T?
+interface Interpreter<T : AbstractSyntaxTree, U : InterpreterState> {
+    fun interpret(abstractSyntaxTree: T, interpreterState: U): InterpreterResponse?
 }
 
-class PrintlnInterpreter : Interpreter<PrintlnResponse, PrintLnInterpreterState> {
-    override fun interpret(abstractSyntaxTree: AbstractSyntaxTree<*>, interpreterState: PrintLnInterpreterState): PrintlnResponse? {
-        return if (abstractSyntaxTree is PrintlnAst) {
-            interpreterState.add(abstractSyntaxTree.value())
+class PrintlnInterpreter : Interpreter<AbstractSyntaxTree, PrintlnInterpreterState> {
+    override fun interpret(abstractSyntaxTree: AbstractSyntaxTree, interpreterState: PrintlnInterpreterState): InterpreterResponse? =
+        if (abstractSyntaxTree is PrintlnAst) {
+            PrintlnParameterInterpreter().interpret(abstractSyntaxTree.value(), interpreterState)
         } else {
             null
         }
-    }
 }
 
-class DeclarationInterpreter : Interpreter<DeclarationResponse, DeclarationInterpreterState> {
-    override fun interpret(abstractSyntaxTree: AbstractSyntaxTree<*>, interpreterState: DeclarationInterpreterState): DeclarationResponse? {
-        return if (abstractSyntaxTree is DeclarationAst) {
-            interpreterState.add(abstractSyntaxTree.value())
+class PrintlnParameterInterpreter : Interpreter<PrintlnAstParameter, PrintlnInterpreterState> {
+    override fun interpret(abstractSyntaxTree: PrintlnAstParameter, interpreterState: PrintlnInterpreterState): InterpreterResponse =
+        when (abstractSyntaxTree) {
+            is VariableNameNode -> interpreterState.println(abstractSyntaxTree)
+            is NumberLiteralStringNode -> interpreterState.println(abstractSyntaxTree)
+            is StringNode -> interpreterState.println(abstractSyntaxTree)
+        }
+}
+
+class DeclarationInterpreter : Interpreter<AbstractSyntaxTree, DeclarationInterpreterState> {
+    override fun interpret(abstractSyntaxTree: AbstractSyntaxTree, interpreterState: DeclarationInterpreterState): InterpreterResponse? =
+        if (abstractSyntaxTree is DeclarationAst) {
+            interpreterState.initializeVariable(abstractSyntaxTree.leftValue(), abstractSyntaxTree.rightValue())
         } else {
             null
         }
-    }
+}
+
+class AssignationInterpreter : Interpreter<AbstractSyntaxTree, AssignationInterpreterState> {
+    override fun interpret(abstractSyntaxTree: AbstractSyntaxTree, interpreterState: AssignationInterpreterState): InterpreterResponse? =
+        if (abstractSyntaxTree is AssignationAst<*>) {
+            AssignationParameterInterpreter().interpret(abstractSyntaxTree, interpreterState)
+        } else {
+            null
+        }
+}
+
+class AssignationParameterInterpreter : Interpreter<AssignationAst<*>, AssignationInterpreterState> {
+    override fun interpret(abstractSyntaxTree: AssignationAst<*>, interpreterState: AssignationInterpreterState): InterpreterResponse =
+        when (val assignationParameterNode = abstractSyntaxTree.rightValue()) {
+            is NumberNode -> interpreterState.setValueToVariable(abstractSyntaxTree.leftValue(), assignationParameterNode)
+            is StringNode -> interpreterState.setValueToVariable(abstractSyntaxTree.leftValue(), assignationParameterNode)
+            is VariableNameNode -> interpreterState.setValueToVariable(abstractSyntaxTree.leftValue(), assignationParameterNode)
+            else -> AssignationParameterNotValidError()
+        }
+}
+
+class AssignationDeclarationInterpreter : Interpreter<AbstractSyntaxTree, AssignationDeclarationInterpreterState> {
+    override fun interpret(
+        abstractSyntaxTree: AbstractSyntaxTree,
+        interpreterState: AssignationDeclarationInterpreterState
+    ): InterpreterResponse? =
+        if (abstractSyntaxTree is AssignationDeclarationAst<*>) {
+            val declarationAst = abstractSyntaxTree.rightValue()
+            val declarationInterpreterResponse = interpreterState.initializeVariable(declarationAst.leftValue(), declarationAst.rightValue())
+            if (declarationInterpreterResponse is InterpreterState) {
+                val assignationAst = abstractSyntaxTree.leftValue()
+                AssignationParameterInterpreter().interpret(assignationAst, interpreterState)
+            } else {
+                declarationInterpreterResponse
+            }
+        } else {
+            null
+        }
 }

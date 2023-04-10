@@ -78,12 +78,12 @@ class LexerTest {
         val lexer: Lexer = LexerImp()
         val tokenList: List<Token> = lexer.buildTokenList(line)
         assertEquals(0, tokenList[0].position())
-        assertEquals(4, tokenList[1].position())
-        assertEquals(8, tokenList[2].position())
-        assertEquals(10, tokenList[3].position())
-        assertEquals(17, tokenList[4].position())
-        assertEquals(19, tokenList[5].position())
-        assertEquals(25, tokenList[6].position())
+        assertEquals(1, tokenList[1].position())
+        assertEquals(2, tokenList[2].position())
+        assertEquals(3, tokenList[3].position())
+        assertEquals(4, tokenList[4].position())
+        assertEquals(5, tokenList[5].position())
+        assertEquals(6, tokenList[6].position())
     }
 
     @Test

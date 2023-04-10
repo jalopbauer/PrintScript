@@ -18,6 +18,7 @@ class PrintScript : TokenBuilder {
     private val tokenIdentifiers = listOf(
         StringEqualsTokenName(),
         SingleQuoteStringLiteral(),
+        DoubleQuoteStringLiteral(),
         NumberLiteralBuilder(),
         VariableBuilder()
     )
@@ -39,6 +40,16 @@ class VariableBuilder : TokenBuilder {
 class SingleQuoteStringLiteral : TokenBuilder {
     override fun build(string: String, position: Int, lineNumber: Int): Token? {
         return if (string.first() == '\'' && string.last() == '\'') {
+            StringLiteralToken(string, lineNumber, position)
+        } else {
+            null
+        }
+    }
+}
+
+class DoubleQuoteStringLiteral : TokenBuilder {
+    override fun build(string: String, position: Int, lineNumber: Int): Token? {
+        return if (string.first() == '\"' && string.last() == '\"') {
             StringLiteralToken(string, lineNumber, position)
         } else {
             null

@@ -2,18 +2,26 @@ sealed interface InterpreterResponse
 interface Error : InterpreterResponse {
     fun message(): String
 }
-interface InterpreterState : InterpreterResponse
-interface PrintlnResponse : InterpreterResponse
 
-interface PrintLnInterpreterState : PrintlnResponse, InterpreterState {
-    fun add(value: String): PrintLnInterpreterState
+class AssignationParameterNotValidError : Error {
+    override fun message(): String =
+        "AssignationParameterNotValidError"
 }
-interface DeclarationResponse : InterpreterResponse
-class DeclarationError : DeclarationResponse, Error {
-    override fun message(): String {
-        TODO("Not yet implemented")
-    }
+
+interface InterpreterState : InterpreterResponse
+interface AssignationDeclarationInterpreterState : DeclarationInterpreterState, AssignationInterpreterState
+
+interface DeclarationInterpreterState : InterpreterState {
+    fun initializeVariable(value: VariableNameNode, type: TypeNode): InterpreterResponse
 }
-interface DeclarationInterpreterState : DeclarationResponse, InterpreterState {
-    fun add(variableName: String): DeclarationResponse
+interface PrintlnInterpreterState : InterpreterState {
+    fun println(value: VariableNameNode): InterpreterResponse
+    fun println(value: NumberLiteralStringNode): InterpreterResponse
+    fun println(value: StringNode): InterpreterResponse
 }
+interface AssignationInterpreterState : InterpreterState {
+    fun setValueToVariable(variableNameNode: VariableNameNode, value: NumberNode): InterpreterResponse
+    fun setValueToVariable(variableNameNode: VariableNameNode, value: StringNode): InterpreterResponse
+    fun setValueToVariable(variableNameNode: VariableNameNode, value: VariableNameNode): InterpreterResponse
+}
+interface PrintScriptInterpreterState : InterpreterState, PrintlnInterpreterState, AssignationInterpreterState, DeclarationInterpreterState

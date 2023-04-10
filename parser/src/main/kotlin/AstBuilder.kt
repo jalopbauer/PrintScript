@@ -1,12 +1,12 @@
 interface AstBuilder<T : ValidListOfTokens> {
-    fun build(validListOfTokens: T): AbstractSyntaxTree<*>
+    fun build(validListOfTokens: T): ValuedNode<*>
 }
 
 class PrintlnBuilder : AstBuilder<PrintlnValidListOfTokens> {
-    override fun build(validListOfTokens: PrintlnValidListOfTokens): AbstractSyntaxTree<*> {
+    override fun build(validListOfTokens: PrintlnValidListOfTokens): ValuedNode<*> {
         return when (validListOfTokens.printlnValidParameter) {
             is VariableParameter -> PrintlnAst(VariableNameNode(validListOfTokens.printlnValidParameter.variableToken.value))
-            is NumberLiteralParameter -> PrintlnAst(NumberLiteralNode(validListOfTokens.printlnValidParameter.numberLiteralToken.value))
+            is NumberLiteralParameter -> PrintlnAst(NumberLiteralStringNode(NumberLiteralNode(validListOfTokens.printlnValidParameter.numberLiteralToken.value)))
             is StringLiteralOrStringConcat -> PrintlnAst(StringLiteralOrStringConcatAstBuilder().build(validListOfTokens.printlnValidParameter))
         }
     }
