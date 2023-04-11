@@ -1,11 +1,6 @@
-sealed interface InterpreterResponse
-interface Error : InterpreterResponse {
-    fun message(): String
-}
 
-class AssignationParameterNotValidError : Error {
-    override fun message(): String =
-        "AssignationParameterNotValidError"
+interface Error {
+    fun message(): String
 }
 
 class AstStructureNotDefinedError : Error {
@@ -13,20 +8,15 @@ class AstStructureNotDefinedError : Error {
         "AssignationParameterNotValidError"
 }
 
-interface InterpreterState : InterpreterResponse
-interface AssignationDeclarationInterpreterState : DeclarationInterpreterState, AssignationInterpreterState
+interface PrintScriptInterpreterState {
+    fun addError(astStructureNotDefinedError: Error): PrintScriptInterpreterState
+    fun initializeVariable(value: VariableNameNode, type: TypeNode): PrintScriptInterpreterState
 
-interface DeclarationInterpreterState : InterpreterState {
-    fun initializeVariable(value: VariableNameNode, type: TypeNode): InterpreterResponse
+    fun println(value: VariableNameNode): PrintScriptInterpreterState
+    fun println(value: NumberLiteralStringNode): PrintScriptInterpreterState
+    fun println(value: StringNode): PrintScriptInterpreterState
+
+    fun setValueToVariable(variableNameNode: VariableNameNode, value: NumberNode): PrintScriptInterpreterState
+    fun setValueToVariable(variableNameNode: VariableNameNode, value: StringNode): PrintScriptInterpreterState
+    fun setValueToVariable(variableNameNode: VariableNameNode, value: VariableNameNode): PrintScriptInterpreterState
 }
-interface PrintlnInterpreterState : InterpreterState {
-    fun println(value: VariableNameNode): InterpreterResponse
-    fun println(value: NumberLiteralStringNode): InterpreterResponse
-    fun println(value: StringNode): InterpreterResponse
-}
-interface AssignationInterpreterState : InterpreterState {
-    fun setValueToVariable(variableNameNode: VariableNameNode, value: NumberNode): InterpreterResponse
-    fun setValueToVariable(variableNameNode: VariableNameNode, value: StringNode): InterpreterResponse
-    fun setValueToVariable(variableNameNode: VariableNameNode, value: VariableNameNode): InterpreterResponse
-}
-interface PrintScriptInterpreterState : InterpreterState, PrintlnInterpreterState, AssignationInterpreterState, DeclarationInterpreterState, AssignationDeclarationInterpreterState
