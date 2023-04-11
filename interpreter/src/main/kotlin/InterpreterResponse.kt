@@ -8,6 +8,11 @@ class AssignationParameterNotValidError : Error {
         "AssignationParameterNotValidError"
 }
 
+class AstStructureNotDefinedError : Error {
+    override fun message(): String =
+        "AssignationParameterNotValidError"
+}
+
 interface InterpreterState : InterpreterResponse
 interface AssignationDeclarationInterpreterState : DeclarationInterpreterState, AssignationInterpreterState
 
@@ -24,4 +29,4 @@ interface AssignationInterpreterState : InterpreterState {
     fun setValueToVariable(variableNameNode: VariableNameNode, value: StringNode): InterpreterResponse
     fun setValueToVariable(variableNameNode: VariableNameNode, value: VariableNameNode): InterpreterResponse
 }
-interface PrintScriptInterpreterState : InterpreterState, PrintlnInterpreterState, AssignationInterpreterState, DeclarationInterpreterState
+interface PrintScriptInterpreterState : InterpreterState, PrintlnInterpreterState, AssignationInterpreterState, DeclarationInterpreterState, AssignationDeclarationInterpreterState
