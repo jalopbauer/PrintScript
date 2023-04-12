@@ -64,7 +64,12 @@ class VariableNameNode(private val variableName: String) : ValuedNode<String>, P
 }
 
 // Types
-class TypeNode(private val typeName: String) : ValuedNode<String> {
-    override fun value(): String =
-        typeName
+class TypeNode(private val type: Type) : ValuedNode<Type> {
+    override fun value(): Type =
+        type
+}
+
+enum class Type {
+    STRING,
+    INT
 }

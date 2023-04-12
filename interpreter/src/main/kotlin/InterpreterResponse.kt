@@ -29,7 +29,7 @@ interface PrintScriptInterpreterState {
 
 data class StatefullPrintScriptInterpreterState(
     val errors: List<Error>,
-    val variableTypeMap: Map<String, String> = mapOf(),
+    val variableTypeMap: Map<String, Type> = mapOf(),
     val variableIntegerMap: Map<String, Int> = mapOf(),
     val variableStringMap: Map<String, String> = mapOf(),
     val variableVariableMap: Map<String, String> = mapOf()
