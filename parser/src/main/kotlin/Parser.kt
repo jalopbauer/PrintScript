@@ -18,3 +18,33 @@ class PrintlnParser : AstParser<PrintlnValidListOfTokens> {
     override fun parserAstValidator(): AstValidator<PrintlnValidListOfTokens> =
         PrintlnAstValidator()
 }
+
+class DeclarationParser : AstParser<DeclarationValidListOfTokens> {
+    override fun parserAstBuilder(): AstBuilder<DeclarationValidListOfTokens> {
+        TODO("Not yet implemented")
+    }
+
+    override fun parserAstValidator(): AstValidator<DeclarationValidListOfTokens> {
+        TODO("Not yet implemented")
+    }
+}
+
+class AssignationParser : AstParser<AssignationValidListOfTokens> {
+    override fun parserAstBuilder(): AstBuilder<AssignationValidListOfTokens> {
+        TODO("Not yet implemented")
+    }
+
+    override fun parserAstValidator(): AstValidator<AssignationValidListOfTokens> {
+        TODO("Not yet implemented")
+    }
+}
+
+class DeclarationAssignationParser : AstParser<DeclarationAssignationValidListOfTokens> {
+    override fun parserAstBuilder(): AstBuilder<DeclarationAssignationValidListOfTokens> {
+        TODO("Not yet implemented")
+    }
+
+    override fun parserAstValidator(): AstValidator<DeclarationAssignationValidListOfTokens> {
+        TODO("Not yet implemented")
+    }
+}

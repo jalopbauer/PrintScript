@@ -3,6 +3,7 @@ import token.NumberLiteralToken
 import token.OpenBracketToken
 import token.OperatorHighToken
 import token.OperatorLowToken
+import token.StringLiteralToken
 import token.Token
 import token.TokenName
 
@@ -49,5 +50,37 @@ class ShuntingYardImpl : ShuntingYard {
 
     private fun swap(stack: ArrayDeque<Token>, queue: ArrayDeque<Token>) {
         queue.add(stack.removeLast())
+    }
+
+    override fun orderString(content: List<Token>): AssignationParameterNode<String> {
+        if (content.size == 1) {
+            val stringToken = content.component1() as StringLiteralToken
+            return StringLiteralNode(stringToken.value)
+        }
+        return StringConcatNode((content.component1() as StringLiteralToken).value, addToStringTree(content.drop(1)))
+    }
+    private fun addToStringTree(content: List<Token>): StringNode {
+        if (content.size == 1) {
+            val stringToken = content.component1() as StringLiteralToken
+            return StringLiteralNode(stringToken.value)
+        }
+        return StringConcatNode((content.component1() as StringLiteralToken).value, addToStringTree(content.drop(1)))
+    }
+
+    override fun orderNumber(content: List<Token>): AssignationParameterNode<Int> {
+        if (content.size == 1) {
+            val numberToken = content.component1() as NumberLiteralToken
+            return NumberLiteralNode(numberToken.value)
+        }
+        // aca tengo que hacer el algoritmo de creacion de arbol
+        val orderOperation = check(content)
+        val stack = ArrayDeque<NumberNode>()
+        for (token in orderOperation) {
+            when (token) {
+                is NumberLiteralToken -> stack.add(NumberLiteralNode(token.value))
+                is OperatorHighToken -> stack.add(OperationNode(stack.removeLast(), token.tokenName.name, stack.removeLast() as NumberLiteralNode))
+            }
+        }
+        return stack.removeLast()
     }
 }

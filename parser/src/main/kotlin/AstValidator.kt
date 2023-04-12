@@ -44,7 +44,7 @@ class StringLiteralOrConcatValidator : AstValidator<StringLiteralOrStringConcat>
         }
         return StringLiteralOrStringConcat(tokens)
     }
-    fun validateChain(tokens: List<Token>): Boolean{
+    fun validateChain(tokens: List<Token>): Boolean {
         var tokenCounter = 1
         for (token in tokens) {
             if (tokenCounter % 2 == 0) {
@@ -68,7 +68,7 @@ class DeclarationValidator : AstValidator<DeclarationValidListOfTokens> {
             tokens.component3().tokenName() == TokenName.DECLARATION &&
             (tokens.component4().tokenName() == TokenName.STRING_TYPE || tokens.component4().tokenName() == TokenName.NUMBER_TYPE)
         ) {
-            return DeclarationValidListOfTokens(tokens.component4(), tokens.component2())
+            return DeclarationValidListOfTokens(tokens.component4(), tokens.component2() as VariableLiteralToken)
         }
         return null
     }
@@ -81,7 +81,7 @@ class AssignationValidator : AstValidator<AssignationValidListOfTokens> {
             tokens.component2().tokenName() == TokenName.ASSIGNATION &&
             (tokens.component3().tokenName() == TokenName.VARIABLE || StringLiteralOrConcatValidator().validateChain(tokens.subList(2, (tokens.size - 1))) || OperationValidator().validateChain(tokens.subList(2, (tokens.size - 1))))
         ) {
-            return AssignationValidListOfTokens(tokens. component1(),tokens.subList(2, (tokens.size - 1)))
+            return AssignationValidListOfTokens(tokens.component1() as VariableLiteralToken, tokens.subList(2, (tokens.size - 1)))
         }
         return null
     }
@@ -92,11 +92,13 @@ class DeclarationAssignationValidator : AstValidator<DeclarationAssignationValid
             tokens.component1().tokenName() == TokenName.LET &&
             tokens.component2().tokenName() == TokenName.VARIABLE &&
             tokens.component3().tokenName() == TokenName.DECLARATION &&
-            (tokens.component4().tokenName() == TokenName.STRING_TYPE || tokens.component4().tokenName() == TokenName.NUMBER_TYPE) &&
-            tokens.component5().tokenName() == TokenName.ASSIGNATION &&
-            (StringLiteralOrConcatValidator().validateChain(tokens.subList(5, (tokens.size - 1))) || OperationValidator().validateChain(tokens.subList(5, (tokens.size - 1))))
+            (
+                (tokens.component4().tokenName() == TokenName.STRING_TYPE && StringLiteralOrConcatValidator().validateChain(tokens.subList(5, (tokens.size - 1)))) ||
+                    (tokens.component4().tokenName() == TokenName.NUMBER_TYPE) && OperationValidator().validateChain(tokens.subList(5, (tokens.size - 1)))
+                ) &&
+            tokens.component5().tokenName() == TokenName.ASSIGNATION
         ) {
-            return DeclarationAssignationValidListOfTokens(tokens.component2(), tokens.subList(5, (tokens.size - 1)))
+            return DeclarationAssignationValidListOfTokens(tokens.component2() as VariableLiteralToken, tokens.subList(5, (tokens.size - 1)), tokens.component4())
         }
         return null
     }
@@ -106,9 +108,9 @@ class OperationValidator : AstValidator<OperationValidListOfTokens> {
     override fun validate(tokens: List<Token>): OperationValidListOfTokens? {
         var previousToken = tokens[0]
         if (tokens.size == 1) {
-            when (previousToken) {
-                is NumberLiteralToken -> return NumberLiteralParameter(previousToken)
-                else -> return null
+            return when (previousToken) {
+                is NumberLiteralToken -> NumberLiteralParameter(previousToken)
+                else -> null
             }
         }
         for (token in tokens.subList(1, tokens.size)) {
@@ -151,24 +153,24 @@ class OperationValidator : AstValidator<OperationValidListOfTokens> {
         for (token in tokens.subList(1, tokens.size)) {
             when (token.tokenName()) {
                 TokenName.NUMBER_LITERAL -> if (!(
-                            previousToken.tokenName() == TokenName.LEFT_PARENTHESIS ||
-                                    previousToken.tokenName() == TokenName.SUM ||
-                                    previousToken.tokenName() == TokenName.SUB ||
-                                    previousToken.tokenName() == TokenName.MULT ||
-                                    previousToken.tokenName() == TokenName.DIV
-                            )
+                    previousToken.tokenName() == TokenName.LEFT_PARENTHESIS ||
+                        previousToken.tokenName() == TokenName.SUM ||
+                        previousToken.tokenName() == TokenName.SUB ||
+                        previousToken.tokenName() == TokenName.MULT ||
+                        previousToken.tokenName() == TokenName.DIV
+                    )
                 ) { return false }
                 TokenName.SUM, TokenName.SUB, TokenName.MULT, TokenName.DIV -> if (!(
-                            previousToken.tokenName() == TokenName.NUMBER_LITERAL ||
-                                    previousToken.tokenName() == TokenName.RIGHT_PARENTHESIS
-                            )
+                    previousToken.tokenName() == TokenName.NUMBER_LITERAL ||
+                        previousToken.tokenName() == TokenName.RIGHT_PARENTHESIS
+                    )
                 ) { return false }
                 TokenName.LEFT_PARENTHESIS -> if (!(
-                            previousToken.tokenName() == TokenName.SUM ||
-                                    previousToken.tokenName() == TokenName.SUB ||
-                                    previousToken.tokenName() == TokenName.MULT ||
-                                    previousToken.tokenName() == TokenName.DIV
-                            )
+                    previousToken.tokenName() == TokenName.SUM ||
+                        previousToken.tokenName() == TokenName.SUB ||
+                        previousToken.tokenName() == TokenName.MULT ||
+                        previousToken.tokenName() == TokenName.DIV
+                    )
                 ) { return false }
                 TokenName.RIGHT_PARENTHESIS -> if (previousToken.tokenName() != TokenName.NUMBER_LITERAL) { return false }
                 else -> return false
