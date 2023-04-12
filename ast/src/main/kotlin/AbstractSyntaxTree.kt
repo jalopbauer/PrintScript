@@ -50,9 +50,15 @@ class StringLiteralNode(private val value: String) : StringNode, PrintlnAstParam
     override fun value(): String =
         value
 }
-class NumberLiteralNode(val number: Int) : NumberNode, AssignationParameterNode<Int> {
+class StringConcatNode(private val value: String, private val node: StringNode) : StringNode {
+    override fun value(): String = value
+}
+class NumberLiteralNode(val number: Int) : NumberNode {
     override fun value(): Int =
         number
+}
+class OperationNode(val rightNode: NumberNode, val operation: String, val leftNumber: NumberLiteralNode) : NumberNode {
+    override fun value(): Int = leftNumber.number // TODO ver como transformar operation en un operador valido
 }
 class NumberLiteralStringNode(private val number: NumberLiteralNode) : ValuedNode<String>, PrintlnAstParameter {
     override fun value(): String =

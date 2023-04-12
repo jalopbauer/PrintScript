@@ -68,7 +68,7 @@ class DeclarationValidator : AstValidator<DeclarationValidListOfTokens> {
             tokens.component3().tokenName() == TokenName.DECLARATION &&
             (tokens.component4().tokenName() == TokenName.STRING_TYPE || tokens.component4().tokenName() == TokenName.NUMBER_TYPE)
         ) {
-            return DeclarationValidListOfTokens(tokens.component4(), tokens.component2())
+            return DeclarationValidListOfTokens(tokens.component4(), tokens.component2() as VariableLiteralToken)
         }
         return null
     }
@@ -81,7 +81,7 @@ class AssignationValidator : AstValidator<AssignationValidListOfTokens> {
             tokens.component2().tokenName() == TokenName.ASSIGNATION &&
             (tokens.component3().tokenName() == TokenName.VARIABLE || StringLiteralOrConcatValidator().validateChain(tokens.subList(2, (tokens.size - 1))) || OperationValidator().validateChain(tokens.subList(2, (tokens.size - 1))))
         ) {
-            return AssignationValidListOfTokens(tokens.component1(), tokens.subList(2, (tokens.size - 1)))
+            return AssignationValidListOfTokens(tokens.component1() as VariableLiteralToken, tokens.subList(2, (tokens.size - 1)))
         }
         return null
     }
@@ -96,7 +96,7 @@ class DeclarationAssignationValidator : AstValidator<DeclarationAssignationValid
             tokens.component5().tokenName() == TokenName.ASSIGNATION &&
             (StringLiteralOrConcatValidator().validateChain(tokens.subList(5, (tokens.size - 1))) || OperationValidator().validateChain(tokens.subList(5, (tokens.size - 1))))
         ) {
-            return DeclarationAssignationValidListOfTokens(tokens.component2(), tokens.subList(5, (tokens.size - 1)))
+            return DeclarationAssignationValidListOfTokens(tokens.component2() as VariableLiteralToken, tokens.subList(5, (tokens.size - 1)), tokens.component4())
         }
         return null
     }

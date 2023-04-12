@@ -26,7 +26,11 @@ class VariablesDontShareType : Error {
         "VariablesDontShareType"
 }
 
-interface InterpreterState
+class NotAcceptableAssignationValueError : Error {
+    override fun message(): String =
+        "NotAcceptableAssignationValueError"
+}
+
 interface PrintScriptInterpreterState {
     fun addError(error: Error): PrintScriptInterpreterState
     fun initializeVariable(key: VariableNameNode, value: TypeNode): PrintScriptInterpreterState
@@ -71,6 +75,7 @@ data class StatefullPrintScriptInterpreterState(
                 is NumberLiteralNode -> this.copy(variableIntegerMap = variableIntegerMap + (key.value() to value.value()))
                 is StringLiteralNode -> this.copy(variableStringMap = variableStringMap + (key.value() to value.value()))
                 is VariableNameNode -> this.setValueToVariable(key, value)
+                else -> this.addError(NotAcceptableAssignationValueError())
             }
         } else {
             this.addError(VariableIsNotDefined())

@@ -9,5 +9,3 @@
 
 rootProject.name = 'PrintScript'
 include('app', 'ast', 'list', 'token', 'lexer', 'parser', 'interpreter', 'sentence', 'testSuite')
-include 'formatter'
-
