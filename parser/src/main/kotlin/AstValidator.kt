@@ -92,11 +92,9 @@ class DeclarationAssignationValidator : AstValidator<DeclarationAssignationValid
             tokens.component1().tokenName() == TokenName.LET &&
             tokens.component2().tokenName() == TokenName.VARIABLE &&
             tokens.component3().tokenName() == TokenName.DECLARATION &&
-            (
-                (tokens.component4().tokenName() == TokenName.STRING_TYPE && StringLiteralOrConcatValidator().validateChain(tokens.subList(5, (tokens.size - 1)))) ||
-                    (tokens.component4().tokenName() == TokenName.NUMBER_TYPE) && OperationValidator().validateChain(tokens.subList(5, (tokens.size - 1)))
-                ) &&
-            tokens.component5().tokenName() == TokenName.ASSIGNATION
+            (tokens.component4().tokenName() == TokenName.STRING_TYPE || tokens.component4().tokenName() == TokenName.NUMBER_TYPE) &&
+            tokens.component5().tokenName() == TokenName.ASSIGNATION &&
+            (StringLiteralOrConcatValidator().validateChain(tokens.subList(5, (tokens.size - 1))) || OperationValidator().validateChain(tokens.subList(5, (tokens.size - 1))))
         ) {
             return DeclarationAssignationValidListOfTokens(tokens.component2() as VariableLiteralToken, tokens.subList(5, (tokens.size - 1)), tokens.component4())
         }
@@ -108,9 +106,9 @@ class OperationValidator : AstValidator<OperationValidListOfTokens> {
     override fun validate(tokens: List<Token>): OperationValidListOfTokens? {
         var previousToken = tokens[0]
         if (tokens.size == 1) {
-            return when (previousToken) {
-                is NumberLiteralToken -> NumberLiteralParameter(previousToken)
-                else -> null
+            when (previousToken) {
+                is NumberLiteralToken -> return NumberLiteralParameter(previousToken)
+                else -> return null
             }
         }
         for (token in tokens.subList(1, tokens.size)) {
