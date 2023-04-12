@@ -15,6 +15,17 @@ class VariableIsNotDefined : Error {
     override fun message(): String =
         "VariableIsNotDefined"
 }
+
+class NotValidType : Error {
+    override fun message(): String =
+        "NotValidType"
+}
+
+class VariablesDontShareType : Error {
+    override fun message(): String =
+        "VariablesDontShareType"
+}
+
 interface InterpreterState
 interface PrintScriptInterpreterState {
     fun addError(error: Error): PrintScriptInterpreterState
@@ -30,9 +41,8 @@ interface PrintScriptInterpreterState {
 data class StatefullPrintScriptInterpreterState(
     val errors: List<Error>,
     val variableTypeMap: Map<String, Type> = mapOf(),
-    val variableIntegerMap: Map<String, Int> = mapOf(),
-    val variableStringMap: Map<String, String> = mapOf(),
-    val variableVariableMap: Map<String, String> = mapOf()
+    val variableIntegerMap: Map<String, Int?> = mapOf(),
+    val variableStringMap: Map<String, String?> = mapOf()
 ) : PrintScriptInterpreterState {
     override fun addError(error: Error): PrintScriptInterpreterState =
         this.copy(errors = errors + error)
@@ -73,11 +83,18 @@ data class StatefullPrintScriptInterpreterState(
         key: VariableNameNode,
         value: VariableNameNode
     ): PrintScriptInterpreterState =
-        if (isVariableDefined(value)) {
-            this.copy(variableVariableMap = variableVariableMap + (key.value() to value.value()))
-        } else {
-            this.addError(VariableIsNotDefined())
-        }
+        variableTypeMap[key.value()]
+            ?.let { keyType ->
+                variableTypeMap[value.value()]
+                    ?.let { valueType ->
+                        when {
+                            keyType != valueType -> this.addError(VariablesDontShareType())
+                            keyType == Type.INT -> this.copy(variableIntegerMap = variableIntegerMap + (key.value() to variableIntegerMap[value.value()]))
+                            keyType == Type.STRING -> this.copy(variableStringMap = variableStringMap + (key.value() to variableStringMap[value.value()]))
+                            else -> this.addError(NotValidType())
+                        }
+                    }
+            } ?: this.addError(VariableIsNotDefined())
 
     private fun isVariableDefined(key: VariableNameNode) = variableTypeMap.containsKey(key.value())
 }
