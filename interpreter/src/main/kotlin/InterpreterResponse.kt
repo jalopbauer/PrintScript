@@ -31,15 +31,14 @@ interface PrintScriptInterpreterState {
     fun addError(error: Error): PrintScriptInterpreterState
     fun initializeVariable(key: VariableNameNode, value: TypeNode): PrintScriptInterpreterState
 
-    fun println(value: VariableNameNode): PrintScriptInterpreterState
-    fun println(value: NumberLiteralStringNode): PrintScriptInterpreterState
-    fun println(value: StringNode): PrintScriptInterpreterState
+    fun println(value: PrintlnAstParameter): PrintScriptInterpreterState
 
     fun setValueToVariable(key: VariableNameNode, value: AssignationParameterNode<*>): PrintScriptInterpreterState
 }
 
 data class StatefullPrintScriptInterpreterState(
-    val errors: List<Error>,
+    val errors: List<Error> = listOf(),
+    val printList: List<String> = listOf(),
     val variableTypeMap: Map<String, Type> = mapOf(),
     val variableIntegerMap: Map<String, Int?> = mapOf(),
     val variableStringMap: Map<String, String?> = mapOf()
@@ -53,18 +52,16 @@ data class StatefullPrintScriptInterpreterState(
         } else {
             this.copy(variableTypeMap = variableTypeMap + (key.value() to value.value()))
         }
-    override fun println(value: VariableNameNode): PrintScriptInterpreterState {
-        TODO("Not yet implemented")
-    }
-
-    override fun println(value: NumberLiteralStringNode): PrintScriptInterpreterState {
-        TODO("Not yet implemented")
-    }
-
-    override fun println(value: StringNode): PrintScriptInterpreterState {
-        TODO("Not yet implemented")
-    }
-
+    override fun println(value: PrintlnAstParameter): PrintScriptInterpreterState =
+        when (value) {
+            is NumberLiteralStringNode, is StringLiteralNode -> this.copy(printList = printList + value.value())
+            is VariableNameNode ->
+                variableStringMap[value.value()]
+                    ?.let { this.copy(printList = printList + value.value()) }
+                    ?: variableIntegerMap[value.value()]
+                        ?.let { this.copy(printList = printList + value.value()) }
+                    ?: this.addError(VariableIsNotDefined())
+        }
     override fun setValueToVariable(
         key: VariableNameNode,
         value: AssignationParameterNode<*>
