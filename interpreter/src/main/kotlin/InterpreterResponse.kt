@@ -58,7 +58,8 @@ data class StatefullPrintScriptInterpreterState(
         }
     override fun println(value: PrintlnAstParameter): PrintScriptInterpreterState =
         when (value) {
-            is NumberLiteralStringNode, is StringLiteralNode -> this.copy(printList = printList + value.value())
+            is NumberLiteralStringNode -> this.copy(printList = printList + value.value())
+            is StringLiteralNode -> this.copy(printList = printList + value.value())
             is VariableNameNode ->
                 variableStringMap[value.value()]
                     ?.let { this.copy(printList = printList + value.value()) }
