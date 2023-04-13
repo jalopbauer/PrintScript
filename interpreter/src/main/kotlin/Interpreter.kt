@@ -23,6 +23,7 @@ class PrintlnParameterInterpreter : Interpreter<PrintlnAstParameter> {
             is NumberLiteralStringNode -> interpreterState.println(abstractSyntaxTree)
             is NumberLiteralNode -> interpreterState.println(abstractSyntaxTree)
             is StringNode -> interpreterState.println(abstractSyntaxTree)
+            else -> interpreterState.addError(PrintlnAstParameterNotAccepted())
         }
 }
 class AssignationParameterInterpreter : Interpreter<AssignationAst<*>> {

@@ -46,6 +46,10 @@ class VariableIsNotDefinedError : Error {
     override fun message(): String =
         "VariableIsNotDefinedError"
 }
+class PrintlnAstParameterNotAccepted : Error {
+    override fun message(): String =
+        "PrintlnAstParameterNotAccepted"
+}
 
 interface PrintScriptInterpreterState {
     fun addError(error: Error): PrintScriptInterpreterState
