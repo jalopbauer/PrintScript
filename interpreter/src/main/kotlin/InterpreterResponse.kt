@@ -119,11 +119,11 @@ data class StatefullPrintScriptInterpreterState(
                     ?.let { valueType ->
                         when {
                             keyType != valueType -> this.addError(VariablesDontShareType())
-                            keyType == Type.INT ->
+                            keyType is NumberType ->
                                 variableIntegerMap[value.value()]
                                     ?.let { this.copy(variableIntegerMap = variableIntegerMap + (key.value() to it)) }
                                     ?: this.addError(VariableIsNotDefined())
-                            keyType == Type.STRING ->
+                            keyType is StringType ->
                                 variableStringMap[value.value()]
                                     ?.let { this.copy(variableStringMap = variableStringMap + (key.value() to it)) }
                                     ?: this.addError(VariableIsNotDefined())

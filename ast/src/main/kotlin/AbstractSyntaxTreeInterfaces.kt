@@ -66,10 +66,10 @@ data class TypeNode(private val type: Type) : AbstractSyntaxTree {
         type
 }
 
-enum class Type {
-    STRING,
-    INT
-}
+interface Type : AbstractSyntaxTree
+class StringType : Type
+class NumberType : Type
+
 interface Operable : AbstractSyntaxTree
 interface EndingOperable : Operable
 interface Operation<T : Operable, U : Operable> : Operable
