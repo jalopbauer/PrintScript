@@ -73,6 +73,6 @@ enum class Type {
 interface Operable : AbstractSyntaxTree
 interface Operation : Operable
 interface Sum : Operation
-data class Sub<T : Operable, U : Operable> (val leftOperable: T, val rightOperable: T) : Operation
-data class Mult<T : Operable, U : Operable> (val leftOperable: T, val rightOperable: T) : Operation
-data class Div<T : Operable, U : Operable> (val leftOperable: T, val rightOperable: T) : Operation
+interface Sub : Operation
+interface Mult : Operation
+interface Div : Operation
