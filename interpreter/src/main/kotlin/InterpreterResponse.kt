@@ -37,6 +37,16 @@ class TypeNotSupportedInPrintError : Error {
     override fun message(): String =
         "CannotPrintValueError"
 }
+
+class OperationNotSupportedError : Error {
+    override fun message(): String =
+        "OperationNotSupportedError"
+}
+class VariableIsNotDefinedError : Error {
+    override fun message(): String =
+        "VariableIsNotDefinedError"
+}
+
 interface PrintScriptInterpreterState {
     fun addError(error: Error): PrintScriptInterpreterState
     fun initializeVariable(key: VariableNameNode, value: TypeNode): PrintScriptInterpreterState
@@ -44,6 +54,7 @@ interface PrintScriptInterpreterState {
     fun println(value: PrintlnAstParameter): PrintScriptInterpreterState
 
     fun setValueToVariable(key: VariableNameNode, value: AssignationParameterNode<*>): PrintScriptInterpreterState
+    fun get(operation: VariableNameNode): LiteralNode?
 }
 
 data class StatefullPrintScriptInterpreterState(
@@ -89,6 +100,10 @@ data class StatefullPrintScriptInterpreterState(
         } else {
             this.addError(VariableIsNotDefined())
         }
+
+    override fun get(operation: VariableNameNode): LiteralNode? {
+        TODO("Not yet implemented")
+    }
 
     private fun setValueToVariable(
         key: VariableNameNode,

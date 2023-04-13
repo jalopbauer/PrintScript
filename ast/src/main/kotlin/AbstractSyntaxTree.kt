@@ -36,7 +36,7 @@ sealed interface AssignationParameterNode<T> : AbstractSyntaxTree
 
 // Value interfaces
 sealed interface StringNode : AssignationParameterNode<String>
-interface LiteralNode : AbstractSyntaxTree
+interface LiteralNode : AbstractSyntaxTree, Operation
 
 // Literals
 data class StringLiteralNode(private val value: String) : StringNode, PrintlnAstParameter, Operation, LiteralNode {
