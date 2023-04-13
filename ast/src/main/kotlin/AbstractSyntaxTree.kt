@@ -72,3 +72,6 @@ enum class Type {
     STRING,
     INT
 }
+interface Operable : AbstractSyntaxTree
+interface Operation : Operable
+data class Sum<T : Operable, U : Operable> (val leftOperable: T, val rightOperable: T) : Operation
