@@ -72,8 +72,8 @@ data class StatefullPrintScriptInterpreterState(
     ): PrintScriptInterpreterState =
         if (isVariableDefined(key)) {
             when (value) {
-                is NumberNode -> this.copy(variableIntegerMap = variableIntegerMap + (key.value() to value.value()))
-                is StringNode -> this.copy(variableStringMap = variableStringMap + (key.value() to value.value()))
+                is NumberLiteralNode -> this.copy(variableIntegerMap = variableIntegerMap + (key.value() to value.value()))
+                is StringLiteralNode -> this.copy(variableStringMap = variableStringMap + (key.value() to value.value()))
                 is VariableNameNode -> this.setValueToVariable(key, value)
                 else -> this.addError(NotAcceptableAssignationValueError())
             }
@@ -81,7 +81,7 @@ data class StatefullPrintScriptInterpreterState(
             this.addError(VariableIsNotDefined())
         }
 
-    private fun setValueToVariable(
+    fun setValueToVariable(
         key: VariableNameNode,
         value: VariableNameNode
     ): PrintScriptInterpreterState =
