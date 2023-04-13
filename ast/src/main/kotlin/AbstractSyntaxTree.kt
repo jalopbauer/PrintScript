@@ -55,7 +55,7 @@ data class NumberLiteralStringNode(private val number: NumberLiteralNode) : Abst
     fun value(): String =
         number.number.toString()
 }
-data class VariableNameNode(private val variableName: String) : AbstractSyntaxTree, PrintlnAstParameter, AssignationParameterNode<String>, Operation {
+data class VariableNameNode(val variableName: String) : AbstractSyntaxTree, PrintlnAstParameter, AssignationParameterNode<String>, Operation {
     fun value(): String =
         variableName
 }
@@ -72,14 +72,20 @@ enum class Type {
 }
 interface Operable : AbstractSyntaxTree
 interface Operation : Operable
-interface Sum<T : Operable, U : Operable> : Operation
-data class NumberNumberSum(val leftOperable: NumberLiteralNode, val rightOperable: NumberLiteralNode) : Sum<NumberLiteralNode, NumberLiteralNode> {
+interface Sum : Operation
+data class NumberNumberSum(val leftOperable: NumberLiteralNode, val rightOperable: NumberLiteralNode) : Sum {
     fun leftNumber(): Int =
         leftOperable.number
     fun rightNumber(): Int =
         rightOperable.number
 }
-
+data class NumberStringSum(val leftOperable: NumberLiteralNode, val rightOperable: StringLiteralNode) : Sum
+data class StringNumberSum(val leftOperable: StringLiteralNode, val rightOperable: NumberLiteralNode) : Sum
+data class StringStringSum(val leftOperable: StringLiteralNode, val rightOperable: StringLiteralNode) : Sum
+data class VariableStringSum(val leftOperable: VariableNameNode, val rightOperable: StringLiteralNode) : Sum
+data class StringVariableSum(val leftOperable: StringLiteralNode, val rightOperable: VariableNameNode) : Sum
+data class VariableNumberSum(val leftOperable: VariableNameNode, val rightOperable: NumberLiteralNode) : Sum
+data class NumberVariableSum(val leftOperable: NumberLiteralNode, val rightOperable: VariableNameNode) : Sum
 data class Sub<T : Operable, U : Operable> (val leftOperable: T, val rightOperable: T) : Operation
 data class Mult<T : Operable, U : Operable> (val leftOperable: T, val rightOperable: T) : Operation
 data class Div<T : Operable, U : Operable> (val leftOperable: T, val rightOperable: T) : Operation
