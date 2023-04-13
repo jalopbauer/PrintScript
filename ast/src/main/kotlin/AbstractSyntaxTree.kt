@@ -1,9 +1,5 @@
 // Extensible
 sealed interface AbstractSyntaxTree
-sealed interface LeftRightValuedNode<T, U> : AbstractSyntaxTree {
-    fun leftValue(): T
-    fun rightValue(): U
-}
 
 // Defined Structures AST
 class PrintlnAst(private val value: PrintlnAstParameter) : AbstractSyntaxTree {
@@ -12,27 +8,27 @@ class PrintlnAst(private val value: PrintlnAstParameter) : AbstractSyntaxTree {
 }
 sealed interface PrintlnAstParameter : AbstractSyntaxTree
 
-class DeclarationAst(private val variableNameNode: VariableNameNode, private val typeNode: TypeNode) : LeftRightValuedNode<VariableNameNode, TypeNode> {
-    override fun leftValue(): VariableNameNode =
+class DeclarationAst(private val variableNameNode: VariableNameNode, private val typeNode: TypeNode) : AbstractSyntaxTree {
+    fun leftValue(): VariableNameNode =
         variableNameNode
 
-    override fun rightValue(): TypeNode =
+    fun rightValue(): TypeNode =
         typeNode
 }
 
-class AssignationAst<T>(private val variableNameNode: VariableNameNode, private val assignationParameter: AssignationParameterNode<T>) : LeftRightValuedNode<VariableNameNode, AssignationParameterNode<T>> {
-    override fun leftValue(): VariableNameNode =
+class AssignationAst<T>(private val variableNameNode: VariableNameNode, private val assignationParameter: AssignationParameterNode<T>) : AbstractSyntaxTree {
+    fun leftValue(): VariableNameNode =
         variableNameNode
 
-    override fun rightValue(): AssignationParameterNode<T> =
+    fun rightValue(): AssignationParameterNode<T> =
         assignationParameter
 }
 
-class AssignationDeclarationAst<T>(private val assignation: AssignationAst<T>, private val declaration: DeclarationAst) : LeftRightValuedNode<AssignationAst<T>, DeclarationAst> {
-    override fun leftValue(): AssignationAst<T> =
+class AssignationDeclarationAst<T>(private val assignation: AssignationAst<T>, private val declaration: DeclarationAst) : AbstractSyntaxTree {
+    fun leftValue(): AssignationAst<T> =
         assignation
 
-    override fun rightValue(): DeclarationAst =
+    fun rightValue(): DeclarationAst =
         declaration
 }
 
