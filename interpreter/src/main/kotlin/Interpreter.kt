@@ -21,6 +21,7 @@ class PrintlnParameterInterpreter : Interpreter<PrintlnAstParameter> {
         when (abstractSyntaxTree) {
             is VariableNameNode -> interpreterState.println(abstractSyntaxTree)
             is NumberLiteralStringNode -> interpreterState.println(abstractSyntaxTree)
+            is NumberLiteralNode -> interpreterState.println(abstractSyntaxTree)
             is StringNode -> interpreterState.println(abstractSyntaxTree)
         }
 }

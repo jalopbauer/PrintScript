@@ -39,10 +39,7 @@ sealed interface StringNode : AssignationParameterNode<String>
 interface LiteralNode : AbstractSyntaxTree, Operation
 
 // Literals
-data class StringLiteralNode(private val value: String) : StringNode, PrintlnAstParameter, Operation, LiteralNode {
-    fun value(): String =
-        value
-}
+data class StringLiteralNode(val value: String) : StringNode, PrintlnAstParameter, Operation, LiteralNode
 data class StringConcatNode(private val value: String, private val node: StringNode) : StringNode {
     fun value(): String = value
 }
@@ -75,7 +72,14 @@ enum class Type {
 }
 interface Operable : AbstractSyntaxTree
 interface Operation : Operable
-data class Sum<T : Operable, U : Operable> (val leftOperable: T, val rightOperable: T) : Operation
+interface Sum<T : Operable, U : Operable> : Operation
+data class NumberNumberSum(val leftOperable: NumberLiteralNode, val rightOperable: NumberLiteralNode) : Sum<NumberLiteralNode, NumberLiteralNode> {
+    fun leftNumber(): Int =
+        leftOperable.number
+    fun rightNumber(): Int =
+        rightOperable.number
+}
+
 data class Sub<T : Operable, U : Operable> (val leftOperable: T, val rightOperable: T) : Operation
 data class Mult<T : Operable, U : Operable> (val leftOperable: T, val rightOperable: T) : Operation
 data class Div<T : Operable, U : Operable> (val leftOperable: T, val rightOperable: T) : Operation
