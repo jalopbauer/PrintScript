@@ -36,7 +36,6 @@ sealed interface AssignationParameterNode<T> : AbstractSyntaxTree
 
 // Value interfaces
 sealed interface StringNode : AssignationParameterNode<String>
-sealed interface NumberNode : AssignationParameterNode<Int>
 
 // Literals
 data class StringLiteralNode(private val value: String) : StringNode, PrintlnAstParameter {
@@ -46,11 +45,12 @@ data class StringLiteralNode(private val value: String) : StringNode, PrintlnAst
 data class StringConcatNode(private val value: String, private val node: StringNode) : StringNode {
     fun value(): String = value
 }
-data class NumberLiteralNode(val number: Int) : NumberNode {
+interface NumberNode : AbstractSyntaxTree, AssignationParameterNode<Int>
+data class NumberLiteralNode(val number: Int) : AssignationParameterNode<Int>, NumberNode {
     fun value(): Int =
         number
 }
-data class OperationNode(val rightNode: NumberNode, val operation: String, val leftNumber: NumberLiteralNode) : NumberNode {
+data class OperationNode<T>(val rightNode: T, val operation: String, val leftNumber: NumberLiteralNode) : AbstractSyntaxTree, NumberNode {
     fun value(): Int = leftNumber.number // TODO ver como transformar operation en un operador valido
 }
 data class NumberLiteralStringNode(private val number: NumberLiteralNode) : AbstractSyntaxTree, PrintlnAstParameter {
