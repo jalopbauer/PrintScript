@@ -30,7 +30,13 @@ class NotAcceptableAssignationValueError : Error {
     override fun message(): String =
         "NotAcceptableAssignationValueError"
 }
-
+class TypeNotSupportedInPrintError : Error {
+    override fun message(): String =
+        "TypeNotSupportedInPrintError"
+} class CannotPrintValueError : Error {
+    override fun message(): String =
+        "CannotPrintValueError"
+}
 interface PrintScriptInterpreterState {
     fun addError(error: Error): PrintScriptInterpreterState
     fun initializeVariable(key: VariableNameNode, value: TypeNode): PrintScriptInterpreterState
@@ -66,6 +72,8 @@ data class StatefullPrintScriptInterpreterState(
                     ?: variableIntegerMap[value.value()]
                         ?.let { this.copy(printList = printList + value.value()) }
                     ?: this.addError(VariableIsNotDefined())
+            is LiteralNode -> this.addError(TypeNotSupportedInPrintError())
+            else -> this.addError(CannotPrintValueError())
         }
     override fun setValueToVariable(
         key: VariableNameNode,
@@ -82,7 +90,7 @@ data class StatefullPrintScriptInterpreterState(
             this.addError(VariableIsNotDefined())
         }
 
-    fun setValueToVariable(
+    private fun setValueToVariable(
         key: VariableNameNode,
         value: VariableNameNode
     ): PrintScriptInterpreterState =
