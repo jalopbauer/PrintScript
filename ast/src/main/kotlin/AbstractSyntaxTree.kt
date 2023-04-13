@@ -2,13 +2,13 @@
 sealed interface AbstractSyntaxTree
 
 // Defined Structures AST
-class PrintlnAst(private val value: PrintlnAstParameter) : AbstractSyntaxTree {
+data class PrintlnAst(private val value: PrintlnAstParameter) : AbstractSyntaxTree {
     fun value(): PrintlnAstParameter =
         value
 }
 sealed interface PrintlnAstParameter : AbstractSyntaxTree
 
-class DeclarationAst(private val variableNameNode: VariableNameNode, private val typeNode: TypeNode) : AbstractSyntaxTree {
+data class DeclarationAst(private val variableNameNode: VariableNameNode, private val typeNode: TypeNode) : AbstractSyntaxTree {
     fun leftValue(): VariableNameNode =
         variableNameNode
 
@@ -16,7 +16,7 @@ class DeclarationAst(private val variableNameNode: VariableNameNode, private val
         typeNode
 }
 
-class AssignationAst<T>(private val variableNameNode: VariableNameNode, private val assignationParameter: AssignationParameterNode<T>) : AbstractSyntaxTree {
+data class AssignationAst<T>(private val variableNameNode: VariableNameNode, private val assignationParameter: AssignationParameterNode<T>) : AbstractSyntaxTree {
     fun leftValue(): VariableNameNode =
         variableNameNode
 
@@ -24,7 +24,7 @@ class AssignationAst<T>(private val variableNameNode: VariableNameNode, private 
         assignationParameter
 }
 
-class AssignationDeclarationAst<T>(private val assignation: AssignationAst<T>, private val declaration: DeclarationAst) : AbstractSyntaxTree {
+data class AssignationDeclarationAst<T>(private val assignation: AssignationAst<T>, private val declaration: DeclarationAst) : AbstractSyntaxTree {
     fun leftValue(): AssignationAst<T> =
         assignation
 
@@ -39,31 +39,31 @@ sealed interface StringNode : AssignationParameterNode<String>
 sealed interface NumberNode : AssignationParameterNode<Int>
 
 // Literals
-class StringLiteralNode(private val value: String) : StringNode, PrintlnAstParameter {
+data class StringLiteralNode(private val value: String) : StringNode, PrintlnAstParameter {
     fun value(): String =
         value
 }
-class StringConcatNode(private val value: String, private val node: StringNode) : StringNode {
+data class StringConcatNode(private val value: String, private val node: StringNode) : StringNode {
     fun value(): String = value
 }
-class NumberLiteralNode(val number: Int) : NumberNode {
+data class NumberLiteralNode(val number: Int) : NumberNode {
     fun value(): Int =
         number
 }
-class OperationNode(val rightNode: NumberNode, val operation: String, val leftNumber: NumberLiteralNode) : NumberNode {
+data class OperationNode(val rightNode: NumberNode, val operation: String, val leftNumber: NumberLiteralNode) : NumberNode {
     fun value(): Int = leftNumber.number // TODO ver como transformar operation en un operador valido
 }
-class NumberLiteralStringNode(private val number: NumberLiteralNode) : AbstractSyntaxTree, PrintlnAstParameter {
+data class NumberLiteralStringNode(private val number: NumberLiteralNode) : AbstractSyntaxTree, PrintlnAstParameter {
     fun value(): String =
         number.number.toString()
 }
-class VariableNameNode(private val variableName: String) : AbstractSyntaxTree, PrintlnAstParameter, AssignationParameterNode<String> {
+data class VariableNameNode(private val variableName: String) : AbstractSyntaxTree, PrintlnAstParameter, AssignationParameterNode<String> {
     fun value(): String =
         variableName
 }
 
 // Types
-class TypeNode(private val type: Type) : AbstractSyntaxTree {
+data class TypeNode(private val type: Type) : AbstractSyntaxTree {
     fun value(): Type =
         type
 }
