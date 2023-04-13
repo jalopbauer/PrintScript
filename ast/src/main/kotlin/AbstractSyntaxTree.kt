@@ -4,16 +4,13 @@ sealed interface LeftRightValuedNode<T, U> : AbstractSyntaxTree {
     fun leftValue(): T
     fun rightValue(): U
 }
-sealed interface ValuedNode<T> : AbstractSyntaxTree {
-    fun value(): T
-}
 
 // Defined Structures AST
-class PrintlnAst(private val value: PrintlnAstParameter) : ValuedNode<PrintlnAstParameter> {
-    override fun value(): PrintlnAstParameter =
+class PrintlnAst(private val value: PrintlnAstParameter) : AbstractSyntaxTree {
+    fun value(): PrintlnAstParameter =
         value
 }
-sealed interface PrintlnAstParameter : ValuedNode<String>
+sealed interface PrintlnAstParameter : AbstractSyntaxTree
 
 class DeclarationAst(private val variableNameNode: VariableNameNode, private val typeNode: TypeNode) : LeftRightValuedNode<VariableNameNode, TypeNode> {
     override fun leftValue(): VariableNameNode =
@@ -39,7 +36,7 @@ class AssignationDeclarationAst<T>(private val assignation: AssignationAst<T>, p
         declaration
 }
 
-sealed interface AssignationParameterNode<T> : ValuedNode<T>
+sealed interface AssignationParameterNode<T> : AbstractSyntaxTree
 
 // Value interfaces
 sealed interface StringNode : AssignationParameterNode<String>
@@ -47,31 +44,31 @@ sealed interface NumberNode : AssignationParameterNode<Int>
 
 // Literals
 class StringLiteralNode(private val value: String) : StringNode, PrintlnAstParameter {
-    override fun value(): String =
+    fun value(): String =
         value
 }
 class StringConcatNode(private val value: String, private val node: StringNode) : StringNode {
-    override fun value(): String = value
+    fun value(): String = value
 }
 class NumberLiteralNode(val number: Int) : NumberNode {
-    override fun value(): Int =
+    fun value(): Int =
         number
 }
 class OperationNode(val rightNode: NumberNode, val operation: String, val leftNumber: NumberLiteralNode) : NumberNode {
-    override fun value(): Int = leftNumber.number // TODO ver como transformar operation en un operador valido
+    fun value(): Int = leftNumber.number // TODO ver como transformar operation en un operador valido
 }
-class NumberLiteralStringNode(private val number: NumberLiteralNode) : ValuedNode<String>, PrintlnAstParameter {
-    override fun value(): String =
+class NumberLiteralStringNode(private val number: NumberLiteralNode) : AbstractSyntaxTree, PrintlnAstParameter {
+    fun value(): String =
         number.number.toString()
 }
-class VariableNameNode(private val variableName: String) : ValuedNode<String>, PrintlnAstParameter, AssignationParameterNode<String> {
-    override fun value(): String =
+class VariableNameNode(private val variableName: String) : AbstractSyntaxTree, PrintlnAstParameter, AssignationParameterNode<String> {
+    fun value(): String =
         variableName
 }
 
 // Types
-class TypeNode(private val type: Type) : ValuedNode<Type> {
-    override fun value(): Type =
+class TypeNode(private val type: Type) : AbstractSyntaxTree {
+    fun value(): Type =
         type
 }
 
