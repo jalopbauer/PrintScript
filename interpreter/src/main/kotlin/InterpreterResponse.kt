@@ -44,8 +44,8 @@ data class StatefullPrintScriptInterpreterState(
     val errors: List<Error> = listOf(),
     val printList: List<String> = listOf(),
     val variableTypeMap: Map<String, Type> = mapOf(),
-    val variableIntegerMap: Map<String, Int?> = mapOf(),
-    val variableStringMap: Map<String, String?> = mapOf()
+    val variableIntegerMap: Map<String, Int> = mapOf(),
+    val variableStringMap: Map<String, String> = mapOf()
 ) : PrintScriptInterpreterState {
     override fun addError(error: Error): PrintScriptInterpreterState =
         this.copy(errors = errors + error)
@@ -91,8 +91,14 @@ data class StatefullPrintScriptInterpreterState(
                     ?.let { valueType ->
                         when {
                             keyType != valueType -> this.addError(VariablesDontShareType())
-                            keyType == Type.INT -> this.copy(variableIntegerMap = variableIntegerMap + (key.value() to variableIntegerMap[value.value()]))
-                            keyType == Type.STRING -> this.copy(variableStringMap = variableStringMap + (key.value() to variableStringMap[value.value()]))
+                            keyType == Type.INT ->
+                                variableIntegerMap[value.value()]
+                                    ?.let { this.copy(variableIntegerMap = variableIntegerMap + (key.value() to it)) }
+                                    ?: this.addError(VariableIsNotDefined())
+                            keyType == Type.STRING ->
+                                variableStringMap[value.value()]
+                                    ?.let { this.copy(variableStringMap = variableStringMap + (key.value() to it)) }
+                                    ?: this.addError(VariableIsNotDefined())
                             else -> this.addError(NotValidType())
                         }
                     }
