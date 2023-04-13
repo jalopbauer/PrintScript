@@ -1,8 +1,8 @@
 interface OperationSolver {
-    fun solver(operation: Operation, printScriptInterpreterState: PrintScriptInterpreterState): OperationResult
+    fun solver(operation: Operable, printScriptInterpreterState: PrintScriptInterpreterState): OperationResult
 }
 class PrintlnOperationSolver : OperationSolver {
-    override fun solver(operation: Operation, printScriptInterpreterState: PrintScriptInterpreterState): OperationResult =
+    override fun solver(operation: Operable, printScriptInterpreterState: PrintScriptInterpreterState): OperationResult =
         when (operation) {
             is StringLiteralNode -> ValueOperationResult(operation.value)
             is NumberLiteralNode -> ValueOperationResult(operation.value().toString())
@@ -12,7 +12,7 @@ class PrintlnOperationSolver : OperationSolver {
                         this.solver(it, printScriptInterpreterState)
                     }
                     ?: OperationError(VariableIsNotDefinedError())
-            is NumberNumberSum -> this.solver(NumberLiteralNode(operation.leftNumber() + operation.rightNumber()), printScriptInterpreterState)
+//            is NumberNumberSum -> this.solver(NumberLiteralNode(operation.leftNumber() + operation.rightNumber()), printScriptInterpreterState)
 //            is NumberStringSum -> this.solver(NumberLiteralNode(leftOperable.number + rightOperable.number), printScriptInterpreterState)
 //                    (leftOperable is NumberLiteralNode && rightOperable is StringLiteralNode) ->
 //                        this.solver(StringLiteralNode(leftOperable.number.toString() + rightOperable.value), printScriptInterpreterState)
