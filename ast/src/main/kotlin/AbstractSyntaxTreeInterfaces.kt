@@ -35,12 +35,11 @@ data class AssignationDeclarationAst<T>(private val assignation: AssignationAst<
 interface AssignationParameterNode<T> : AbstractSyntaxTree
 
 // Value interfaces
-interface StringNode : AssignationParameterNode<String>
 interface LiteralNode : AbstractSyntaxTree
 
 // Literals
-data class StringLiteralNode(val value: String) : StringNode, PrintlnAstParameter, LiteralNode
-data class StringConcatNode(private val value: String, private val node: StringNode) : StringNode {
+data class StringLiteralNode(val value: String) : PrintlnAstParameter, LiteralNode, AssignationParameterNode<String>
+data class StringConcatNode(private val value: String) : AbstractSyntaxTree {
     fun value(): String = value
 }
 sealed interface NumberNode<T> : AbstractSyntaxTree, AssignationParameterNode<T>, PrintlnAstParameter {
