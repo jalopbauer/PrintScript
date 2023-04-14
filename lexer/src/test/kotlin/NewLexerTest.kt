@@ -59,7 +59,7 @@ class LexerTokenResult(private val tokenName: String, private val lineNumber: In
 }
 
 class LexerExpectedValuesBuilder : ExpectedValuesBuilder<Token> {
-    override fun build(s: String): List<Token> = LexerSentence().buildTokenList(Sentence(s,0))
+    override fun build(s: String): List<Token> = LexerSentence().buildTokenList(Sentence(s, 0))
 }
 class LexerTestFolderPathBuilder : TestFolderPathBuilder {
     override fun build(): List<String> = ((1..5) + 7).map { it.toString() }
