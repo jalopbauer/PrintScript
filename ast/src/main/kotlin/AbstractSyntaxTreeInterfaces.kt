@@ -43,17 +43,20 @@ data class StringLiteralNode(val value: String) : StringNode, PrintlnAstParamete
 data class StringConcatNode(private val value: String, private val node: StringNode) : StringNode {
     fun value(): String = value
 }
-interface NumberNode : AbstractSyntaxTree, AssignationParameterNode<Int>
-data class NumberLiteralNode(val number: Int) : AssignationParameterNode<Int>, NumberNode, PrintlnAstParameter, LiteralNode {
-    fun value(): Int =
+sealed interface NumberNode<T> : AbstractSyntaxTree, AssignationParameterNode<T>, PrintlnAstParameter {
+    fun value(): T
+}
+data class IntNumberLiteralNode(val number: Int) : AssignationParameterNode<Int>, NumberNode<Int>, PrintlnAstParameter, LiteralNode {
+    override fun value(): Int =
         number
 }
-data class OperationNode<T>(val rightNode: T, val operation: String, val leftNumber: NumberLiteralNode) : AbstractSyntaxTree, NumberNode {
-    fun value(): Int = leftNumber.number // TODO ver como transformar operation en un operador valido
+
+data class DoubleNumberLiteralNode(val number: Double) : AssignationParameterNode<Double>, NumberNode<Double>, PrintlnAstParameter, LiteralNode {
+    override fun value(): Double =
+        number
 }
-data class NumberLiteralStringNode(private val number: NumberLiteralNode) : AbstractSyntaxTree, PrintlnAstParameter {
-    fun value(): String =
-        number.number.toString()
+data class OperationNode<T, U>(val rightNode: T, val operation: String, val leftNumber: IntNumberLiteralNode) : AbstractSyntaxTree {
+    fun value(): Int = leftNumber.number // TODO ver como transformar operation en un operador valido
 }
 data class VariableNameNode(val variableName: String) : AbstractSyntaxTree, PrintlnAstParameter, AssignationParameterNode<String> {
     fun value(): String =

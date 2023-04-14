@@ -19,7 +19,7 @@ class PrintScript : TokenBuilder {
         StringEqualsTokenName(),
         SingleQuoteStringLiteral(),
         DoubleQuoteStringLiteral(),
-        NumberLiteralBuilder(),
+        IntNumberLiteralBuilder(),
         VariableBuilder()
     )
     override fun build(string: String, position: Int, lineNumber: Int): Token {
@@ -57,12 +57,15 @@ class DoubleQuoteStringLiteral : TokenBuilder {
     }
 }
 
-class NumberLiteralBuilder : TokenBuilder {
-    override fun build(string: String, position: Int, lineNumber: Int): Token? {
-        return string.toIntOrNull()?.let { number -> NumberLiteralToken(number, lineNumber, position) }
+class IntNumberLiteralBuilder : TokenBuilder {
+    override fun build(string: String, position: Int, lineNumber: Int): IntNumberLiteralToken? =
+        string.toIntOrNull()?.let { number -> IntNumberLiteralToken(number, lineNumber, position) }
+}
+class DoubleNumberLiteralBuilder : TokenBuilder {
+    override fun build(string: String, position: Int, lineNumber: Int): DoubleNumberLiteralToken? {
+        return string.toDoubleOrNull()?.let { number -> DoubleNumberLiteralToken(number, lineNumber, position) }
     }
 }
-
 class StringEqualsTokenName : TokenBuilder {
     override fun build(string: String, position: Int, lineNumber: Int): Token? {
         return stringTokenNameMap[string]?.let { tokenName -> TokenWithoutValue(tokenName, lineNumber, position) }

@@ -10,7 +10,7 @@ class DeclarationAssignationValidListOfTokens(val variable: VariableLiteralToken
 
 sealed interface PrintlnValidParameter : ValidListOfTokens
 class VariableParameter(val variableToken: VariableLiteralToken) : ValidListOfTokens, PrintlnValidParameter
-class NumberLiteralParameter(val numberLiteralToken: NumberLiteralToken) : ValidListOfTokens, PrintlnValidParameter, OperationValidListOfTokens
+class NumberLiteralParameter(val numberLiteralToken: NumberLiteralToken<*>) : ValidListOfTokens, PrintlnValidParameter, OperationValidListOfTokens
 class StringLiteralOrStringConcat(val stringOrConcat: List<Token>) : ValidListOfTokens, PrintlnValidParameter
 interface OperationValidListOfTokens : ValidListOfTokens
 class OperationValidListOfConcatTokens(val operationConcat: List<Token>) : OperationValidListOfTokens

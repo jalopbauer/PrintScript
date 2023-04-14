@@ -42,8 +42,21 @@ data class ErrorToken(private val lineNumber: Int, private val position: Int) : 
         return position
     }
 }
+sealed interface NumberLiteralToken<T> : Token
+data class IntNumberLiteralToken(val value: Int, private val lineNumber: Int, private val position: Int) : NumberLiteralToken<Int> {
+    override fun tokenName(): TokenName {
+        return TokenName.NUMBER_LITERAL
+    }
 
-data class NumberLiteralToken(val value: Int, private val lineNumber: Int, private val position: Int) : Token {
+    override fun lineNumber(): Int {
+        return lineNumber
+    }
+
+    override fun position(): Int {
+        return position
+    }
+}
+data class DoubleNumberLiteralToken(val value: Double, private val lineNumber: Int, private val position: Int) : NumberLiteralToken<Double> {
     override fun tokenName(): TokenName {
         return TokenName.NUMBER_LITERAL
     }
