@@ -53,7 +53,7 @@ class PrintlnAstParameterNotAccepted : Error {
 
 interface PrintScriptInterpreterState {
     fun addError(error: Error): PrintScriptInterpreterState
-    fun initializeVariable(key: VariableNameNode, value: TypeNode): PrintScriptInterpreterState
+    fun initializeVariable(key: VariableNameNode, value: Type): PrintScriptInterpreterState
 
     fun println(value: PrintlnAstParameter): PrintScriptInterpreterState
 
@@ -71,11 +71,11 @@ data class StatefullPrintScriptInterpreterState(
     override fun addError(error: Error): PrintScriptInterpreterState =
         this.copy(errors = errors + error)
 
-    override fun initializeVariable(key: VariableNameNode, value: TypeNode): PrintScriptInterpreterState =
+    override fun initializeVariable(key: VariableNameNode, value: Type): PrintScriptInterpreterState =
         if (isVariableDefined(key)) {
             this.addError(VariableAlreadyExistsError())
         } else {
-            this.copy(variableTypeMap = variableTypeMap + (key.value() to value.value()))
+            this.copy(variableTypeMap = variableTypeMap + (key.value() to value))
         }
     override fun println(value: PrintlnAstParameter): PrintScriptInterpreterState =
         when (value) {
@@ -119,11 +119,11 @@ data class StatefullPrintScriptInterpreterState(
                     ?.let { valueType ->
                         when {
                             keyType != valueType -> this.addError(VariablesDontShareType())
-                            keyType == Type.INT ->
+                            keyType is IntType ->
                                 variableIntegerMap[value.value()]
                                     ?.let { this.copy(variableIntegerMap = variableIntegerMap + (key.value() to it)) }
                                     ?: this.addError(VariableIsNotDefined())
-                            keyType == Type.STRING ->
+                            keyType is StringType ->
                                 variableStringMap[value.value()]
                                     ?.let { this.copy(variableStringMap = variableStringMap + (key.value() to it)) }
                                     ?: this.addError(VariableIsNotDefined())

@@ -6,12 +6,12 @@ data class PrintlnAst(private val value: PrintlnAstParameter) : AbstractSyntaxTr
 interface PrintlnAstParameter : AbstractSyntaxTree
 
 // DeclarationAst
-data class DeclarationAst(private val variableNameNode: VariableNameNode, private val typeNode: TypeNode) : AbstractSyntaxTree {
+data class DeclarationAst(private val variableNameNode: VariableNameNode, private val type: Type) : AbstractSyntaxTree {
     fun leftValue(): VariableNameNode =
         variableNameNode
 
-    fun rightValue(): TypeNode =
-        typeNode
+    fun rightValue(): Type =
+        type
 }
 
 // Assignation

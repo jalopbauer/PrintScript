@@ -3,11 +3,7 @@ data class VariableNameNode(val variableName: String) : AbstractSyntaxTree, Prin
     fun value(): String =
         variableName
 }
-data class TypeNode(private val type: Type) : AbstractSyntaxTree {
-    fun value(): Type =
-        type
-}
-enum class Type {
-    STRING,
-    INT
-}
+interface Type : AbstractSyntaxTree
+object StringType : Type
+object IntType : Type
+object DoubleType : Type
