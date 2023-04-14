@@ -1,5 +1,5 @@
 interface AbstractSyntaxTree
-data class VariableNameNode(val variableName: String) : AbstractSyntaxTree, PrintlnAstParameter, AssignationParameterNode<String> {
+data class VariableNameNode(val variableName: String) : AbstractSyntaxTree, PrintlnAstParameter, AssignationParameterNode<String>, OperationParameter {
     fun value(): String =
         variableName
 }
