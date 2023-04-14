@@ -1,40 +1,6 @@
 // Extensible
 interface AbstractSyntaxTree
 
-// Defined Structures AST
-data class PrintlnAst(private val value: PrintlnAstParameter) : AbstractSyntaxTree {
-    fun value(): PrintlnAstParameter =
-        value
-}
-interface PrintlnAstParameter : AbstractSyntaxTree
-
-data class DeclarationAst(private val variableNameNode: VariableNameNode, private val typeNode: TypeNode) : AbstractSyntaxTree {
-    fun leftValue(): VariableNameNode =
-        variableNameNode
-
-    fun rightValue(): TypeNode =
-        typeNode
-}
-
-data class AssignationAst<T>(private val variableNameNode: VariableNameNode, private val assignationParameter: AssignationParameterNode<T>) : AbstractSyntaxTree {
-    fun leftValue(): VariableNameNode =
-        variableNameNode
-
-    fun rightValue(): AssignationParameterNode<T> =
-        assignationParameter
-}
-
-data class AssignationDeclarationAst<T>(private val assignation: AssignationAst<T>, private val declaration: DeclarationAst) : AbstractSyntaxTree {
-    fun leftValue(): AssignationAst<T> =
-        assignation
-
-    fun rightValue(): DeclarationAst =
-        declaration
-}
-
-interface AssignationParameterNode<T> : AbstractSyntaxTree
-
-// Value interfaces
 interface LiteralNode : AbstractSyntaxTree
 
 // Literals
