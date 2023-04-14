@@ -36,15 +36,15 @@ interface AssignationParameterNode<T> : AbstractSyntaxTree
 
 // Value interfaces
 interface StringNode : AssignationParameterNode<String>
-interface LiteralNode : AbstractSyntaxTree, Operation
+interface LiteralNode : AbstractSyntaxTree
 
 // Literals
-data class StringLiteralNode(val value: String) : StringNode, PrintlnAstParameter, Operation, LiteralNode
+data class StringLiteralNode(val value: String) : StringNode, PrintlnAstParameter, LiteralNode
 data class StringConcatNode(private val value: String, private val node: StringNode) : StringNode {
     fun value(): String = value
 }
 interface NumberNode : AbstractSyntaxTree, AssignationParameterNode<Int>
-data class NumberLiteralNode(val number: Int) : AssignationParameterNode<Int>, NumberNode, Operation, PrintlnAstParameter, LiteralNode {
+data class NumberLiteralNode(val number: Int) : AssignationParameterNode<Int>, NumberNode, PrintlnAstParameter, LiteralNode {
     fun value(): Int =
         number
 }
@@ -55,7 +55,7 @@ data class NumberLiteralStringNode(private val number: NumberLiteralNode) : Abst
     fun value(): String =
         number.number.toString()
 }
-data class VariableNameNode(val variableName: String) : AbstractSyntaxTree, PrintlnAstParameter, AssignationParameterNode<String>, Operation {
+data class VariableNameNode(val variableName: String) : AbstractSyntaxTree, PrintlnAstParameter, AssignationParameterNode<String> {
     fun value(): String =
         variableName
 }
@@ -70,9 +70,3 @@ enum class Type {
     STRING,
     INT
 }
-interface Operable : AbstractSyntaxTree
-interface Operation : Operable
-interface Sum : Operation
-interface Sub : Operation
-interface Mult : Operation
-interface Div : Operation
