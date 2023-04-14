@@ -1,8 +1,9 @@
 package lexer
 
+import CodeStructure
 import token.Token
 
-interface Lexer {
+interface Lexer<T: CodeStructure> {
 
-    fun buildTokenList(sentence: String): List<Token>
+    fun buildTokenList(sentence: T): List<Token>
 }
