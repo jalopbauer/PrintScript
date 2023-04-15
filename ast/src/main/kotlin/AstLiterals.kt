@@ -1,5 +1,5 @@
 interface LiteralNode : AbstractSyntaxTree
-data class StringLiteralNode(val value: String) : PrintlnAstParameter, LiteralNode, AssignationParameterNode<String>
+data class StringLiteral(val value: String) : PrintlnAstParameter, LiteralNode, AssignationParameterNode<String>
 sealed interface NumberLiteral<T> : AbstractSyntaxTree, AssignationParameterNode<T>, PrintlnAstParameter, OperationParameter {
     fun value(): T
 }
