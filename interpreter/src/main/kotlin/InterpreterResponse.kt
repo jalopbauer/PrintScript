@@ -66,7 +66,8 @@ data class StatefullPrintScriptInterpreterState(
     val printList: List<String> = listOf(),
     val variableTypeMap: Map<String, Type> = mapOf(),
     val variableIntegerMap: Map<String, Int> = mapOf(),
-    val variableStringMap: Map<String, String> = mapOf()
+    val variableStringMap: Map<String, String> = mapOf(),
+    val variableDoubleMap: Map<String, Double> = mapOf()
 ) : PrintScriptInterpreterState {
     override fun addError(error: Error): PrintScriptInterpreterState =
         this.copy(errors = errors + error)
@@ -97,6 +98,7 @@ data class StatefullPrintScriptInterpreterState(
         if (isVariableDefined(key)) {
             when (value) {
                 is IntNumberLiteralLiteral -> this.copy(variableIntegerMap = variableIntegerMap + (key.value() to value.value()))
+                is DoubleNumberLiteralLiteral -> this.copy(variableDoubleMap = variableDoubleMap + (key.value() to value.value()))
                 is StringLiteralNode -> this.copy(variableStringMap = variableStringMap + (key.value() to value.value))
                 is VariableNameNode -> this.setValueToVariable(key, value)
                 else -> this.addError(NotAcceptableAssignationValueError())
