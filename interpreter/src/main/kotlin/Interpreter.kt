@@ -21,7 +21,7 @@ class PrintlnParameterInterpreter : Interpreter<PrintlnAstParameter> {
         when (abstractSyntaxTree) {
             is VariableNameNode -> interpreterState.println(abstractSyntaxTree)
             is NumberLiteral<*> -> interpreterState.println(abstractSyntaxTree)
-            is StringLiteralNode -> interpreterState.println(abstractSyntaxTree)
+            is StringLiteral -> interpreterState.println(abstractSyntaxTree)
             else -> interpreterState.addError(PrintlnAstParameterNotAccepted())
         }
 }
@@ -29,7 +29,7 @@ class AssignationParameterInterpreter : Interpreter<AssignationAst<*>> {
     override fun interpret(abstractSyntaxTree: AssignationAst<*>, interpreterState: PrintScriptInterpreterState): PrintScriptInterpreterState =
         when (val assignationParameterNode = abstractSyntaxTree.rightValue()) {
             is IntNumberLiteral -> interpreterState.setValueToVariable(abstractSyntaxTree.leftValue(), assignationParameterNode)
-            is StringLiteralNode -> interpreterState.setValueToVariable(abstractSyntaxTree.leftValue(), assignationParameterNode)
+            is StringLiteral -> interpreterState.setValueToVariable(abstractSyntaxTree.leftValue(), assignationParameterNode)
             is VariableNameNode -> interpreterState.setValueToVariable(abstractSyntaxTree.leftValue(), assignationParameterNode)
             else -> interpreterState
         }

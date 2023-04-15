@@ -58,7 +58,7 @@ interface PrintScriptInterpreterState {
     fun println(value: PrintlnAstParameter): PrintScriptInterpreterState
 
     fun setValueToVariable(key: VariableNameNode, value: AssignationParameterNode<*>): PrintScriptInterpreterState
-    fun get(operation: VariableNameNode): LiteralNode?
+    fun get(operation: VariableNameNode): Literal?
 }
 
 data class StatefullPrintScriptInterpreterState(
@@ -81,14 +81,14 @@ data class StatefullPrintScriptInterpreterState(
     override fun println(value: PrintlnAstParameter): PrintScriptInterpreterState =
         when (value) {
             is NumberLiteral<*> -> this.copy(printList = printList + value.value().toString())
-            is StringLiteralNode -> this.copy(printList = printList + value.value)
+            is StringLiteral -> this.copy(printList = printList + value.value)
             is VariableNameNode ->
                 variableStringMap[value.value()]
                     ?.let { this.copy(printList = printList + value.value()) }
                     ?: variableIntegerMap[value.value()]
                         ?.let { this.copy(printList = printList + value.value()) }
                     ?: this.addError(VariableIsNotDefined())
-            is LiteralNode -> this.addError(TypeNotSupportedInPrintError())
+            is Literal -> this.addError(TypeNotSupportedInPrintError())
             else -> this.addError(CannotPrintValueError())
         }
     override fun setValueToVariable(
@@ -99,7 +99,7 @@ data class StatefullPrintScriptInterpreterState(
             when (value) {
                 is IntNumberLiteral -> this.copy(variableIntegerMap = variableIntegerMap + (key.value() to value.value()))
                 is DoubleNumberLiteral -> this.copy(variableDoubleMap = variableDoubleMap + (key.value() to value.value()))
-                is StringLiteralNode -> this.copy(variableStringMap = variableStringMap + (key.value() to value.value))
+                is StringLiteral -> this.copy(variableStringMap = variableStringMap + (key.value() to value.value))
                 is VariableNameNode -> this.setValueToVariable(key, value)
                 else -> this.addError(NotAcceptableAssignationValueError())
             }
@@ -107,7 +107,7 @@ data class StatefullPrintScriptInterpreterState(
             this.addError(VariableIsNotDefined())
         }
 
-    override fun get(operation: VariableNameNode): LiteralNode? {
+    override fun get(operation: VariableNameNode): Literal? {
         TODO("Not yet implemented")
     }
 
