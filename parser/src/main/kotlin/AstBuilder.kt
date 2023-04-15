@@ -12,8 +12,8 @@ class PrintlnBuilder : AstBuilder<PrintlnValidListOfTokens> {
             is VariableParameter -> PrintlnAst(VariableNameNode(validListOfTokens.printlnValidParameter.variableToken.value))
             is NumberLiteralParameter ->
                 when (validListOfTokens.printlnValidParameter.numberLiteralToken) {
-                    is DoubleNumberLiteralToken -> PrintlnAst(DoubleNumberLiteralLiteral(validListOfTokens.printlnValidParameter.numberLiteralToken.value))
-                    is IntNumberLiteralToken -> PrintlnAst(IntNumberLiteralLiteral(validListOfTokens.printlnValidParameter.numberLiteralToken.value))
+                    is DoubleNumberLiteralToken -> PrintlnAst(DoubleNumberLiteral(validListOfTokens.printlnValidParameter.numberLiteralToken.value))
+                    is IntNumberLiteralToken -> PrintlnAst(IntNumberLiteral(validListOfTokens.printlnValidParameter.numberLiteralToken.value))
                 }
             is StringLiteralOrStringConcat -> PrintlnAst(StringLiteralOrStringConcatAstBuilder().build(validListOfTokens.printlnValidParameter))
         }
