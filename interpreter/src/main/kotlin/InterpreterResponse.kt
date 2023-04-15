@@ -97,8 +97,8 @@ data class StatefullPrintScriptInterpreterState(
     ): PrintScriptInterpreterState =
         if (isVariableDefined(key)) {
             when (value) {
-                is IntNumberLiteralLiteral -> this.copy(variableIntegerMap = variableIntegerMap + (key.value() to value.value()))
-                is DoubleNumberLiteralLiteral -> this.copy(variableDoubleMap = variableDoubleMap + (key.value() to value.value()))
+                is IntNumberLiteral -> this.copy(variableIntegerMap = variableIntegerMap + (key.value() to value.value()))
+                is DoubleNumberLiteral -> this.copy(variableDoubleMap = variableDoubleMap + (key.value() to value.value()))
                 is StringLiteralNode -> this.copy(variableStringMap = variableStringMap + (key.value() to value.value))
                 is VariableNameNode -> this.setValueToVariable(key, value)
                 else -> this.addError(NotAcceptableAssignationValueError())

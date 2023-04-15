@@ -3,12 +3,12 @@ data class StringLiteralNode(val value: String) : PrintlnAstParameter, LiteralNo
 sealed interface NumberLiteral<T> : AbstractSyntaxTree, AssignationParameterNode<T>, PrintlnAstParameter, OperationParameter {
     fun value(): T
 }
-data class IntNumberLiteralLiteral(val number: Int) : AssignationParameterNode<Int>, NumberLiteral<Int>, PrintlnAstParameter, LiteralNode {
+data class IntNumberLiteral(val number: Int) : AssignationParameterNode<Int>, NumberLiteral<Int>, PrintlnAstParameter, LiteralNode {
     override fun value(): Int =
         number
 }
 
-data class DoubleNumberLiteralLiteral(val number: Double) : AssignationParameterNode<Double>, NumberLiteral<Double>, PrintlnAstParameter, LiteralNode {
+data class DoubleNumberLiteral(val number: Double) : AssignationParameterNode<Double>, NumberLiteral<Double>, PrintlnAstParameter, LiteralNode {
     override fun value(): Double =
         number
 }
