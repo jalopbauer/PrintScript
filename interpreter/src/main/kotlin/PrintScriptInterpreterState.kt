@@ -99,51 +99,41 @@ data class VariableInterpreterState(
             this.copy(variableTypeMap = variableTypeMap + (variableInstance.variableNameNode.value() to variableInstance.type))
         }
 
-    fun setValueToVariable(
-        key: VariableNameNode,
-        value: AssignationParameterNode<*>
-    ): VariableInterpreterState =
+    fun setLiteralToVariable(key: VariableNameNode, value: Literal): VariableInterpreterState =
         getVariableType(key)
             ?.let {
                 when (value) {
                     is IntNumberLiteral,
                     is DoubleNumberLiteral,
-                    is StringLiteral -> add(key, value as Literal)
+                    is StringLiteral -> add(key, value)
                     else -> this.addError(NotAcceptableAssignationValueError())
                 }
             }
+            ?: this.addError(VariableIsNotDefined())
+    fun setVariableValueToVariable(key: VariableNameNode, value: VariableNameNode): VariableInterpreterState =
+        getKeyValueIfVariablesAreSameType(key, value)
+            ?.let { setLiteralToVariable(value, it) }
             ?: this.addError(VariableIsNotDefined())
 
     private fun add(
         key: VariableNameNode,
         value: Literal
     ) = this.copy(variableLiteralMap = variableLiteralMap + (key.value() to value))
-    fun get(variableName: VariableNameNode): Literal? =
+    private fun get(variableName: VariableNameNode): Literal? =
         variableLiteralMap[variableName.value()]
-    fun getVariableType(variableName: VariableNameNode): Type? =
+    private fun getVariableType(variableName: VariableNameNode): Type? =
         variableTypeMap[variableName.value()]
-    private fun setValueToVariable(
-        key: VariableNameNode,
-        value: VariableNameNode
-    ): VariableInterpreterState =
-        variableTypeMap[key.value()]
+    private fun getKeyValueIfVariablesAreSameType(key: VariableNameNode, value: VariableNameNode): Literal? =
+        getVariableType(key)
             ?.let { keyType ->
-                variableTypeMap[value.value()]
+                getVariableType(value)
                     ?.let { valueType ->
-                        when {
-                            keyType != valueType -> this.addError(VariablesDontShareType())
-                            keyType is IntType ->
-                                variableLiteralMap[value.value()]
-                                    ?.let { this.copy(variableLiteralMap = variableLiteralMap + (key.value() to it)) }
-                                    ?: this.addError(VariableIsNotDefined())
-                            keyType is StringType ->
-                                variableLiteralMap[value.value()]
-                                    ?.let { this.copy(variableLiteralMap = variableLiteralMap + (key.value() to it)) }
-                                    ?: this.addError(VariableIsNotDefined())
-                            else -> this.addError(NotValidType())
+                        if (keyType == valueType) {
+                            get(key)
+                        } else {
+                            null
                         }
                     }
-            } ?: this.addError(VariableIsNotDefined())
-
+            }
     private fun isVariableDefined(key: VariableNameNode) = variableTypeMap.containsKey(key.value())
 }
