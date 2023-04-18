@@ -15,18 +15,18 @@ data class DeclarationAst(private val variableNameNode: VariableNameNode, privat
 }
 
 // Assignation
-data class AssignationAst<T>(private val variableNameNode: VariableNameNode, private val assignationParameter: AssignationParameterNode<T>) : AbstractSyntaxTree {
+data class AssignationAst(private val variableNameNode: VariableNameNode, private val assignationParameter: AssignationParameterNode) : AbstractSyntaxTree {
     fun leftValue(): VariableNameNode =
         variableNameNode
 
-    fun rightValue(): AssignationParameterNode<T> =
+    fun rightValue(): AssignationParameterNode =
         assignationParameter
 }
-interface AssignationParameterNode<T> : AbstractSyntaxTree
+interface AssignationParameterNode : AbstractSyntaxTree
 
 // Assignation Declaration
-data class AssignationDeclarationAst<T>(private val assignation: AssignationAst<T>, private val declaration: DeclarationAst) : AbstractSyntaxTree {
-    fun leftValue(): AssignationAst<T> =
+data class AssignationDeclarationAst(private val assignation: AssignationAst, private val declaration: DeclarationAst) : AbstractSyntaxTree {
+    fun leftValue(): AssignationAst =
         assignation
 
     fun rightValue(): DeclarationAst =
