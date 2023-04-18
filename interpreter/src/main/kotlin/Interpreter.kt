@@ -44,12 +44,17 @@ class DeclarationInterpreter : Interpreter<DeclarationAst, VariableInterpreterSt
     override fun interpret(abstractSyntaxTree: DeclarationAst, interpreterState: VariableInterpreterState): InterpreterResponse =
         interpreterState.initializeVariable(VariableInstance(abstractSyntaxTree.leftValue(), abstractSyntaxTree.rightValue()))
 }
-//
-// class AssignationDeclarationInterpreter : Interpreter<AssignationDeclarationAst<*>> {
-//    override fun interpret(
-//        abstractSyntaxTree: AssignationDeclarationAst<*>,
-//        interpreterState: PrintScriptInterpreterState
-//    ): PrintScriptInterpreterState =
-//        interpreterState.initializeVariable(VariableInstance(abstractSyntaxTree.rightValue().leftValue(), abstractSyntaxTree.rightValue().rightValue()))
-//            .let { AssignationParameterInterpreter().interpret(abstractSyntaxTree.leftValue(), it) }
-// }
+
+class AssignationDeclarationInterpreter : Interpreter<AssignationDeclarationAst<*>, VariableInterpreterState> {
+    override fun interpret(
+        abstractSyntaxTree: AssignationDeclarationAst<*>,
+        interpreterState: VariableInterpreterState
+    ): InterpreterResponse {
+        val stateOrError = AssignationParameterInterpreter().interpret(abstractSyntaxTree.leftValue(), interpreterState)
+        return if (stateOrError !is InterpreterError) {
+            DeclarationInterpreter().interpret(abstractSyntaxTree.rightValue(), stateOrError as VariableInterpreterState)
+        } else {
+            stateOrError
+        }
+    }
+}
