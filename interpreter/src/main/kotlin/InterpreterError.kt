@@ -57,3 +57,8 @@ class OperationError : InterpreterError {
     override fun message(): String =
         "PrintlnAstParameterNotAccepted"
 }
+
+class ConcatenationParameterNotValidError : InterpreterError {
+    override fun message(): String =
+        "PrintlnAstParameterNotAccepted"
+}

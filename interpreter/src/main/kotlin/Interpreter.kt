@@ -29,6 +29,9 @@ class PrintlnParameterInterpreter : Interpreter<PrintlnAstParameter, PrintlnInte
                     ?: VariableIsNotDefined()
             is NumberLiteral<*> -> interpreterState.println(abstractSyntaxTree.value().toString())
             is StringLiteral -> interpreterState.println(abstractSyntaxTree.value)
+            is StringConcatenation -> {
+                PrintlnAstParameterNotAccepted()
+            }
             else -> PrintlnAstParameterNotAccepted()
         }
 }
@@ -43,6 +46,7 @@ class AssignationParameterInterpreter : Interpreter<AssignationAst, VariableInte
                 when (val literalOrError = FullSolver().solve(assignationParameterNode, interpreterState)) {
                     is InterpreterErrorResponse -> literalOrError.interpreterError
                     is NumberLiteralResponse -> this.interpret(AssignationAst(abstractSyntaxTree.leftValue(), literalOrError.literal), interpreterState)
+                    else -> TODO()
                 }
             else -> AstStructureNotDefinedError()
         }
