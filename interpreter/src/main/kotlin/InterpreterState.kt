@@ -1,1 +1,1 @@
-interface InterpreterState : InterpreterStateResponse
+interface InterpreterState : InterpreterResponse

@@ -1,6 +1,7 @@
-// interface Interpreter<T : AbstractSyntaxTree> {
-//    fun interpret(abstractSyntaxTree: T, interpreterState: PrintScriptInterpreterState): PrintScriptInterpreterState
-// }
+interface Interpreter<T : AbstractSyntaxTree, U : InterpreterState> {
+    fun interpret(abstractSyntaxTree: T, interpreterState: U): InterpreterResponse
+}
+
 //
 // class PrintScriptInterpreter : Interpreter<AbstractSyntaxTree> {
 //    override fun interpret(
@@ -25,15 +26,16 @@
 //            else -> interpreterState.addError(PrintlnAstParameterNotAccepted())
 //        }
 // }
-// class AssignationParameterInterpreter : Interpreter<AssignationAst<*>> {
-//    override fun interpret(abstractSyntaxTree: AssignationAst<*>, interpreterState: PrintScriptInterpreterState): PrintScriptInterpreterState =
-//        when (val assignationParameterNode = abstractSyntaxTree.rightValue()) {
-//            is IntNumberLiteral -> interpreterState.setValueToVariable(abstractSyntaxTree.leftValue(), assignationParameterNode)
-//            is StringLiteral -> interpreterState.setValueToVariable(abstractSyntaxTree.leftValue(), assignationParameterNode)
-//            is VariableNameNode -> interpreterState.setValueToVariable(abstractSyntaxTree.leftValue(), assignationParameterNode)
-//            else -> interpreterState
-//        }
-// }
+class AssignationParameterInterpreter : Interpreter<AssignationAst<*>, VariableInterpreterState> {
+    override fun interpret(abstractSyntaxTree: AssignationAst<*>, interpreterState: VariableInterpreterState): InterpreterResponse =
+        when (val assignationParameterNode = abstractSyntaxTree.rightValue()) {
+            is IntNumberLiteral,
+            is StringLiteral,
+            is DoubleNumberLiteral -> interpreterState.setLiteralToVariable(abstractSyntaxTree.leftValue(), assignationParameterNode as Literal)
+            is VariableNameNode -> interpreterState.setVariableValueToVariable(abstractSyntaxTree.leftValue(), assignationParameterNode)
+            else -> AstStructureNotDefinedError()
+        }
+}
 //
 // class AssignationDeclarationInterpreter : Interpreter<AssignationDeclarationAst<*>> {
 //    override fun interpret(

@@ -1,10 +1,10 @@
 interface VariableInterpreterState : InterpreterState {
 
-    fun initializeVariable(variableInstance: VariableInstance): InterpreterStateResponse
+    fun initializeVariable(variableInstance: VariableInstance): InterpreterResponse
 
-    fun setLiteralToVariable(key: VariableNameNode, value: Literal): InterpreterStateResponse
+    fun setLiteralToVariable(key: VariableNameNode, value: Literal): InterpreterResponse
 
-    fun setVariableValueToVariable(key: VariableNameNode, value: VariableNameNode): InterpreterStateResponse
+    fun setVariableValueToVariable(key: VariableNameNode, value: VariableNameNode): InterpreterResponse
 }
 data class VariableInterpreterStateI(
     val errors: List<InterpreterError> = listOf(),
@@ -12,20 +12,20 @@ data class VariableInterpreterStateI(
     val variableLiteralMap: Map<String, Literal> = mapOf()
 ) : VariableInterpreterState {
 
-    override fun initializeVariable(variableInstance: VariableInstance): InterpreterStateResponse =
+    override fun initializeVariable(variableInstance: VariableInstance): InterpreterResponse =
         if (isVariableDefined(variableInstance.variableNameNode)) {
             VariableAlreadyExistsError()
         } else {
             this.copy(variableTypeMap = variableTypeMap + (variableInstance.variableNameNode.value() to variableInstance.type))
         }
 
-    override fun setLiteralToVariable(key: VariableNameNode, value: Literal): InterpreterStateResponse =
+    override fun setLiteralToVariable(key: VariableNameNode, value: Literal): InterpreterResponse =
         getVariableType(key)
             ?.let {
                 if (it == value.type()) { add(key, value) } else { VariableAndLiteralTypeDoNotMatch() }
             }
             ?: VariableIsNotDefined()
-    override fun setVariableValueToVariable(key: VariableNameNode, value: VariableNameNode): InterpreterStateResponse =
+    override fun setVariableValueToVariable(key: VariableNameNode, value: VariableNameNode): InterpreterResponse =
         getKeyValueIfVariablesAreSameType(key, value)
             ?.let { setLiteralToVariable(value, it) }
             ?: VariableIsNotDefined()

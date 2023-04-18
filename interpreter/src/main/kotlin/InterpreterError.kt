@@ -1,4 +1,4 @@
-interface InterpreterError : InterpreterStateResponse {
+interface InterpreterError : InterpreterResponse {
     fun message(): String
 }
 class VariableAlreadyExistsError : InterpreterError {
