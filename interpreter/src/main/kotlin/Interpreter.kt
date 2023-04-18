@@ -9,7 +9,7 @@ class PrintScriptInterpreter : Interpreter<AbstractSyntaxTree> {
     ): PrintScriptInterpreterState =
         when (abstractSyntaxTree) {
             is PrintlnAst -> PrintlnParameterInterpreter().interpret(abstractSyntaxTree.value(), interpreterState)
-            is DeclarationAst -> interpreterState.initializeVariable(abstractSyntaxTree.leftValue(), abstractSyntaxTree.rightValue())
+            is DeclarationAst -> interpreterState.initializeVariable(VariableInstance(abstractSyntaxTree.leftValue(), abstractSyntaxTree.rightValue()))
             is AssignationAst<*> -> AssignationParameterInterpreter().interpret(abstractSyntaxTree, interpreterState)
             is AssignationDeclarationAst<*> -> AssignationDeclarationInterpreter().interpret(abstractSyntaxTree, interpreterState)
             else -> interpreterState.addError(AstStructureNotDefinedError())
@@ -40,6 +40,6 @@ class AssignationDeclarationInterpreter : Interpreter<AssignationDeclarationAst<
         abstractSyntaxTree: AssignationDeclarationAst<*>,
         interpreterState: PrintScriptInterpreterState
     ): PrintScriptInterpreterState =
-        interpreterState.initializeVariable(abstractSyntaxTree.rightValue().leftValue(), abstractSyntaxTree.rightValue().rightValue())
+        interpreterState.initializeVariable(VariableInstance(abstractSyntaxTree.rightValue().leftValue(), abstractSyntaxTree.rightValue().rightValue()))
             .let { AssignationParameterInterpreter().interpret(abstractSyntaxTree.leftValue(), it) }
 }
