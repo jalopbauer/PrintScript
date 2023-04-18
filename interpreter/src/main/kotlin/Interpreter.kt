@@ -38,6 +38,7 @@ class PrintlnParameterInterpreter : Interpreter<PrintlnAstParameter, PrintlnInte
 class AssignationParameterInterpreter : Interpreter<AssignationAst, VariableInterpreterState> {
     override fun interpret(abstractSyntaxTree: AssignationAst, interpreterState: VariableInterpreterState): InterpreterResponse =
         when (val assignationParameterNode = abstractSyntaxTree.rightValue()) {
+            kjsnacsadbcsc
             is IntNumberLiteral,
             is StringLiteral,
             is DoubleNumberLiteral -> interpreterState.setLiteralToVariable(abstractSyntaxTree.leftValue(), assignationParameterNode as Literal)
