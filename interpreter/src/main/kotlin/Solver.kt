@@ -36,20 +36,31 @@ class FullSolver : Solver<OperationParameter> {
             is VariableNameNode -> VariableSolver().solve(operationParameter, variableInterpreterState)
 
             is Operation -> {
-//                when {
-//                    operationParameter.left is Operation -> {
-//                        this.solve()
-//                    }
-//                }
-                InterpreterErrorResponse(VariableIsNotDefined())
+                val leftSolve = this.solve(operationParameter.left, variableInterpreterState)
+                val rightSolve = this.solve(operationParameter.right, variableInterpreterState)
+                if (leftSolve is NumberLiteralResponse && rightSolve is NumberLiteralResponse) {
+                    when (operationParameter.operation) {
+                        is Sum ->
+                            sum(leftSolve.literal, rightSolve.literal)
+                                ?.let { NumberLiteralResponse(it) }
+                                ?: InterpreterErrorResponse(VariableIsNotDefined())
+                        is Sub ->
+                            sub(leftSolve.literal, rightSolve.literal)
+                                ?.let { NumberLiteralResponse(it) }
+                                ?: InterpreterErrorResponse(VariableIsNotDefined())
+                        is Div -> div(leftSolve.literal, rightSolve.literal)
+                            ?.let { NumberLiteralResponse(it) }
+                            ?: InterpreterErrorResponse(VariableIsNotDefined())
+                        is Mult ->
+                            mult(leftSolve.literal, rightSolve.literal)
+                                ?.let { NumberLiteralResponse(it) }
+                                ?: InterpreterErrorResponse(VariableIsNotDefined())
+                        else -> InterpreterErrorResponse(VariableIsNotDefined())
+                    }
+                } else {
+                    InterpreterErrorResponse(VariableIsNotDefined())
+                }
             }
-//                when(operationParameter.operation) {
-//                    is Sum -> sum(operationParameter.left, operationParameter.right)
-//                    is Sub -> sub(operationParameter.left, operationParameter.right)
-//                    is Div -> div
-//                    is Mult -> {}
-//                    else -> {}
-//                }
         }
 
     fun sum(leftLiteral: NumberLiteral<*>, rightLiteral: NumberLiteral<*>): NumberLiteral<*>? =
