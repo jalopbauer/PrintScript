@@ -58,7 +58,7 @@ class FullSolver : Solver<OperationParameter> {
                         else -> InterpreterErrorResponse(VariableIsNotDefined())
                     }
                 } else {
-                    InterpreterErrorResponse(VariableIsNotDefined())
+                    InterpreterErrorResponse(OperationError())
                 }
             }
         }

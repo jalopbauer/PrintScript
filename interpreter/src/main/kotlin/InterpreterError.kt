@@ -52,3 +52,8 @@ class PrintlnAstParameterNotAccepted : InterpreterError {
     override fun message(): String =
         "PrintlnAstParameterNotAccepted"
 }
+
+class OperationError : InterpreterError {
+    override fun message(): String =
+        "PrintlnAstParameterNotAccepted"
+}
