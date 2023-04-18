@@ -6,7 +6,7 @@ interface ConcatenationParameter : AbstractSyntaxTree
 sealed interface OperationParameter : AbstractSyntaxTree
 sealed interface FinalOperationParameter : OperationParameter
 
-data class Operation(val left: OperationParameter, val operation: OperationType, val right: OperationParameter) : OperationParameter
+data class Operation(val left: OperationParameter, val operation: OperationType, val right: OperationParameter) : OperationParameter, AssignationParameterNode
 interface OperationType
 
 class Sum : OperationType
