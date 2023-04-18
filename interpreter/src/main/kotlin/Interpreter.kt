@@ -1,4 +1,5 @@
 import state.InterpreterState
+import state.PrintlnInterpreterState
 import state.VariableInterpreterState
 
 interface Interpreter<T : AbstractSyntaxTree, U : InterpreterState> {
@@ -20,15 +21,15 @@ interface Interpreter<T : AbstractSyntaxTree, U : InterpreterState> {
 //        }
 // }
 //
-// class PrintlnParameterInterpreter : Interpreter<PrintlnAstParameter> {
-//    override fun interpret(abstractSyntaxTree: PrintlnAstParameter, interpreterState: PrintScriptInterpreterState): PrintScriptInterpreterState =
-//        when (abstractSyntaxTree) {
-//            is VariableNameNode -> interpreterState.println(abstractSyntaxTree)
-//            is NumberLiteral<*> -> interpreterState.println(abstractSyntaxTree)
-//            is StringLiteral -> interpreterState.println(abstractSyntaxTree)
-//            else -> interpreterState.addError(PrintlnAstParameterNotAccepted())
-//        }
-// }
+class PrintlnParameterInterpreter : Interpreter<PrintlnAstParameter, PrintlnInterpreterState> {
+    override fun interpret(abstractSyntaxTree: PrintlnAstParameter, interpreterState: PrintlnInterpreterState): InterpreterResponse =
+        when (abstractSyntaxTree) {
+            is VariableNameNode -> interpreterState.println(abstractSyntaxTree)
+            is NumberLiteral<*> -> interpreterState.println(abstractSyntaxTree.value().toString())
+            is StringLiteral -> interpreterState.println(abstractSyntaxTree.value)
+            else -> PrintlnAstParameterNotAccepted()
+        }
+}
 class AssignationParameterInterpreter : Interpreter<AssignationAst<*>, VariableInterpreterState> {
     override fun interpret(abstractSyntaxTree: AssignationAst<*>, interpreterState: VariableInterpreterState): InterpreterResponse =
         when (val assignationParameterNode = abstractSyntaxTree.rightValue()) {

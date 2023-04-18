@@ -17,6 +17,8 @@ interface VariableInterpreterState : InterpreterState {
     fun setLiteralToVariable(key: VariableNameNode, value: Literal): InterpreterResponse
 
     fun setVariableValueToVariable(key: VariableNameNode, value: VariableNameNode): InterpreterResponse
+
+    fun get(variableName: VariableNameNode): Literal?
 }
 data class VariableInterpreterStateI(
     val errors: List<InterpreterError> = listOf(),
@@ -48,7 +50,7 @@ data class VariableInterpreterStateI(
         key: VariableNameNode,
         value: Literal
     ) = this.copy(variableLiteralMap = variableLiteralMap + (key.value() to value))
-    private fun get(variableName: VariableNameNode): Literal? =
+    override fun get(variableName: VariableNameNode): Literal? =
         variableLiteralMap[variableName.value()]
     private fun getVariableType(variableName: VariableNameNode): Type? =
         variableTypeMap[variableName.value()]
