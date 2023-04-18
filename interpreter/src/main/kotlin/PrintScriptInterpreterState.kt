@@ -1,25 +1,25 @@
-interface PrintScriptInterpreterState {
-    fun addError(error: Error): PrintScriptInterpreterState
-    fun initializeVariable(variableInstance: VariableInstance): PrintScriptInterpreterState
-
-    fun println(value: PrintlnAstParameter): PrintScriptInterpreterState
-
-    fun setValueToVariable(key: VariableNameNode, value: AssignationParameterNode<*>): PrintScriptInterpreterState
-}
-
-data class StatefullPrintScriptInterpreterState(
-    val printList: List<String> = listOf(),
-    val variableInterpreterState: VariableInterpreterState
-) : PrintScriptInterpreterState {
-    override fun addError(error: Error): PrintScriptInterpreterState =
-        this.copy(variableInterpreterState = variableInterpreterState.addError(error))
-
-    override fun initializeVariable(variableInstance: VariableInstance): PrintScriptInterpreterState =
-        this.copy(variableInterpreterState = variableInterpreterState.initializeVariable(variableInstance))
-
-    override fun println(value: PrintlnAstParameter): PrintScriptInterpreterState =
-        TODO("Do")
-
+// interface PrintScriptInterpreterState {
+//    fun addError(error: Error): PrintScriptInterpreterState
+//    fun initializeVariable(variableInstance: VariableInstance): PrintScriptInterpreterState
+//
+//    fun println(value: PrintlnAstParameter): PrintScriptInterpreterState
+//
+//    fun setValueToVariable(key: VariableNameNode, value: AssignationParameterNode<*>): PrintScriptInterpreterState
+// }
+//
+// data class StatefullPrintScriptInterpreterState(
+//    val printList: List<String> = listOf(),
+//    val variableInterpreterState: VariableInterpreterState
+// ) : PrintScriptInterpreterState {
+//    override fun addError(error: Error): PrintScriptInterpreterState =
+//        this.copy(variableInterpreterState = variableInterpreterState.addError(error))
+//
+//    override fun initializeVariable(variableInstance: VariableInstance): PrintScriptInterpreterState =
+//        this.copy(variableInterpreterState = variableInterpreterState.initializeVariable(variableInstance))
+//
+//    override fun println(value: PrintlnAstParameter): PrintScriptInterpreterState =
+//        TODO("Do")
+//
 //        when (value) {
 //            is NumberLiteral<*> -> this.copy(printList = printList + value.value().toString())
 //            is StringLiteral -> this.copy(printList = printList + value.value)
@@ -32,20 +32,20 @@ data class StatefullPrintScriptInterpreterState(
 //            is Literal -> this.addError(TypeNotSupportedInPrintError())
 //            else -> this.addError(CannotPrintValueError())
 //        }
-    override fun setValueToVariable(
-        key: VariableNameNode,
-        value: AssignationParameterNode<*>
-    ): PrintScriptInterpreterState =
-        when (value) {
-            is IntNumberLiteral,
-            is DoubleNumberLiteral,
-            is StringLiteral -> this.copy(variableInterpreterState = variableInterpreterState.setLiteralToVariable(key, value as Literal))
-            is VariableNameNode -> this.copy(
-                variableInterpreterState = variableInterpreterState.setVariableValueToVariable(
-                    key,
-                    value
-                )
-            )
-            else -> this.addError(NotAcceptableAssignationValueError())
-        }
-}
+//    override fun setValueToVariable(
+//        key: VariableNameNode,
+//        value: AssignationParameterNode<*>
+//    ): PrintScriptInterpreterState =
+//        when (value) {
+//            is IntNumberLiteral,
+//            is DoubleNumberLiteral,
+//            is StringLiteral -> this.copy(variableInterpreterState = variableInterpreterState.setLiteralToVariable(key, value as Literal))
+//            is VariableNameNode -> this.copy(
+//                variableInterpreterState = variableInterpreterState.setVariableValueToVariable(
+//                    key,
+//                    value
+//                )
+//            )
+//            else -> this.addError(NotAcceptableAssignationValueError())
+//        }
+// }

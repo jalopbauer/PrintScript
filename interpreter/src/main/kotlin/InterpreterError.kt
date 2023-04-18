@@ -1,54 +1,54 @@
-interface Error {
+interface InterpreterError : InterpreterStateResponse {
     fun message(): String
 }
-class VariableAlreadyExistsError : Error {
+class VariableAlreadyExistsError : InterpreterError {
     override fun message(): String =
         "VariableAlreadyExistsError"
 }
 
-class AstStructureNotDefinedError : Error {
+class AstStructureNotDefinedError : InterpreterError {
     override fun message(): String =
         "AssignationParameterNotValidError"
 }
-class VariableIsNotDefined : Error {
+class VariableIsNotDefined : InterpreterError {
     override fun message(): String =
         "VariableIsNotDefined"
 }
-class VariableAndLiteralTypeDoNotMatch : Error {
+class VariableAndLiteralTypeDoNotMatch : InterpreterError {
     override fun message(): String =
         "VariableAndLiteralTypeDoNotMatch"
 }
-class NotValidType : Error {
+class NotValidType : InterpreterError {
     override fun message(): String =
         "NotValidType"
 }
 
-class VariablesDontShareType : Error {
+class VariablesDontShareType : InterpreterError {
     override fun message(): String =
         "VariablesDontShareType"
 }
 
-class NotAcceptableAssignationValueError : Error {
+class NotAcceptableAssignationValueError : InterpreterError {
     override fun message(): String =
         "NotAcceptableAssignationValueError"
 }
-class TypeNotSupportedInPrintError : Error {
+class TypeNotSupportedInPrintError : InterpreterError {
     override fun message(): String =
         "TypeNotSupportedInPrintError"
-} class CannotPrintValueError : Error {
+} class CannotPrintValueError : InterpreterError {
     override fun message(): String =
         "CannotPrintValueError"
 }
 
-class OperationNotSupportedError : Error {
+class OperationNotSupportedError : InterpreterError {
     override fun message(): String =
         "OperationNotSupportedError"
 }
-class VariableIsNotDefinedError : Error {
+class VariableIsNotDefinedError : InterpreterError {
     override fun message(): String =
         "VariableIsNotDefinedError"
 }
-class PrintlnAstParameterNotAccepted : Error {
+class PrintlnAstParameterNotAccepted : InterpreterError {
     override fun message(): String =
         "PrintlnAstParameterNotAccepted"
 }
