@@ -1,3 +1,15 @@
+package state
+
+import InterpreterError
+import InterpreterResponse
+import Literal
+import Type
+import VariableAlreadyExistsError
+import VariableAndLiteralTypeDoNotMatch
+import VariableInstance
+import VariableIsNotDefined
+import VariableNameNode
+
 interface VariableInterpreterState : InterpreterState {
 
     fun initializeVariable(variableInstance: VariableInstance): InterpreterResponse
@@ -22,7 +34,9 @@ data class VariableInterpreterStateI(
     override fun setLiteralToVariable(key: VariableNameNode, value: Literal): InterpreterResponse =
         getVariableType(key)
             ?.let {
-                if (it == value.type()) { add(key, value) } else { VariableAndLiteralTypeDoNotMatch() }
+                if (it == value.type()) { add(key, value) } else {
+                    VariableAndLiteralTypeDoNotMatch()
+                }
             }
             ?: VariableIsNotDefined()
     override fun setVariableValueToVariable(key: VariableNameNode, value: VariableNameNode): InterpreterResponse =

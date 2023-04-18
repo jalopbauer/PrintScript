@@ -1,4 +1,4 @@
-// interface PrintScriptInterpreterState {
+package state// interface PrintScriptInterpreterState {
 //    fun addError(error: Error): PrintScriptInterpreterState
 //    fun initializeVariable(variableInstance: VariableInstance): PrintScriptInterpreterState
 //

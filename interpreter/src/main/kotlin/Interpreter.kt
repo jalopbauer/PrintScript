@@ -1,3 +1,6 @@
+import state.InterpreterState
+import state.VariableInterpreterState
+
 interface Interpreter<T : AbstractSyntaxTree, U : InterpreterState> {
     fun interpret(abstractSyntaxTree: T, interpreterState: U): InterpreterResponse
 }
