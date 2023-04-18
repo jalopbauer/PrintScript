@@ -14,7 +14,10 @@ class VariableIsNotDefined : Error {
     override fun message(): String =
         "VariableIsNotDefined"
 }
-
+class VariableAndLiteralTypeDoNotMatch : Error {
+    override fun message(): String =
+        "VariableAndLiteralTypeDoNotMatch"
+}
 class NotValidType : Error {
     override fun message(): String =
         "NotValidType"
