@@ -1,21 +1,21 @@
 interface Literal : AbstractSyntaxTree {
     fun type(): Type
 }
-data class StringLiteral(val value: String) : PrintlnAstParameter, Literal, AssignationParameterNode<String> {
+data class StringLiteral(val value: String) : PrintlnAstParameter, Literal, AssignationParameterNode {
     override fun type(): StringType = StringType
 }
 
-sealed interface NumberLiteral<T> : AbstractSyntaxTree, AssignationParameterNode<T>, PrintlnAstParameter, FinalOperationParameter {
+sealed interface NumberLiteral<T> : AbstractSyntaxTree, AssignationParameterNode, PrintlnAstParameter, FinalOperationParameter {
     fun value(): T
 }
-data class IntNumberLiteral(val number: Int) : AssignationParameterNode<Int>, NumberLiteral<Int>, PrintlnAstParameter, Literal {
+data class IntNumberLiteral(val number: Int) : AssignationParameterNode, NumberLiteral<Int>, PrintlnAstParameter, Literal {
     override fun value(): Int =
         number
 
     override fun type(): IntType = IntType
 }
 
-data class DoubleNumberLiteral(val number: Double) : AssignationParameterNode<Double>, NumberLiteral<Double>, PrintlnAstParameter, Literal {
+data class DoubleNumberLiteral(val number: Double) : AssignationParameterNode, NumberLiteral<Double>, PrintlnAstParameter, Literal {
     override fun value(): Double =
         number
 

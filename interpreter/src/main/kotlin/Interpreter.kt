@@ -15,8 +15,8 @@ class PrintScriptInterpreter : Interpreter<AbstractSyntaxTree, PrintScriptInterp
         when (abstractSyntaxTree) {
             is PrintlnAst -> PrintlnParameterInterpreter().interpret(abstractSyntaxTree.value(), interpreterState)
             is DeclarationAst -> DeclarationInterpreter().interpret(abstractSyntaxTree, interpreterState)
-            is AssignationAst<*> -> AssignationParameterInterpreter().interpret(abstractSyntaxTree, interpreterState)
-            is AssignationDeclarationAst<*> -> AssignationDeclarationInterpreter().interpret(abstractSyntaxTree, interpreterState)
+            is AssignationAst -> AssignationParameterInterpreter().interpret(abstractSyntaxTree, interpreterState)
+            is AssignationDeclarationAst -> AssignationDeclarationInterpreter().interpret(abstractSyntaxTree, interpreterState)
             else -> AstStructureNotDefinedError()
         }
 }
@@ -32,8 +32,8 @@ class PrintlnParameterInterpreter : Interpreter<PrintlnAstParameter, PrintlnInte
             else -> PrintlnAstParameterNotAccepted()
         }
 }
-class AssignationParameterInterpreter : Interpreter<AssignationAst<*>, VariableInterpreterState> {
-    override fun interpret(abstractSyntaxTree: AssignationAst<*>, interpreterState: VariableInterpreterState): InterpreterResponse =
+class AssignationParameterInterpreter : Interpreter<AssignationAst, VariableInterpreterState> {
+    override fun interpret(abstractSyntaxTree: AssignationAst, interpreterState: VariableInterpreterState): InterpreterResponse =
         when (val assignationParameterNode = abstractSyntaxTree.rightValue()) {
             is IntNumberLiteral,
             is StringLiteral,
@@ -48,9 +48,9 @@ class DeclarationInterpreter : Interpreter<DeclarationAst, VariableInterpreterSt
         interpreterState.initializeVariable(VariableInstance(abstractSyntaxTree.leftValue(), abstractSyntaxTree.rightValue()))
 }
 
-class AssignationDeclarationInterpreter : Interpreter<AssignationDeclarationAst<*>, VariableInterpreterState> {
+class AssignationDeclarationInterpreter : Interpreter<AssignationDeclarationAst, VariableInterpreterState> {
     override fun interpret(
-        abstractSyntaxTree: AssignationDeclarationAst<*>,
+        abstractSyntaxTree: AssignationDeclarationAst,
         interpreterState: VariableInterpreterState
     ): InterpreterResponse {
         val stateOrError = AssignationParameterInterpreter().interpret(abstractSyntaxTree.leftValue(), interpreterState)
