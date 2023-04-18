@@ -5,7 +5,7 @@ data class StringLiteral(val value: String) : PrintlnAstParameter, Literal, Assi
     override fun type(): StringType = StringType
 }
 
-sealed interface NumberLiteral<T> : AbstractSyntaxTree, AssignationParameterNode<T>, PrintlnAstParameter, OperationParameter {
+sealed interface NumberLiteral<T> : AbstractSyntaxTree, AssignationParameterNode<T>, PrintlnAstParameter, FinalOperationParameter {
     fun value(): T
 }
 data class IntNumberLiteral(val number: Int) : AssignationParameterNode<Int>, NumberLiteral<Int>, PrintlnAstParameter, Literal {
