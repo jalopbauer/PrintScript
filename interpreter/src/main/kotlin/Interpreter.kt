@@ -39,6 +39,11 @@ class AssignationParameterInterpreter : Interpreter<AssignationAst<*>, VariableI
             else -> AstStructureNotDefinedError()
         }
 }
+
+class DeclarationInterpreter : Interpreter<DeclarationAst, VariableInterpreterState> {
+    override fun interpret(abstractSyntaxTree: DeclarationAst, interpreterState: VariableInterpreterState): InterpreterResponse =
+        interpreterState.initializeVariable(VariableInstance(abstractSyntaxTree.leftValue(), abstractSyntaxTree.rightValue()))
+}
 //
 // class AssignationDeclarationInterpreter : Interpreter<AssignationDeclarationAst<*>> {
 //    override fun interpret(
