@@ -1,4 +1,5 @@
 import state.InterpreterState
+import state.PrintScriptInterpreterState
 import state.PrintlnInterpreterState
 import state.VariableInterpreterState
 
@@ -6,25 +7,26 @@ interface Interpreter<T : AbstractSyntaxTree, U : InterpreterState> {
     fun interpret(abstractSyntaxTree: T, interpreterState: U): InterpreterResponse
 }
 
-//
-// class PrintScriptInterpreter : Interpreter<AbstractSyntaxTree> {
-//    override fun interpret(
-//        abstractSyntaxTree: AbstractSyntaxTree,
-//        interpreterState: PrintScriptInterpreterState
-//    ): PrintScriptInterpreterState =
-//        when (abstractSyntaxTree) {
-//            is PrintlnAst -> PrintlnParameterInterpreter().interpret(abstractSyntaxTree.value(), interpreterState)
-//            is DeclarationAst -> interpreterState.initializeVariable(VariableInstance(abstractSyntaxTree.leftValue(), abstractSyntaxTree.rightValue()))
-//            is AssignationAst<*> -> AssignationParameterInterpreter().interpret(abstractSyntaxTree, interpreterState)
-//            is AssignationDeclarationAst<*> -> AssignationDeclarationInterpreter().interpret(abstractSyntaxTree, interpreterState)
-//            else -> interpreterState.addError(AstStructureNotDefinedError())
-//        }
-// }
-//
+class PrintScriptInterpreter : Interpreter<AbstractSyntaxTree, PrintScriptInterpreterState> {
+    override fun interpret(
+        abstractSyntaxTree: AbstractSyntaxTree,
+        interpreterState: PrintScriptInterpreterState
+    ): InterpreterResponse =
+        when (abstractSyntaxTree) {
+            is PrintlnAst -> PrintlnParameterInterpreter().interpret(abstractSyntaxTree.value(), interpreterState)
+            is DeclarationAst -> DeclarationInterpreter().interpret(abstractSyntaxTree, interpreterState)
+            is AssignationAst<*> -> AssignationParameterInterpreter().interpret(abstractSyntaxTree, interpreterState)
+            is AssignationDeclarationAst<*> -> AssignationDeclarationInterpreter().interpret(abstractSyntaxTree, interpreterState)
+            else -> AstStructureNotDefinedError()
+        }
+}
 class PrintlnParameterInterpreter : Interpreter<PrintlnAstParameter, PrintlnInterpreterState> {
     override fun interpret(abstractSyntaxTree: PrintlnAstParameter, interpreterState: PrintlnInterpreterState): InterpreterResponse =
         when (abstractSyntaxTree) {
-            is VariableNameNode -> interpreterState.println(abstractSyntaxTree)
+            is VariableNameNode ->
+                interpreterState.get(abstractSyntaxTree)
+                    ?.let { this.interpret(it as PrintlnAstParameter, interpreterState) }
+                    ?: VariableIsNotDefined()
             is NumberLiteral<*> -> interpreterState.println(abstractSyntaxTree.value().toString())
             is StringLiteral -> interpreterState.println(abstractSyntaxTree.value)
             else -> PrintlnAstParameterNotAccepted()

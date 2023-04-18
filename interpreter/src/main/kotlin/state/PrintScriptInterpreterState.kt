@@ -1,11 +1,5 @@
-package state // interface PrintScriptInterpreterState {
-//    fun addError(error: Error): PrintScriptInterpreterState
-//    fun initializeVariable(variableInstance: VariableInstance): PrintScriptInterpreterState
-//
-//    fun println(value: PrintlnAstParameter): PrintScriptInterpreterState
-//
-//    fun setValueToVariable(key: VariableNameNode, value: AssignationParameterNode<*>): PrintScriptInterpreterState
-// }
+package state
+interface PrintScriptInterpreterState : InterpreterState, PrintlnInterpreterState, VariableInterpreterState
 //
 // data class StatefullPrintScriptInterpreterState(
 //    val printList: List<String> = listOf(),
