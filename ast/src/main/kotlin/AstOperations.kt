@@ -1,5 +1,5 @@
 // String Concatenation
-data class StringConcatenation(val concatenationParameterValues: List<ConcatenationParameter>) : AbstractSyntaxTree, PrintlnAstParameter
+data class StringConcatenation(val concatenationParameterValues: List<ConcatenationParameter>) : AbstractSyntaxTree, PrintlnAstParameter, AssignationParameterNode
 interface ConcatenationParameter : AbstractSyntaxTree
 
 // Operation

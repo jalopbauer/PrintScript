@@ -35,7 +35,7 @@ class VariableConcatSolver : ConcatenationParameterSolver<VariableNameNode> {
             }
             ?: ConcatErrorResponse(VariableIsNotDefined())
 }
-class FullConcatSolver : ConcatenationParameterSolver<ConcatenationParameter> {
+class ConcatMapperSolver : ConcatenationParameterSolver<ConcatenationParameter> {
     override fun solve(concatenationParameter: ConcatenationParameter, variableInterpreterState: VariableInterpreterState): ConcatSolverResponse =
         when (concatenationParameter) {
             is DoubleNumberLiteral -> NumberConcatSolver().solve(concatenationParameter, variableInterpreterState)
@@ -43,4 +43,23 @@ class FullConcatSolver : ConcatenationParameterSolver<ConcatenationParameter> {
             is VariableNameNode -> VariableConcatSolver().solve(concatenationParameter, variableInterpreterState)
             else -> ConcatErrorResponse(VariableIsNotDefined())
         }
+}
+
+class ConcatenationSolver {
+    fun solve(stringConcatenation: StringConcatenation, variableInterpreterState: VariableInterpreterState): ConcatSolverResponse {
+        val initial: ConcatSolverResponse? = null
+        stringConcatenation.concatenationParameterValues
+            .fold(initial) { acc, concatenationParameter ->
+                when (acc) {
+                    is StringLiteralResponse -> {
+                        when (val solve = ConcatMapperSolver().solve(concatenationParameter, variableInterpreterState)) {
+                            is ConcatErrorResponse -> solve
+                            is StringLiteralResponse -> StringLiteralResponse(StringLiteral(acc.literal.value + solve.literal.value))
+                        }
+                    }
+                    else -> acc
+                }
+            }
+        return ConcatErrorResponse(VariableIsNotDefined())
+    }
 }
