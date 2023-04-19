@@ -68,9 +68,9 @@ class AssignationDeclarationInterpreter : Interpreter<AssignationDeclarationAst,
         abstractSyntaxTree: AssignationDeclarationAst,
         interpreterState: VariableInterpreterState
     ): InterpreterResponse {
-        val stateOrError = AssignationParameterInterpreter().interpret(abstractSyntaxTree.leftValue(), interpreterState)
+        val stateOrError = DeclarationInterpreter().interpret(abstractSyntaxTree.rightValue(), interpreterState)
         return if (stateOrError !is InterpreterError) {
-            DeclarationInterpreter().interpret(abstractSyntaxTree.rightValue(), stateOrError as VariableInterpreterState)
+            AssignationParameterInterpreter().interpret(abstractSyntaxTree.leftValue(), stateOrError as VariableInterpreterState)
         } else {
             stateOrError
         }
