@@ -1,0 +1,3 @@
+package rule
+
+interface Rule
