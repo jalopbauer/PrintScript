@@ -24,7 +24,7 @@ class PrintlnParameterAstValidator : AstValidator<PrintlnValidParameter> {
     override fun validate(tokens: List<Token>): PrintlnValidParameter? =
         when {
             tokens.size == 1 && tokens.component1() is VariableLiteralToken -> VariableParameter(tokens.component1() as VariableLiteralToken)
-            tokens.size == 1 && tokens.component1() is NumberLiteralToken<*> -> NumberLiteralParameter(tokens.component1() as NumberLiteralToken<*>)
+            tokens.size == 1 && tokens.component1() is NumberLiteralToken -> NumberLiteralParameter(tokens.component1() as NumberLiteralToken)
             else -> StringLiteralOrConcatValidator().validate(tokens)
         }
 }
@@ -107,7 +107,7 @@ class OperationValidator : AstValidator<OperationValidListOfTokens> {
         var previousToken = tokens[0]
         if (tokens.size == 1) {
             when (previousToken) {
-                is NumberLiteralToken<*> -> return NumberLiteralParameter(previousToken)
+                is NumberLiteralToken -> return NumberLiteralParameter(previousToken)
                 else -> return null
             }
         }
@@ -144,7 +144,7 @@ class OperationValidator : AstValidator<OperationValidListOfTokens> {
         var previousToken = tokens[0]
         if (tokens.size == 1) {
             when (previousToken) {
-                is NumberLiteralToken<*> -> return true
+                is NumberLiteralToken -> return true
                 else -> return false
             }
         }

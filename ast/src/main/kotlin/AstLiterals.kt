@@ -5,17 +5,17 @@ data class StringLiteral(val value: String) : PrintlnAstParameter, Literal, Assi
     override fun type(): StringType = StringType
 }
 
-sealed interface NumberLiteral<T> : AbstractSyntaxTree, AssignationParameterNode, PrintlnAstParameter, FinalOperationParameter, ConcatenationParameter {
-    fun value(): T
+sealed interface NumberLiteral : AbstractSyntaxTree, AssignationParameterNode, PrintlnAstParameter, FinalOperationParameter, ConcatenationParameter {
+    fun value(): Number
 }
-data class IntNumberLiteral(val number: Int) : AssignationParameterNode, NumberLiteral<Int>, PrintlnAstParameter, Literal {
+data class IntNumberLiteral(val number: Int) : AssignationParameterNode, NumberLiteral, PrintlnAstParameter, Literal {
     override fun value(): Int =
         number
 
     override fun type(): IntType = IntType
 }
 
-data class DoubleNumberLiteral(val number: Double) : AssignationParameterNode, NumberLiteral<Double>, PrintlnAstParameter, Literal {
+data class DoubleNumberLiteral(val number: Double) : AssignationParameterNode, NumberLiteral, PrintlnAstParameter, Literal {
     override fun value(): Double =
         number
 

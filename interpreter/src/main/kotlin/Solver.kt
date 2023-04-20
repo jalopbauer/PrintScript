@@ -1,14 +1,14 @@
 import state.VariableInterpreterState
 
 sealed interface SolverResponse
-data class NumberLiteralResponse(val literal: NumberLiteral<*>) : SolverResponse
+data class NumberLiteralResponse(val literal: NumberLiteral) : SolverResponse
 data class InterpreterErrorResponse(val interpreterError: InterpreterError) : SolverResponse
 interface Solver<T : OperationParameter> {
     fun solve(operationParameter: T, variableInterpreterState: VariableInterpreterState): SolverResponse
 }
-class NumberSolver : Solver<NumberLiteral<*>> {
+class NumberSolver : Solver<NumberLiteral> {
     override fun solve(
-        operationParameter: NumberLiteral<*>,
+        operationParameter: NumberLiteral,
         variableInterpreterState: VariableInterpreterState
     ): SolverResponse =
         NumberLiteralResponse(operationParameter)
@@ -22,7 +22,7 @@ class VariableSolver : Solver<VariableNameNode> {
         variableInterpreterState.get(operationParameter)
             ?.let {
                 when (it) {
-                    is NumberLiteral<*> -> NumberSolver().solve(it, variableInterpreterState)
+                    is NumberLiteral -> NumberSolver().solve(it, variableInterpreterState)
                     else -> InterpreterErrorResponse(NotValidType())
                 }
             }
@@ -63,7 +63,7 @@ class FullSolver : Solver<OperationParameter> {
             }
         }
 
-    fun sum(leftLiteral: NumberLiteral<*>, rightLiteral: NumberLiteral<*>): NumberLiteral<*>? =
+    fun sum(leftLiteral: NumberLiteral, rightLiteral: NumberLiteral): NumberLiteral? =
         when {
             leftLiteral is DoubleNumberLiteral && rightLiteral is DoubleNumberLiteral -> DoubleNumberLiteral(leftLiteral.number + rightLiteral.number)
             leftLiteral is DoubleNumberLiteral && rightLiteral is IntNumberLiteral -> DoubleNumberLiteral(leftLiteral.number + rightLiteral.number)
@@ -71,7 +71,7 @@ class FullSolver : Solver<OperationParameter> {
             leftLiteral is IntNumberLiteral && rightLiteral is IntNumberLiteral -> IntNumberLiteral(leftLiteral.number + rightLiteral.value())
             else -> null
         }
-    fun sub(leftLiteral: NumberLiteral<*>, rightLiteral: NumberLiteral<*>): NumberLiteral<*>? =
+    fun sub(leftLiteral: NumberLiteral, rightLiteral: NumberLiteral): NumberLiteral? =
         when {
             leftLiteral is DoubleNumberLiteral && rightLiteral is DoubleNumberLiteral -> DoubleNumberLiteral(leftLiteral.number - rightLiteral.number)
             leftLiteral is DoubleNumberLiteral && rightLiteral is IntNumberLiteral -> DoubleNumberLiteral(leftLiteral.number - rightLiteral.number)
@@ -80,7 +80,7 @@ class FullSolver : Solver<OperationParameter> {
             else -> null
         }
 
-    fun mult(leftLiteral: NumberLiteral<*>, rightLiteral: NumberLiteral<*>): NumberLiteral<*>? =
+    fun mult(leftLiteral: NumberLiteral, rightLiteral: NumberLiteral): NumberLiteral? =
         when {
             leftLiteral is DoubleNumberLiteral && rightLiteral is DoubleNumberLiteral -> DoubleNumberLiteral(leftLiteral.number * rightLiteral.number)
             leftLiteral is DoubleNumberLiteral && rightLiteral is IntNumberLiteral -> DoubleNumberLiteral(leftLiteral.number * rightLiteral.number)
@@ -89,7 +89,7 @@ class FullSolver : Solver<OperationParameter> {
             else -> null
         }
 
-    fun div(leftLiteral: NumberLiteral<*>, rightLiteral: NumberLiteral<*>): NumberLiteral<*>? =
+    fun div(leftLiteral: NumberLiteral, rightLiteral: NumberLiteral): NumberLiteral? =
         when {
             rightLiteral is DoubleNumberLiteral && rightLiteral.number == 0.0 ||
                 rightLiteral is IntNumberLiteral && rightLiteral.number == 0 -> null

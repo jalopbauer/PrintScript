@@ -11,40 +11,33 @@ interface AstParser<T : ValidListOfTokens> : Parser<AbstractSyntaxTree> {
 }
 
 class PrintlnParser : AstParser<PrintlnValidListOfTokens> {
-    override fun parserAstBuilder(): AstBuilder<PrintlnValidListOfTokens> {
-        TODO("Not yet implemented")
-    }
+    override fun parserAstBuilder(): AstBuilder<PrintlnValidListOfTokens> =
+        PrintlnBuilder()
 
     override fun parserAstValidator(): AstValidator<PrintlnValidListOfTokens> =
         PrintlnAstValidator()
 }
 
 class DeclarationParser : AstParser<DeclarationValidListOfTokens> {
-    override fun parserAstBuilder(): AstBuilder<DeclarationValidListOfTokens> {
-        TODO("Not yet implemented")
-    }
+    override fun parserAstBuilder(): AstBuilder<DeclarationValidListOfTokens> =
+        DeclarationBuilder()
 
-    override fun parserAstValidator(): AstValidator<DeclarationValidListOfTokens> {
-        TODO("Not yet implemented")
-    }
+    override fun parserAstValidator(): AstValidator<DeclarationValidListOfTokens> =
+        DeclarationValidator()
 }
 
 class AssignationParser : AstParser<AssignationValidListOfTokens> {
-    override fun parserAstBuilder(): AstBuilder<AssignationValidListOfTokens> {
-        TODO("Not yet implemented")
-    }
+    override fun parserAstBuilder(): AstBuilder<AssignationValidListOfTokens> =
+        AssignationBuilder()
 
-    override fun parserAstValidator(): AstValidator<AssignationValidListOfTokens> {
-        TODO("Not yet implemented")
-    }
+    override fun parserAstValidator(): AstValidator<AssignationValidListOfTokens> =
+        AssignationValidator()
 }
 
 class DeclarationAssignationParser : AstParser<DeclarationAssignationValidListOfTokens> {
-    override fun parserAstBuilder(): AstBuilder<DeclarationAssignationValidListOfTokens> {
-        TODO("Not yet implemented")
-    }
+    override fun parserAstBuilder(): AstBuilder<DeclarationAssignationValidListOfTokens> =
+        DeclarationAssignationBuilder()
 
-    override fun parserAstValidator(): AstValidator<DeclarationAssignationValidListOfTokens> {
-        TODO("Not yet implemented")
-    }
+    override fun parserAstValidator(): AstValidator<DeclarationAssignationValidListOfTokens> =
+        DeclarationAssignationValidator()
 }
