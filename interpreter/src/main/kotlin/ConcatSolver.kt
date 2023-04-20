@@ -6,9 +6,9 @@ data class ConcatErrorResponse(val concatError: InterpreterError) : ConcatSolver
 interface ConcatenationParameterSolver<T : ConcatenationParameter> {
     fun solve(concatenationParameter: T, variableInterpreterState: VariableInterpreterState): ConcatSolverResponse
 }
-class NumberConcatSolver : ConcatenationParameterSolver<NumberLiteral<*>> {
+class NumberConcatSolver : ConcatenationParameterSolver<NumberLiteral> {
     override fun solve(
-        concatenationParameter: NumberLiteral<*>,
+        concatenationParameter: NumberLiteral,
         variableInterpreterState: VariableInterpreterState
     ): ConcatSolverResponse =
         StringLiteralResponse(StringLiteral(concatenationParameter.value().toString()))
@@ -28,7 +28,7 @@ class VariableConcatSolver : ConcatenationParameterSolver<VariableNameNode> {
         variableInterpreterState.get(concatenationParameter)
             ?.let {
                 when (it) {
-                    is NumberLiteral<*> -> NumberConcatSolver().solve(it, variableInterpreterState)
+                    is NumberLiteral -> NumberConcatSolver().solve(it, variableInterpreterState)
                     is StringLiteral -> StringConcatSolver().solve(it, variableInterpreterState)
                     else -> ConcatErrorResponse(NotValidType())
                 }
