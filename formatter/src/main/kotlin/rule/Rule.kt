@@ -2,7 +2,11 @@ package rule
 
 import AssignationValidListOfTokens
 import DeclarationValidListOfTokens
+import NumberLiteralParameter
+import PrintlnValidListOfTokens
+import StringLiteralOrStringConcat
 import ValidListOfTokens
+import VariableParameter
 import token.Token
 
 interface Rule<T> {
@@ -28,6 +32,20 @@ class AddSpaceBeforeAndAfterAssignation(private val tokenListSpacingRule: TokenL
     override fun apply(listOfTokens: AssignationValidListOfTokens): String =
         "${listOfTokens.variable.value} = ${tokenListSpacingRule.apply(listOfTokens.content)}"
 }
+
+class EnterBeforePrintln(private val tokenListSpacingRule: TokenListSpacingRule, val amount: Int) : ValidListOfTokensRule<PrintlnValidListOfTokens> {
+    override fun apply(listOfTokens: PrintlnValidListOfTokens): String {
+        val printlnValidParameter = listOfTokens.printlnValidParameter
+        return tokenListSpacingRule.apply(
+            when (printlnValidParameter) {
+                is NumberLiteralParameter -> listOf(printlnValidParameter.numberLiteralToken)
+                is StringLiteralOrStringConcat -> printlnValidParameter.stringOrConcat
+                is VariableParameter -> listOf(printlnValidParameter.variableToken)
+            }
+        ).padStart(amount, '\n')
+    }
+}
+
 interface TokenListSpacingRule : Rule<List<Token>>
 class OneSpaceBetweenEveryToken : TokenListSpacingRule {
     override fun apply(listOfTokens: List<Token>): String =
