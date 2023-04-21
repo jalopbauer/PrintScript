@@ -9,6 +9,6 @@ plugins {
 dependencies {
     implementation project(path: ':ast')
     testImplementation project(path: ':testSuite')
-    implementation project(path: ':parser')
     implementation project(path: ':token')
+    implementation project(path: ':validListOfTokens')
 }

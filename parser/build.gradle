@@ -9,4 +9,5 @@ plugins {
 dependencies {
     implementation project(path: ':token')
     implementation project(path: ':ast')
+    implementation project(path: ':validListOfTokens')
 }
