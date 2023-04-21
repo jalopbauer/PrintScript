@@ -4,7 +4,7 @@ import AssignationValidListOfTokens
 import DeclarationValidListOfTokens
 import NumberLiteralParameter
 import PrintlnValidListOfTokens
-import StringLiteralOrStringConcat
+import StringLiteralOrStringConcatValidListOfTokens
 import ValidListOfTokens
 import VariableParameter
 import token.Token
@@ -35,11 +35,11 @@ class AddSpaceBeforeAndAfterAssignation(private val tokenListSpacingRule: TokenL
 
 class EnterBeforePrintln(private val tokenListSpacingRule: TokenListSpacingRule, val amount: Int) : ValidListOfTokensRule<PrintlnValidListOfTokens> {
     override fun apply(listOfTokens: PrintlnValidListOfTokens): String {
-        val printlnValidParameter = listOfTokens.printlnValidParameter
+        val printlnValidParameter = listOfTokens.printLnParameterValidListOfTokens
         return tokenListSpacingRule.apply(
             when (printlnValidParameter) {
                 is NumberLiteralParameter -> listOf(printlnValidParameter.numberLiteralToken)
-                is StringLiteralOrStringConcat -> printlnValidParameter.stringOrConcat
+                is StringLiteralOrStringConcatValidListOfTokens -> printlnValidParameter.stringOrConcat
                 is VariableParameter -> listOf(printlnValidParameter.variableToken)
             }
         ).padStart(amount, '\n')

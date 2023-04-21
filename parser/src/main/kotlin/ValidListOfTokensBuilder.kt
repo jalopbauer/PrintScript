@@ -3,11 +3,11 @@ import token.Token
 import token.TokenName
 import token.VariableLiteralToken
 
-interface AstValidator<T : ValidListOfTokens> {
+interface ValidListOfTokensBuilder<T : ValidListOfTokens> {
     fun validate(tokens: List<Token>): T?
 }
 
-class PrintlnAstValidator : AstValidator<PrintlnValidListOfTokens> {
+class PrintlnValidListOfTokensBuilder : ValidListOfTokensBuilder<PrintlnValidListOfTokens> {
     override fun validate(tokens: List<Token>): PrintlnValidListOfTokens? =
         if (tokens.size < 5 ||
             tokens.component1().tokenName() != TokenName.PRINT ||
@@ -16,21 +16,21 @@ class PrintlnAstValidator : AstValidator<PrintlnValidListOfTokens> {
         ) {
             null
         } else {
-            PrintlnParameterAstValidator().validate(tokens.subList(2, tokens.size - 2))?.let { PrintlnValidListOfTokens(it) }
+            PrintlnParameterValidListOfTokensBuilder().validate(tokens.subList(2, tokens.size - 2))?.let { PrintlnValidListOfTokens(it) }
         }
 }
 
-class PrintlnParameterAstValidator : AstValidator<PrintlnValidParameter> {
-    override fun validate(tokens: List<Token>): PrintlnValidParameter? =
+class PrintlnParameterValidListOfTokensBuilder : ValidListOfTokensBuilder<PrintlnParameterValidListOfTokens> {
+    override fun validate(tokens: List<Token>): PrintlnParameterValidListOfTokens? =
         when {
             tokens.size == 1 && tokens.component1() is VariableLiteralToken -> VariableParameter(tokens.component1() as VariableLiteralToken)
             tokens.size == 1 && tokens.component1() is NumberLiteralToken -> NumberLiteralParameter(tokens.component1() as NumberLiteralToken)
-            else -> StringLiteralOrConcatValidator().validate(tokens)
+            else -> StringLiteralOrConcatValidListOfTokensBuilder().validate(tokens)
         }
 }
 
-class StringLiteralOrConcatValidator : AstValidator<StringLiteralOrStringConcat> {
-    override fun validate(tokens: List<Token>): StringLiteralOrStringConcat? {
+class StringLiteralOrConcatValidListOfTokensBuilder : ValidListOfTokensBuilder<StringLiteralOrStringConcatValidListOfTokens> {
+    override fun validate(tokens: List<Token>): StringLiteralOrStringConcatValidListOfTokens? {
         var tokenCounter = 1
         for (token in tokens) {
             if (tokenCounter % 2 == 0) {
@@ -42,7 +42,7 @@ class StringLiteralOrConcatValidator : AstValidator<StringLiteralOrStringConcat>
             }
             tokenCounter++
         }
-        return StringLiteralOrStringConcat(tokens)
+        return StringLiteralOrStringConcatValidListOfTokens(tokens)
     }
     fun validateChain(tokens: List<Token>): Boolean {
         var tokenCounter = 1
@@ -60,7 +60,7 @@ class StringLiteralOrConcatValidator : AstValidator<StringLiteralOrStringConcat>
     }
 }
 
-class DeclarationValidator : AstValidator<DeclarationValidListOfTokens> {
+class DeclarationValidListOfTokensBuilder : ValidListOfTokensBuilder<DeclarationValidListOfTokens> {
     override fun validate(tokens: List<Token>): DeclarationValidListOfTokens? {
         if (tokens.size == 5 &&
             tokens.component1().tokenName() == TokenName.LET &&
@@ -74,19 +74,19 @@ class DeclarationValidator : AstValidator<DeclarationValidListOfTokens> {
     }
 }
 
-class AssignationValidator : AstValidator<AssignationValidListOfTokens> {
+class AssignationValidListOfTokensBuilder : ValidListOfTokensBuilder<AssignationValidListOfTokens> {
     override fun validate(tokens: List<Token>): AssignationValidListOfTokens? {
         if (tokens.size >= 3 &&
             tokens.component1().tokenName() == TokenName.VARIABLE &&
             tokens.component2().tokenName() == TokenName.ASSIGNATION &&
-            (tokens.component3().tokenName() == TokenName.VARIABLE || StringLiteralOrConcatValidator().validateChain(tokens.subList(2, (tokens.size - 1))) || OperationValidator().validateChain(tokens.subList(2, (tokens.size - 1))))
+            (tokens.component3().tokenName() == TokenName.VARIABLE || StringLiteralOrConcatValidListOfTokensBuilder().validateChain(tokens.subList(2, (tokens.size - 1))) || OperationValidListOfTokensBuilder().validateChain(tokens.subList(2, (tokens.size - 1))))
         ) {
             return AssignationValidListOfTokens(tokens.component1() as VariableLiteralToken, tokens.subList(2, (tokens.size - 1)))
         }
         return null
     }
 }
-class DeclarationAssignationValidator : AstValidator<DeclarationAssignationValidListOfTokens> {
+class DeclarationAssignationValidListOfTokensBuilder : ValidListOfTokensBuilder<DeclarationAssignationValidListOfTokens> {
     override fun validate(tokens: List<Token>): DeclarationAssignationValidListOfTokens? {
         if (tokens.size >= 7 &&
             tokens.component1().tokenName() == TokenName.LET &&
@@ -94,7 +94,7 @@ class DeclarationAssignationValidator : AstValidator<DeclarationAssignationValid
             tokens.component3().tokenName() == TokenName.DECLARATION &&
             (tokens.component4().tokenName() == TokenName.STRING_TYPE || tokens.component4().tokenName() == TokenName.NUMBER_TYPE) &&
             tokens.component5().tokenName() == TokenName.ASSIGNATION &&
-            (StringLiteralOrConcatValidator().validateChain(tokens.subList(5, (tokens.size - 1))) || OperationValidator().validateChain(tokens.subList(5, (tokens.size - 1))))
+            (StringLiteralOrConcatValidListOfTokensBuilder().validateChain(tokens.subList(5, (tokens.size - 1))) || OperationValidListOfTokensBuilder().validateChain(tokens.subList(5, (tokens.size - 1))))
         ) {
             return DeclarationAssignationValidListOfTokens(tokens.component2() as VariableLiteralToken, tokens.subList(5, (tokens.size - 1)), tokens.component4())
         }
@@ -102,7 +102,7 @@ class DeclarationAssignationValidator : AstValidator<DeclarationAssignationValid
     }
 }
 
-class OperationValidator : AstValidator<OperationValidListOfTokens> {
+class OperationValidListOfTokensBuilder : ValidListOfTokensBuilder<OperationValidListOfTokens> {
     override fun validate(tokens: List<Token>): OperationValidListOfTokens? {
         var previousToken = tokens[0]
         if (tokens.size == 1) {

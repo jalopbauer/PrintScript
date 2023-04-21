@@ -19,9 +19,9 @@ interface AstBuilder<T : ValidListOfTokens> {
 
 class PrintlnBuilder : AstBuilder<PrintlnValidListOfTokens> {
     override fun build(validListOfTokens: PrintlnValidListOfTokens): PrintlnAst {
-        return when (val parameter = validListOfTokens.printlnValidParameter) {
+        return when (val parameter = validListOfTokens.printLnParameterValidListOfTokens) {
             is VariableParameter -> PrintlnAst(VariableNameNode(parameter.variableToken.value))
-            is StringLiteralOrStringConcat -> PrintlnAst(getConcat(parameter.stringOrConcat))
+            is StringLiteralOrStringConcatValidListOfTokens -> PrintlnAst(getConcat(parameter.stringOrConcat))
             is NumberLiteralParameter -> PrintlnAst(getNumberNode(parameter.numberLiteralToken))
         }
     }
@@ -45,7 +45,7 @@ class DeclarationBuilder : AstBuilder<DeclarationValidListOfTokens> {
 }
 class AssignationBuilder : AstBuilder<AssignationValidListOfTokens> {
     override fun build(validListOfTokens: AssignationValidListOfTokens): AbstractSyntaxTree {
-        if (OperationValidator().validateChain(validListOfTokens.content)) {
+        if (OperationValidListOfTokensBuilder().validateChain(validListOfTokens.content)) {
             return AssignationAst(VariableNameNode(validListOfTokens.variable.value), ShuntingYardImpl().orderNumber(validListOfTokens.content))
         }
         return AssignationAst(VariableNameNode(validListOfTokens.variable.value), ShuntingYardImpl().orderString(validListOfTokens.content))
