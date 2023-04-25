@@ -41,16 +41,18 @@ class ConcatMapperSolver : ConcatenationParameterSolver<ConcatenationParameter> 
             is DoubleNumberLiteral -> NumberConcatSolver().solve(concatenationParameter, variableInterpreterState)
             is IntNumberLiteral -> NumberConcatSolver().solve(concatenationParameter, variableInterpreterState)
             is VariableNameNode -> VariableConcatSolver().solve(concatenationParameter, variableInterpreterState)
-            else -> ConcatErrorResponse(VariableIsNotDefined())
+            is StringLiteral -> StringLiteralResponse(concatenationParameter)
+            else -> ConcatErrorResponse(ConcatenationParameterNotValidError())
         }
 }
 
 class ConcatenationSolver {
     fun solve(stringConcatenation: StringConcatenation, variableInterpreterState: VariableInterpreterState): ConcatSolverResponse {
         val initial: ConcatSolverResponse? = null
-        stringConcatenation.concatenationParameterValues
+        return stringConcatenation.concatenationParameterValues
             .fold(initial) { acc, concatenationParameter ->
                 when (acc) {
+                    null -> ConcatMapperSolver().solve(concatenationParameter, variableInterpreterState)
                     is StringLiteralResponse -> {
                         when (val solve = ConcatMapperSolver().solve(concatenationParameter, variableInterpreterState)) {
                             is ConcatErrorResponse -> solve
@@ -60,6 +62,6 @@ class ConcatenationSolver {
                     else -> acc
                 }
             }
-        return ConcatErrorResponse(VariableIsNotDefined())
+            ?: ConcatErrorResponse(ConcatenationParameterNotValidError())
     }
 }
