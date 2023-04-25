@@ -14,7 +14,7 @@ class PrintScriptStaticCodeAnalyserFactory() : StaticCodeAnalyserFactory {
     }
 }
 class PrintlnParameterFactoryFactory : StaticCodeAnalyserFactory {
-    override fun build(configString: String): OneStaticCodeAnalyser<*>? =
+    override fun build(configString: String): ValidListOfTokensStaticCodeAnalyser<*>? =
         PrintlnParameterFactory().build(configString)
-            ?.let { OneStaticCodeAnalyser(PrintlnValidListOfTokensBuilder(), it) }
+            ?.let { ValidListOfTokensStaticCodeAnalyser(PrintlnValidListOfTokensBuilder(), it) }
 }
