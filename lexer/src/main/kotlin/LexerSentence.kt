@@ -1,11 +1,12 @@
 package lexer
 
+import LexerCodeStructure
 import Sentence
 import SentenceSplitter
 import token.PrintScript
 import token.Token
 
-class LexerSentence : Lexer<Sentence> {
+class LexerSentence : LexerCodeStructure<Sentence> {
 
     override fun buildTokenList(sentence: Sentence): List<Token> {
         val splitSentence: List<String> = SentenceSplitter().split(sentence)
