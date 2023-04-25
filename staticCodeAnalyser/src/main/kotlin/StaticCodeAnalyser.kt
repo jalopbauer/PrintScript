@@ -4,7 +4,7 @@ interface StaticCodeAnalyser {
     fun format(listOfTokens: List<Token>): String?
 }
 
-class OneStaticCodeAnalyser<T : ValidListOfTokens>(
+class ValidListOfTokensStaticCodeAnalyser<T : ValidListOfTokens>(
     private val validListOfTokens: ValidListOfTokensBuilder<T>,
     private val rule: Rule<T>
 ) : StaticCodeAnalyser {

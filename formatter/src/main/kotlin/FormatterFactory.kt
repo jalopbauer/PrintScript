@@ -5,7 +5,7 @@ interface FormatterFactory {
 class PrintScriptFormatterFactory() : FormatterFactory {
     override fun build(configString: String): Formatter {
         val tokenListSpacingRule = TokenListSpacingRuleFactory().build(configString)
-        val list: List<OneFormatter<*>> = listOf()
+        val list: List<ValidListOfTokensFormatter<*>> = listOf()
         val newList = AssignationFormatterFactory(tokenListSpacingRule).build(configString)
             ?.let { list + it } ?: list
         val newNewList = DeclarationFormatterFactory().build(configString)
@@ -17,19 +17,19 @@ class PrintScriptFormatterFactory() : FormatterFactory {
 }
 
 class AssignationFormatterFactory(private val tokenListSpacingRule: TokenListSpacingRule) : FormatterFactory {
-    override fun build(configString: String): OneFormatter<*>? =
+    override fun build(configString: String): ValidListOfTokensFormatter<*>? =
         AssignationValidListOfTokensRuleFactory(tokenListSpacingRule).build(configString)
-            ?.let { OneFormatter(AssignationValidListOfTokensBuilder(), it) }
+            ?.let { ValidListOfTokensFormatter(AssignationValidListOfTokensBuilder(), it) }
 }
 
 class DeclarationFormatterFactory : FormatterFactory {
-    override fun build(configString: String): OneFormatter<*>? =
+    override fun build(configString: String): ValidListOfTokensFormatter<*>? =
         DeclarationValidListOfTokensRuleFactory().build(configString)
-            ?.let { OneFormatter(DeclarationValidListOfTokensBuilder(), it) }
+            ?.let { ValidListOfTokensFormatter(DeclarationValidListOfTokensBuilder(), it) }
 }
 
 class EnterBeforePrintlnFormatterFactory(private val tokenListSpacingRule: TokenListSpacingRule) : FormatterFactory {
-    override fun build(configString: String): OneFormatter<*>? =
+    override fun build(configString: String): ValidListOfTokensFormatter<*>? =
         EnterBeforePrintlnRuleFactory(tokenListSpacingRule).build(configString)
-            ?.let { OneFormatter(PrintlnValidListOfTokensBuilder(), it) }
+            ?.let { ValidListOfTokensFormatter(PrintlnValidListOfTokensBuilder(), it) }
 }
