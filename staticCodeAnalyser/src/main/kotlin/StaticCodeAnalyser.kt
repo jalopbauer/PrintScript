@@ -12,14 +12,18 @@ class OneStaticCodeAnalyser<T : ValidListOfTokens>(
         validListOfTokens.validate(listOfTokens)
             ?.let { rule.apply(it) }
 }
-
-class PrintScriptStaticCodeAnalyser(
-    private val oneFormatterList: List<OneStaticCodeAnalyser<*>>
+class RuleStaticCodeAnalyser(
+    private val rule: Rule<List<Token>>
 ) : StaticCodeAnalyser {
-    override fun format(listOfTokens: List<Token>): String? {
-        val initial: String? = null
-        return oneFormatterList.fold(initial) { acc, oneFormatter ->
-            acc ?: oneFormatter.format(listOfTokens)
-        }
-    }
+    override fun format(listOfTokens: List<Token>): String? =
+        rule.apply(listOfTokens)
+}
+class PrintScriptStaticCodeAnalyser(
+    private val oneFormatterList: List<StaticCodeAnalyser>
+) : StaticCodeAnalyser {
+    override fun format(listOfTokens: List<Token>): String? =
+        oneFormatterList.mapNotNull { it.format(listOfTokens) }
+            .let {
+                if (it.isEmpty()) null else it.joinToString { "\n" }
+            }
 }

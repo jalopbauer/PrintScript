@@ -6,12 +6,11 @@ interface Rule<T> {
 }
 interface ValidListOfTokensRule<T : ValidListOfTokens> : Rule<T>
 
-class PrintlnParameterRule(private val variableRule: VariableRule) :
+class PrintlnParameterRule :
     ValidListOfTokensRule<PrintlnValidListOfTokens> {
     override fun apply(listOfTokens: PrintlnValidListOfTokens): String? =
         when (val printLnParameterValidListOfTokens = listOfTokens.printLnParameterValidListOfTokens) {
-            is NumberLiteralParameter -> null
-            is VariableParameter -> variableRule.apply(printLnParameterValidListOfTokens.variableToken)
+            is NumberLiteralParameter, is VariableParameter -> null
             is StringLiteralOrStringConcatValidListOfTokens ->
                 if (printLnParameterValidListOfTokens.stringOrConcat.size == 1) {
                     null
