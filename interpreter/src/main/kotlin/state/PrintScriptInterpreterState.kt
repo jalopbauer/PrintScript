@@ -17,12 +17,27 @@ data class PrintScriptInterpreterStateI(private val printlnInterpreterState: Pri
         }
 
     override fun initializeVariable(variableInstance: VariableInstance): InterpreterResponse =
-        printlnInterpreterState.initializeVariable(variableInstance)
+        printlnInterpreterState.initializeVariable(variableInstance).let {
+            when (it) {
+                is PrintlnInterpreterState -> this.copy(printlnInterpreterState = it)
+                else -> it
+            }
+        }
 
     override fun setLiteralToVariable(key: VariableNameNode, value: Literal): InterpreterResponse =
-        printlnInterpreterState.setLiteralToVariable(key, value)
+        printlnInterpreterState.setLiteralToVariable(key, value).let {
+            when (it) {
+                is PrintlnInterpreterState -> this.copy(printlnInterpreterState = it)
+                else -> it
+            }
+        }
     override fun setVariableValueToVariable(key: VariableNameNode, value: VariableNameNode): InterpreterResponse =
-        printlnInterpreterState.setVariableValueToVariable(key, value)
+        printlnInterpreterState.setVariableValueToVariable(key, value).let {
+            when (it) {
+                is PrintlnInterpreterState -> this.copy(printlnInterpreterState = it)
+                else -> it
+            }
+        }
 
     override fun get(variableName: VariableNameNode): Literal? =
         printlnInterpreterState.get(variableName)
