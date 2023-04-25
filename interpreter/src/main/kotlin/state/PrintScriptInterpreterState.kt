@@ -42,5 +42,8 @@ data class PrintScriptInterpreterStateI(private val printlnInterpreterState: Pri
     override fun get(variableName: VariableNameNode): Literal? =
         printlnInterpreterState.get(variableName)
 
+    override fun isVariableDefined(key: VariableNameNode): Boolean =
+        printlnInterpreterState.isVariableDefined(key)
+
     override fun printList(): String = printlnInterpreterState.printList()
 }

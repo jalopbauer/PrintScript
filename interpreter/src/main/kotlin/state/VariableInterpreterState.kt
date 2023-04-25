@@ -19,6 +19,8 @@ interface VariableInterpreterState : InterpreterState {
     fun setVariableValueToVariable(key: VariableNameNode, value: VariableNameNode): InterpreterResponse
 
     fun get(variableName: VariableNameNode): Literal?
+
+    fun isVariableDefined(key: VariableNameNode): Boolean
 }
 data class VariableInterpreterStateI(
     val errors: List<InterpreterError> = listOf(),
@@ -66,5 +68,5 @@ data class VariableInterpreterStateI(
                         }
                     }
             }
-    private fun isVariableDefined(key: VariableNameNode) = variableTypeMap.containsKey(key.value())
+    override fun isVariableDefined(key: VariableNameNode) = variableTypeMap.containsKey(key.value())
 }
