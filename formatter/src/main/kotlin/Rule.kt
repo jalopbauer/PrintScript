@@ -1,12 +1,3 @@
-package rule
-
-import AssignationValidListOfTokens
-import DeclarationValidListOfTokens
-import NumberLiteralParameter
-import PrintlnValidListOfTokens
-import StringLiteralOrStringConcatValidListOfTokens
-import ValidListOfTokens
-import VariableParameter
 import token.Token
 
 interface Rule<T> {
@@ -28,12 +19,14 @@ class AddSpaceAfterDeclaration : ValidListOfTokensRule<DeclarationValidListOfTok
         "let ${listOfTokens.type.tokenName()}: ${listOfTokens.variable.value}"
 }
 
-class AddSpaceBeforeAndAfterAssignation(private val tokenListSpacingRule: TokenListSpacingRule) : ValidListOfTokensRule<AssignationValidListOfTokens> {
+class AddSpaceBeforeAndAfterAssignation(private val tokenListSpacingRule: TokenListSpacingRule) :
+    ValidListOfTokensRule<AssignationValidListOfTokens> {
     override fun apply(listOfTokens: AssignationValidListOfTokens): String =
         "${listOfTokens.variable.value} = ${tokenListSpacingRule.apply(listOfTokens.content)}"
 }
 
-class EnterBeforePrintln(private val tokenListSpacingRule: TokenListSpacingRule, val amount: Int) : ValidListOfTokensRule<PrintlnValidListOfTokens> {
+class EnterBeforePrintln(private val tokenListSpacingRule: TokenListSpacingRule, val amount: Int) :
+    ValidListOfTokensRule<PrintlnValidListOfTokens> {
     override fun apply(listOfTokens: PrintlnValidListOfTokens): String {
         val printlnValidParameter = listOfTokens.printLnParameterValidListOfTokens
         return tokenListSpacingRule.apply(
@@ -60,4 +53,13 @@ class PreviousSpacingBetweenEveryToken : TokenListSpacingRule {
             val newLastIndex = lastIndex + tokenValueInStringForm.length
             Pair(newString, newLastIndex)
         }.first
+}
+
+class EnterAfterEndOfLine : Rule<String> {
+    override fun apply(listOfTokens: String): String =
+        if (listOfTokens.last() == ';') {
+            listOfTokens + '\n'
+        } else {
+            listOfTokens
+        }
 }
