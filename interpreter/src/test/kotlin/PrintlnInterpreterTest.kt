@@ -76,4 +76,19 @@ class PrintlnInterpreterTest {
 
         testExpectedValue(interpreterResponse, "valueToTest")
     }
+
+    @Test
+    fun testStringConcatenation() {
+        val concatenation = listOf<ConcatenationParameter>(
+            StringLiteral("valueToTest"),
+            StringLiteral("valueToTest")
+        )
+        val stringConcatenation = StringConcatenation(concatenation)
+        val printlnAst = PrintlnAst(stringConcatenation)
+
+        val printlnInterpreterState = getState(VariableInterpreterStateI())
+        val interpreterResponse = interpreter.interpret(printlnAst, printlnInterpreterState)
+
+        testExpectedValue(interpreterResponse, "valueToTestvalueToTest")
+    }
 }
