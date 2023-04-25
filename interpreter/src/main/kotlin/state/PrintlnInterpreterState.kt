@@ -7,6 +7,7 @@ import VariableNameNode
 
 interface PrintlnInterpreterState : InterpreterState, VariableInterpreterState {
     fun println(value: String): InterpreterResponse
+    fun printList(): String
 }
 
 data class PrintlnInterpreterStateI(val printList: List<String> = listOf(), val variableInterpreterState: VariableInterpreterState) : PrintlnInterpreterState {
@@ -24,4 +25,6 @@ data class PrintlnInterpreterStateI(val printList: List<String> = listOf(), val 
 
     override fun get(variableName: VariableNameNode): Literal? =
         variableInterpreterState.get(variableName)
+
+    override fun printList(): String = printList.last()
 }
