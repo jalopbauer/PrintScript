@@ -6,5 +6,7 @@ data class VariableNameNode(val variableName: String) : AbstractSyntaxTree, Prin
 data class VariableInstance(val variableNameNode: VariableNameNode, val type: Type) : AbstractSyntaxTree
 interface Type : AbstractSyntaxTree
 object StringType : Type
-object IntType : Type
-object DoubleType : Type
+open class NumberType : Type
+object IntType : NumberType()
+object DoubleType : NumberType()
+object ErrorType : Type
