@@ -94,18 +94,18 @@ class ShuntingYardTest {
         assertEquals(TokenName.MULT, simpleTree[4].tokenName())
     }
 
-    /**@Test
-    fun sHWWorksWithComplexBracketsEquation() {
-        val shuntingYard = ShuntingYardImpl()
-        val simpleTree = shuntingYard.check(complexBracketsOperation)
-        assertEquals(TokenName.NUMBER_LITERAL, simpleTree[0].tokenName())
-        assertEquals(TokenName.NUMBER_LITERAL, simpleTree[1].tokenName())
-        assertEquals(TokenName.NUMBER_LITERAL, simpleTree[2].tokenName())
-        assertEquals(TokenName.SUM, simpleTree[3].tokenName())
-        assertEquals(TokenName.MULT, simpleTree[4].tokenName())
-        assertEquals(TokenName.NUMBER_LITERAL, simpleTree[5].tokenName())
-        assertEquals(TokenName.DIV, simpleTree[6].tokenName())
-        assertEquals(TokenName.NUMBER_LITERAL, simpleTree[7].tokenName())
-        assertEquals(TokenName.SUB, simpleTree[8].tokenName())
-    }**/
+    // @Test
+    // fun sHWWorksWithComplexBracketsEquation() {
+    //    val shuntingYard = ShuntingYardImpl()
+    //    val simpleTree = shuntingYard.check(complexBracketsOperation)
+    //    assertEquals(TokenName.NUMBER_LITERAL, simpleTree[0].tokenName())
+    //    assertEquals(TokenName.NUMBER_LITERAL, simpleTree[1].tokenName())
+    //    assertEquals(TokenName.NUMBER_LITERAL, simpleTree[2].tokenName())
+    //    assertEquals(TokenName.SUM, simpleTree[3].tokenName())
+    //    assertEquals(TokenName.MULT, simpleTree[4].tokenName())
+    //    assertEquals(TokenName.NUMBER_LITERAL, simpleTree[5].tokenName())
+    //    assertEquals(TokenName.DIV, simpleTree[6].tokenName())
+    //    assertEquals(TokenName.NUMBER_LITERAL, simpleTree[7].tokenName())
+    //    assertEquals(TokenName.SUB, simpleTree[8].tokenName())
+    // }
 }
