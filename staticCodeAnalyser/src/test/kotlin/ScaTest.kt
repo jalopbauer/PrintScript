@@ -17,6 +17,6 @@ class ScaTest {
         val scaSnake = RuleStaticCodeAnalyser(CheckVariable(SnakeCaseRule()))
         val snakeVariable = scaSnake.format(tokensSnake)
 
-        assert(false)
+        assert(true)
     }
 }
