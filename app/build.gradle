@@ -4,6 +4,7 @@
 
 plugins {
     id 'printscript.kotlin-application-conventions'
+    id 'printscrips.kotlin-application-publish'
 }
 
 dependencies {

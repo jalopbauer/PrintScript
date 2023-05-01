@@ -4,4 +4,5 @@
 
 plugins {
     id 'printscript.kotlin-library-conventions'
+    id 'printscrips.kotlin-application-publish'
 }
