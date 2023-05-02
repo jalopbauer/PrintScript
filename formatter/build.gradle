@@ -11,5 +11,5 @@ dependencies {
     implementation project(path: ':ast')
     testImplementation project(path: ':testSuite')
     implementation project(path: ':token')
-    implementation project(path: ':validListOfTokens')
+    implementation project(path: ':validlistoftokens')
 }
