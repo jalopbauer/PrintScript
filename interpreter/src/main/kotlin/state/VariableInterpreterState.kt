@@ -62,7 +62,7 @@ data class VariableInterpreterStateI(
                 getVariableType(value)
                     ?.let { valueType ->
                         if (keyType == valueType) {
-                            get(key)
+                            get(value)
                         } else {
                             null
                         }
