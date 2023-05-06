@@ -9,6 +9,7 @@ import VariableAndLiteralTypeDoNotMatch
 import VariableInstance
 import VariableIsNotDefined
 import VariableNameNode
+import VariablesDontShareType
 
 interface VariableInterpreterState : InterpreterState {
 
@@ -43,10 +44,11 @@ data class VariableInterpreterStateI(
                 }
             }
             ?: VariableIsNotDefined()
+
     override fun setVariableValueToVariable(key: VariableNameNode, value: VariableNameNode): InterpreterResponse =
         getKeyValueIfVariablesAreSameType(key, value)
             ?.let { setLiteralToVariable(value, it) }
-            ?: VariableIsNotDefined()
+            ?: VariablesDontShareType()
 
     private fun add(
         key: VariableNameNode,
