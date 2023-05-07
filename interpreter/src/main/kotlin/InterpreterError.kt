@@ -1,1 +1,1 @@
-data class InterpreterError(val message : String = "") : InterpreterResponse
+data class InterpreterError(val message: String = "") : InterpreterResponse
