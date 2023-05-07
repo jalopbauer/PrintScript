@@ -9,6 +9,11 @@ plugins {
 
 dependencies {
     implementation 'org.apache.commons:commons-text'
+    implementation project(path: ':lexer')
+    implementation project(path: ':token')
+    implementation project(path: ':parser')
+    implementation project(path: ':ast')
+    implementation project(path: ':validlistoftokens')
 }
 
 application {
