@@ -290,6 +290,91 @@ class AssignationInterpreterTest {
     }
 
     @Test
+    fun testSetSumVariableResultToVariable() {
+        val variableToBeSetName = "variableToBeSet"
+        val variableToBeSet = VariableNameNode(variableToBeSetName)
+
+        val variableWithPreviousValue = "variableWithPreviousValue"
+
+        val leftNumberValue = 69
+        val rightNumberValue = 420
+        val expectedResult = leftNumberValue + rightNumberValue
+        val operation = Operation(IntNumberLiteral(leftNumberValue), Sum(), VariableNameNode(variableWithPreviousValue))
+
+        val assignationInterpreterState = getState(
+            VariableInterpreterStateI(
+                variableTypeMap = mapOf(
+                    variableToBeSetName to IntType,
+                    variableWithPreviousValue to IntType
+                ),
+                variableLiteralMap = mapOf(
+                    variableWithPreviousValue to IntNumberLiteral(rightNumberValue)
+                )
+            )
+        )
+
+        val assignationAst = AssignationAst(
+            variableToBeSet,
+            operation
+        )
+
+        val interpreter = PrintScriptInterpreter()
+
+        val interpreterResponse = interpreter.interpret(
+            assignationAst,
+            assignationInterpreterState
+        )
+
+        assert(interpreterResponse is PrintScriptInterpreterState)
+        (interpreterResponse as PrintScriptInterpreterState).get(variableToBeSet)
+            ?.let {
+                assert(it is IntNumberLiteral)
+                assertEquals(expectedResult, (it as IntNumberLiteral).number)
+            }
+            ?: {
+                assert(false)
+            }
+    }
+
+    @Test
+    fun testSetSumStringVariableResultToVariable() {
+        val variableToBeSetName = "variableToBeSet"
+        val variableToBeSet = VariableNameNode(variableToBeSetName)
+
+        val variableWithPreviousValue = "variableWithPreviousValue"
+
+        val leftNumberValue = 69
+        val rightNumberValue = "420"
+        val operation = Operation(IntNumberLiteral(leftNumberValue), Sum(), VariableNameNode(variableWithPreviousValue))
+
+        val assignationInterpreterState = getState(
+            VariableInterpreterStateI(
+                variableTypeMap = mapOf(
+                    variableToBeSetName to IntType,
+                    variableWithPreviousValue to StringType
+                ),
+                variableLiteralMap = mapOf(
+                    variableWithPreviousValue to StringLiteral(rightNumberValue)
+                )
+            )
+        )
+
+        val assignationAst = AssignationAst(
+            variableToBeSet,
+            operation
+        )
+
+        val interpreter = PrintScriptInterpreter()
+
+        val interpreterResponse = interpreter.interpret(
+            assignationAst,
+            assignationInterpreterState
+        )
+
+        assert(interpreterResponse is InterpreterError)
+    }
+
+    @Test
     fun testSetConcatenationStringResultToVariable() {
         val variableToBeSetName = "variableToBeSet"
         val variableToBeSet = VariableNameNode(variableToBeSetName)
