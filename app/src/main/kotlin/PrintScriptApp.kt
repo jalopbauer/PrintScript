@@ -21,7 +21,12 @@ class MyPrintScriptApp : PrintScriptApp {
             
             """.trimIndent()
         )
-
+    private val sca = PrintScriptStaticCodeAnalyserFactory()
+        .build(
+            """
+            
+            """.trimIndent()
+        )
     override fun interpret(inputStream: InputStream) =
         loop(
             inputStream
@@ -44,9 +49,8 @@ class MyPrintScriptApp : PrintScriptApp {
     override fun format(inputStream: InputStream) =
         loop(inputStream) { formatter.format(it) }
 
-    override fun lint(inputStream: InputStream) {
-        TODO("Not yet implemented")
-    }
+    override fun lint(inputStream: InputStream) =
+        loop(inputStream) { sca.format(it) }
 
     private fun loop(
         inputStream: InputStream,
