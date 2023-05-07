@@ -288,4 +288,97 @@ class AssignationInterpreterTest {
                 assert(false)
             }
     }
+
+    @Test
+    fun testSetConcatenationVariableIntResultToVariable() {
+        val variableToBeSetName = "variableToBeSet"
+        val variableToBeSet = VariableNameNode(variableToBeSetName)
+
+        val numberValue = 420
+        val expectedResult = "$numberValue"
+
+        val variableWithPreviousValue = "variableWithPreviousValue"
+
+        val operation = StringConcatenation(listOf(VariableNameNode(variableWithPreviousValue)))
+
+        val assignationInterpreterState = getState(
+            VariableInterpreterStateI(
+                variableLiteralMap = mapOf(
+                    variableWithPreviousValue to IntNumberLiteral(numberValue)
+                ),
+                variableTypeMap = mapOf(
+                    variableToBeSetName to StringType,
+                    variableWithPreviousValue to IntType
+                )
+            )
+        )
+
+        val assignationAst = AssignationAst(
+            variableToBeSet,
+            operation
+        )
+
+        val interpreter = PrintScriptInterpreter()
+
+        val interpreterResponse = interpreter.interpret(
+            assignationAst,
+            assignationInterpreterState
+        )
+
+        assert(interpreterResponse is PrintScriptInterpreterState)
+        (interpreterResponse as PrintScriptInterpreterState).get(variableToBeSet)
+            ?.let {
+                assert(it is StringLiteral)
+                assertEquals(expectedResult, (it as StringLiteral).value)
+            }
+            ?: {
+                assert(false)
+            }
+    }
+
+    @Test
+    fun testSetConcatenationVariableStringResultToVariable() {
+        val variableToBeSetName = "variableToBeSet"
+        val variableToBeSet = VariableNameNode(variableToBeSetName)
+
+        val numberValue = "420"
+
+        val variableWithPreviousValue = "variableWithPreviousValue"
+
+        val operation = StringConcatenation(listOf(VariableNameNode(variableWithPreviousValue)))
+
+        val assignationInterpreterState = getState(
+            VariableInterpreterStateI(
+                variableLiteralMap = mapOf(
+                    variableWithPreviousValue to StringLiteral(numberValue)
+                ),
+                variableTypeMap = mapOf(
+                    variableToBeSetName to StringType,
+                    variableWithPreviousValue to StringType
+                )
+            )
+        )
+
+        val assignationAst = AssignationAst(
+            variableToBeSet,
+            operation
+        )
+
+        val interpreter = PrintScriptInterpreter()
+
+        val interpreterResponse = interpreter.interpret(
+            assignationAst,
+            assignationInterpreterState
+        )
+
+        assert(interpreterResponse is PrintScriptInterpreterState)
+        (interpreterResponse as PrintScriptInterpreterState).get(variableToBeSet)
+            ?.let {
+                assert(it is StringLiteral)
+                assertEquals(numberValue, (it as StringLiteral).value)
+            }
+            ?: {
+                assert(false)
+            }
+    }
 }
