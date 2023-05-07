@@ -93,10 +93,10 @@ class FullSolver : Solver<OperationParameter> {
         when {
             rightLiteral is DoubleNumberLiteral && rightLiteral.number == 0.0 ||
                 rightLiteral is IntNumberLiteral && rightLiteral.number == 0 -> null
-            leftLiteral is DoubleNumberLiteral && rightLiteral is DoubleNumberLiteral -> DoubleNumberLiteral(leftLiteral.number * rightLiteral.number)
-            leftLiteral is DoubleNumberLiteral && rightLiteral is IntNumberLiteral -> DoubleNumberLiteral(leftLiteral.number * rightLiteral.number)
-            leftLiteral is IntNumberLiteral && rightLiteral is DoubleNumberLiteral -> DoubleNumberLiteral(leftLiteral.number * rightLiteral.number)
-            leftLiteral is IntNumberLiteral && rightLiteral is IntNumberLiteral -> IntNumberLiteral(leftLiteral.number * rightLiteral.value())
+            leftLiteral is DoubleNumberLiteral && rightLiteral is DoubleNumberLiteral -> DoubleNumberLiteral(leftLiteral.number / rightLiteral.number)
+            leftLiteral is DoubleNumberLiteral && rightLiteral is IntNumberLiteral -> DoubleNumberLiteral(leftLiteral.number / rightLiteral.number)
+            leftLiteral is IntNumberLiteral && rightLiteral is DoubleNumberLiteral -> DoubleNumberLiteral(leftLiteral.number / rightLiteral.number)
+            leftLiteral is IntNumberLiteral && rightLiteral is IntNumberLiteral -> IntNumberLiteral(leftLiteral.number / rightLiteral.value())
             else -> null
         }
 }

@@ -249,6 +249,47 @@ class AssignationInterpreterTest {
     }
 
     @Test
+    fun testSetDivResultToVariable() {
+        val variableToBeSetName = "variableToBeSet"
+        val variableToBeSet = VariableNameNode(variableToBeSetName)
+
+        val leftNumberValue = 69
+        val rightNumberValue = 69
+        val expectedResult = leftNumberValue / rightNumberValue
+        val operation = Operation(IntNumberLiteral(leftNumberValue), Div(), IntNumberLiteral(rightNumberValue))
+
+        val assignationInterpreterState = getState(
+            VariableInterpreterStateI(
+                variableTypeMap = mapOf(
+                    variableToBeSetName to IntType
+                )
+            )
+        )
+
+        val assignationAst = AssignationAst(
+            variableToBeSet,
+            operation
+        )
+
+        val interpreter = PrintScriptInterpreter()
+
+        val interpreterResponse = interpreter.interpret(
+            assignationAst,
+            assignationInterpreterState
+        )
+
+        assert(interpreterResponse is PrintScriptInterpreterState)
+        (interpreterResponse as PrintScriptInterpreterState).get(variableToBeSet)
+            ?.let {
+                assert(it is IntNumberLiteral)
+                assertEquals(expectedResult, (it as IntNumberLiteral).number)
+            }
+            ?: {
+                assert(false)
+            }
+    }
+
+    @Test
     fun testSetConcatenationStringResultToVariable() {
         val variableToBeSetName = "variableToBeSet"
         val variableToBeSet = VariableNameNode(variableToBeSetName)
