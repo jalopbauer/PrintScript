@@ -23,10 +23,10 @@ class VariableSolver : Solver<VariableNameNode> {
             ?.let {
                 when (it) {
                     is NumberLiteral -> NumberSolver().solve(it, variableInterpreterState)
-                    else -> InterpreterErrorResponse(NotValidType())
+                    else -> InterpreterErrorResponse(InterpreterError())
                 }
             }
-            ?: InterpreterErrorResponse(VariableIsNotDefined())
+            ?: InterpreterErrorResponse(InterpreterError())
 }
 class FullSolver : Solver<OperationParameter> {
     override fun solve(operationParameter: OperationParameter, variableInterpreterState: VariableInterpreterState): SolverResponse =
@@ -43,22 +43,22 @@ class FullSolver : Solver<OperationParameter> {
                         is Sum ->
                             sum(leftSolve.literal, rightSolve.literal)
                                 ?.let { NumberLiteralResponse(it) }
-                                ?: InterpreterErrorResponse(VariableIsNotDefined())
+                                ?: InterpreterErrorResponse(InterpreterError())
                         is Sub ->
                             sub(leftSolve.literal, rightSolve.literal)
                                 ?.let { NumberLiteralResponse(it) }
-                                ?: InterpreterErrorResponse(VariableIsNotDefined())
+                                ?: InterpreterErrorResponse(InterpreterError())
                         is Div -> div(leftSolve.literal, rightSolve.literal)
                             ?.let { NumberLiteralResponse(it) }
-                            ?: InterpreterErrorResponse(VariableIsNotDefined())
+                            ?: InterpreterErrorResponse(InterpreterError())
                         is Mult ->
                             mult(leftSolve.literal, rightSolve.literal)
                                 ?.let { NumberLiteralResponse(it) }
-                                ?: InterpreterErrorResponse(VariableIsNotDefined())
-                        else -> InterpreterErrorResponse(VariableIsNotDefined())
+                                ?: InterpreterErrorResponse(InterpreterError())
+                        else -> InterpreterErrorResponse(InterpreterError())
                     }
                 } else {
-                    InterpreterErrorResponse(OperationError())
+                    InterpreterErrorResponse(InterpreterError())
                 }
             }
         }

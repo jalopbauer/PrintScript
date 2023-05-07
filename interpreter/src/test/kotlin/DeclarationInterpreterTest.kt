@@ -37,7 +37,7 @@ class DeclarationInterpreterTest {
             declarationInterpreterState
         )
 
-        assert(interpreterResponse is VariableAlreadyExistsError)
+        assert(interpreterResponse is InterpreterError)
     }
 
     @Test

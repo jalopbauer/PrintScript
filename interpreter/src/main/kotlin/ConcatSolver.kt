@@ -30,10 +30,10 @@ class VariableConcatSolver : ConcatenationParameterSolver<VariableNameNode> {
                 when (it) {
                     is NumberLiteral -> NumberConcatSolver().solve(it, variableInterpreterState)
                     is StringLiteral -> StringConcatSolver().solve(it, variableInterpreterState)
-                    else -> ConcatErrorResponse(NotValidType())
+                    else -> ConcatErrorResponse(InterpreterError())
                 }
             }
-            ?: ConcatErrorResponse(VariableIsNotDefined())
+            ?: ConcatErrorResponse(InterpreterError())
 }
 class ConcatMapperSolver : ConcatenationParameterSolver<ConcatenationParameter> {
     override fun solve(concatenationParameter: ConcatenationParameter, variableInterpreterState: VariableInterpreterState): ConcatSolverResponse =
@@ -42,7 +42,7 @@ class ConcatMapperSolver : ConcatenationParameterSolver<ConcatenationParameter> 
             is IntNumberLiteral -> NumberConcatSolver().solve(concatenationParameter, variableInterpreterState)
             is VariableNameNode -> VariableConcatSolver().solve(concatenationParameter, variableInterpreterState)
             is StringLiteral -> StringLiteralResponse(concatenationParameter)
-            else -> ConcatErrorResponse(ConcatenationParameterNotValidError())
+            else -> ConcatErrorResponse(InterpreterError())
         }
 }
 
@@ -62,6 +62,6 @@ class ConcatenationSolver {
                     else -> acc
                 }
             }
-            ?: ConcatErrorResponse(ConcatenationParameterNotValidError())
+            ?: ConcatErrorResponse(InterpreterError())
     }
 }

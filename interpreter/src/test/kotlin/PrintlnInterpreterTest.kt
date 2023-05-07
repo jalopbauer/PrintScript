@@ -54,7 +54,7 @@ class PrintlnInterpreterTest {
         )
         val interpreterResponse = interpreter.interpret(printlnAst, printlnInterpreterState)
 
-        assert(interpreterResponse is VariableIsNotDefined)
+        assert(interpreterResponse is InterpreterError)
     }
 
     @Test

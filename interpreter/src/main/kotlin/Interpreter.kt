@@ -17,7 +17,7 @@ class PrintScriptInterpreter : Interpreter<AbstractSyntaxTree, PrintScriptInterp
             is DeclarationAst -> DeclarationInterpreter().interpret(abstractSyntaxTree, interpreterState)
             is AssignationAst -> AssignationParameterInterpreter().interpret(abstractSyntaxTree, interpreterState)
             is AssignationDeclarationAst -> AssignationDeclarationInterpreter().interpret(abstractSyntaxTree, interpreterState)
-            else -> AstStructureNotDefinedError()
+            else -> InterpreterError()
         }
 }
 class PrintlnParameterInterpreter : Interpreter<PrintlnAstParameter, PrintlnInterpreterState> {
@@ -26,7 +26,7 @@ class PrintlnParameterInterpreter : Interpreter<PrintlnAstParameter, PrintlnInte
             is VariableNameNode ->
                 interpreterState.get(abstractSyntaxTree)
                     ?.let { this.interpret(it as PrintlnAstParameter, interpreterState) }
-                    ?: VariableIsNotDefined()
+                    ?: InterpreterError()
             is NumberLiteral -> interpreterState.println(abstractSyntaxTree.value().toString())
             is StringLiteral -> interpreterState.println(abstractSyntaxTree.value)
             is StringConcatenation ->
@@ -34,7 +34,7 @@ class PrintlnParameterInterpreter : Interpreter<PrintlnAstParameter, PrintlnInte
                     is ConcatErrorResponse -> solve.concatError
                     is StringLiteralResponse -> interpreterState.println(solve.literal.value)
                 }
-            else -> PrintlnAstParameterNotAccepted()
+            else -> InterpreterError()
         }
 }
 class AssignationParameterInterpreter : Interpreter<AssignationAst, VariableInterpreterState> {
@@ -56,7 +56,7 @@ class AssignationParameterInterpreter : Interpreter<AssignationAst, VariableInte
                     is ConcatErrorResponse -> solve.concatError
                     is StringLiteralResponse -> this.interpret(AssignationAst(abstractSyntaxTree.leftValue(), solve.literal), interpreterState)
                 }
-            else -> AstStructureNotDefinedError()
+            else -> InterpreterError()
         }
 }
 

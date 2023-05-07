@@ -40,7 +40,7 @@ class MyPrintScriptApp : PrintScriptApp {
                         }
 
                         is Error -> {
-                            println(it.message)
+                            println(it)
                         }
                     }
                 }

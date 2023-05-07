@@ -4,12 +4,8 @@ import InterpreterError
 import InterpreterResponse
 import Literal
 import Type
-import VariableAlreadyExistsError
-import VariableAndLiteralTypeDoNotMatch
 import VariableInstance
-import VariableIsNotDefined
 import VariableNameNode
-import VariablesDontShareType
 
 interface VariableInterpreterState : InterpreterState {
 
@@ -31,7 +27,7 @@ data class VariableInterpreterStateI(
 
     override fun initializeVariable(variableInstance: VariableInstance): InterpreterResponse =
         if (isVariableDefined(variableInstance.variableNameNode)) {
-            VariableAlreadyExistsError()
+            InterpreterError()
         } else {
             this.copy(variableTypeMap = variableTypeMap + (variableInstance.variableNameNode.value() to variableInstance.type))
         }
@@ -40,15 +36,15 @@ data class VariableInterpreterStateI(
         getVariableType(key)
             ?.let {
                 if (it == value.type()) { add(key, value) } else {
-                    VariableAndLiteralTypeDoNotMatch()
+                    InterpreterError()
                 }
             }
-            ?: VariableIsNotDefined()
+            ?: InterpreterError()
 
     override fun setVariableValueToVariable(key: VariableNameNode, value: VariableNameNode): InterpreterResponse =
         getKeyValueIfVariablesAreSameType(key, value)
             ?.let { setLiteralToVariable(value, it) }
-            ?: VariablesDontShareType()
+            ?: InterpreterError()
 
     private fun add(
         key: VariableNameNode,
