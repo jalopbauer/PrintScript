@@ -10,13 +10,12 @@ interface Rule<T> {
 }
 interface ValidListOfTokensRule<T : ValidListOfTokens> : Rule<T>
 interface DeclarationRule : ValidListOfTokensRule<DeclarationValidListOfTokens> {
-    fun getType(tokenName: TokenName): String {
+    fun getType(tokenName: TokenName): String =
         when (tokenName) {
-            TokenName.STRING_TYPE -> return "string"
-            TokenName.NUMBER_TYPE -> return "number"
-            else -> return "error"
+            TokenName.STRING_TYPE -> "string"
+            TokenName.NUMBER_TYPE -> "number"
+            else -> "error"
         }
-    }
 }
 class AddSpaceBeforeAndAfterDeclaration : DeclarationRule {
     override fun apply(listOfTokens: DeclarationValidListOfTokens): String =
