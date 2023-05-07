@@ -76,9 +76,5 @@ class PreviousSpacingBetweenEveryToken : TokenListSpacingRule {
 
 class EnterAfterEndOfLine : Rule<String> {
     override fun apply(listOfTokens: String): String =
-        if (listOfTokens.last() == ';') {
-            listOfTokens + '\n'
-        } else {
-            listOfTokens
-        }
+        listOfTokens + '\n'
 }

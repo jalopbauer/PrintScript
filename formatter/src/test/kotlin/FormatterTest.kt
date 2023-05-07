@@ -26,7 +26,7 @@ class FormatterTest {
             """.trimIndent()
         )
         val sentenceBoth = formatterBoth.format(tokens)
-        assert(sentenceBoth == "let test : number;")
+        assert(sentenceBoth == "let test : number;\n")
     }
 
     @Test
@@ -44,7 +44,7 @@ class FormatterTest {
             """.trimIndent()
         )
         val sentenceAfter = formatterAfter.format(tokens)
-        assert(sentenceAfter == "let test: string;")
+        assert(sentenceAfter == "let test: string;\n")
     }
 
     @Test
@@ -62,7 +62,7 @@ class FormatterTest {
             """.trimIndent()
         )
         val sentenceBefore = formatterBefore.format(tokens)
-        assert(sentenceBefore == "let test :number;")
+        assert(sentenceBefore == "let test :number;\n")
     }
 
     @Test
@@ -79,7 +79,7 @@ class FormatterTest {
             """.trimIndent()
         )
         val sentence = formatter.format(tokens)
-        val correctSentence = "test = " + '"' + "Hello World" + '"' + ";"
+        val correctSentence = "test = " + '"' + "Hello World" + '"' + ";\n"
         assert(sentence == correctSentence)
     }
 
@@ -126,5 +126,18 @@ class FormatterTest {
         val sentence = formatter.format(tokens)
         val sentenceCorrect = "println(HelloWorld);"
         assert(sentence == sentenceCorrect)
+    }
+
+    fun oneSpaceBetweenEveryToken() {
+        val tokens = listOf(
+            VariableLiteralToken("test", 0, 0),
+            TokenWithoutValue(TokenName.ASSIGNATION, 0, 0),
+            StringLiteralToken("Hello World", 0, 0),
+            TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
+        )
+        val formatter = PrintScriptFormatterFactory().build("")
+        val sentence = formatter.format(tokens)
+        val correctSentence = "test = \"Hello World\"(;\n"
+        assert(sentence == correctSentence)
     }
 }

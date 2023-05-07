@@ -19,8 +19,10 @@ class PrintScriptFormatter(
 ) : Formatter {
     override fun format(listOfTokens: List<Token>): String {
         val initial: String? = null
-        return validListOfTokensFormatterList.fold(initial) { acc, oneFormatter ->
-            acc ?: oneFormatter.format(listOfTokens)
-        } ?: tokenListRule.apply(listOfTokens).let { EnterAfterEndOfLine().apply(it) }
+        return (
+            validListOfTokensFormatterList.fold(initial) { acc, oneFormatter ->
+                acc ?: oneFormatter.format(listOfTokens)
+            } ?: tokenListRule.apply(listOfTokens)
+            ).let { EnterAfterEndOfLine().apply(it) }
     }
 }
