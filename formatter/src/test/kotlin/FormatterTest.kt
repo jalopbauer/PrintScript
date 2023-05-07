@@ -93,7 +93,7 @@ class FormatterTest {
         )
         val formatter = ValidListOfTokensFormatter(PrintlnValidListOfTokensBuilder(), EnterBeforePrintln(OneSpaceBetweenEveryToken(), 1))
         val sentence = formatter.format(tokens)
-        val sentenceCorrect = "println(" + '"' + "Hello World" + '"' + ");"
+        val sentenceCorrect = "println(\"Hello World\");"
         assert(sentence == sentenceCorrect)
     }
 }
