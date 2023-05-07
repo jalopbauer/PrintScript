@@ -40,34 +40,28 @@ class AddSpaceBeforeAndAfterAssignation(private val tokenListSpacingRule: TokenL
 
 class EnterBeforePrintln(private val tokenListSpacingRule: TokenListSpacingRule, val amount: Int) :
     ValidListOfTokensRule<PrintlnValidListOfTokens> {
-    override fun apply(listOfTokens: PrintlnValidListOfTokens): String {
-        val printlnValidParameter = listOfTokens.printLnParameterValidListOfTokens
-        return "println(" + tokenListSpacingRule.apply(
-            when (printlnValidParameter) {
+    override fun apply(listOfTokens: PrintlnValidListOfTokens): String =
+        "println(" + tokenListSpacingRule.apply(
+            when (val printlnValidParameter = listOfTokens.printLnParameterValidListOfTokens) {
                 is NumberLiteralParameter -> listOf(printlnValidParameter.numberLiteralToken)
                 is StringLiteralOrStringConcatValidListOfTokens -> printlnValidParameter.stringOrConcat
                 is VariableParameter -> listOf(printlnValidParameter.variableToken)
             }
         ).padStart(amount, '\n') + ");"
-    }
 }
 
 interface TokenListSpacingRule : Rule<List<Token>>
 class OneSpaceBetweenEveryToken : TokenListSpacingRule {
-    override fun apply(listOfTokens: List<Token>): String {
-        var list = mutableListOf<String>()
-        for (token in listOfTokens) {
-            when (token) {
-                is StringLiteralToken -> list.add(token.value)
-                is IntNumberLiteralToken -> list.add(token.value.toString())
-                is DoubleNumberLiteralToken -> list.add(token.value.toString())
-                is VariableLiteralToken -> list.add(token.value)
+    override fun apply(listOfTokens: List<Token>): String =
+        listOfTokens.joinToString(separator = " ") {
+            when (it) {
+                is StringLiteralToken -> "\"${it.value}\""
+                is IntNumberLiteralToken -> it.value.toString()
+                is DoubleNumberLiteralToken -> it.value.toString()
+                is VariableLiteralToken -> it.value
+                else -> it.toString()
             }
         }
-        listOfTokens.joinToString(separator = " ")
-        val sentence = '"' + list.joinToString(separator = " ") + '"'
-        return sentence
-    }
 }
 
 class PreviousSpacingBetweenEveryToken : TokenListSpacingRule {
