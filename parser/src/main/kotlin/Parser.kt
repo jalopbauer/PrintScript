@@ -2,6 +2,26 @@ import token.Token
 interface Parser<T> {
     fun parse(tokensInCodeBlock: List<Token>): T?
 }
+class PrintScriptParser : Parser<AbstractSyntaxTree> {
+
+    private val parsers = listOf(
+        PrintlnParser(),
+        DeclarationParser(),
+        AssignationParser(),
+        DeclarationAssignationParser()
+    )
+    override fun parse(tokensInCodeBlock: List<Token>): AbstractSyntaxTree? =
+        ListParser(parsers).parse(tokensInCodeBlock)
+}
+
+class ListParser(private val parsers: List<Parser<AbstractSyntaxTree>>) : Parser<AbstractSyntaxTree> {
+    override fun parse(tokensInCodeBlock: List<Token>): AbstractSyntaxTree? {
+        val assignationResult: AbstractSyntaxTree? = null
+        return parsers.fold(assignationResult) { acc, astParser ->
+            acc ?: astParser.parse(tokensInCodeBlock)
+        }
+    }
+}
 
 interface AstParser<T : ValidListOfTokens> : Parser<AbstractSyntaxTree> {
     override fun parse(tokensInCodeBlock: List<Token>): AbstractSyntaxTree? =

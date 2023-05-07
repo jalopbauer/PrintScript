@@ -21,7 +21,7 @@ class ParserImplTest {
             TokenWithoutValue(TokenName.NUMBER_TYPE, 0, 0),
             TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
         )
-        val declarationParser = DeclarationParser()
+        val declarationParser = PrintScriptParser()
         val declarationAst = declarationParser.parse(declaration)
 
         when (declarationAst) {
@@ -42,7 +42,7 @@ class ParserImplTest {
             TokenWithoutValue(TokenName.NUMBER_TYPE, 0, 0),
             TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
         )
-        val declarationParser = DeclarationParser()
+        val declarationParser = PrintScriptParser()
         val declarationAst = declarationParser.parse(declaration)
 
         assert(declarationAst !is DeclarationAst)
@@ -57,7 +57,7 @@ class ParserImplTest {
             TokenWithoutValue(TokenName.STRING_TYPE, 0, 0),
             TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
         )
-        val declarationParser = DeclarationParser()
+        val declarationParser = PrintScriptParser()
         val declarationAst = declarationParser.parse(declaration)
 
         when (declarationAst) {
@@ -77,7 +77,7 @@ class ParserImplTest {
             StringLiteralToken("Hello World", 0, 0),
             TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
         )
-        val assignationParser = AssignationParser()
+        val assignationParser = PrintScriptParser()
         val assignationAst = assignationParser.parse(assignation)
 
         when (assignationAst) {
@@ -99,7 +99,7 @@ class ParserImplTest {
             StringLiteralToken("World", 0, 0),
             TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
         )
-        val assignationParser = AssignationParser()
+        val assignationParser = PrintScriptParser()
         val assignationAst = assignationParser.parse(assignation)
 
         when (assignationAst) {
@@ -118,7 +118,7 @@ class ParserImplTest {
             IntNumberLiteralToken(2, 0, 0),
             TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
         )
-        val assignationParser = AssignationParser()
+        val assignationParser = PrintScriptParser()
         val assignationAst = assignationParser.parse(assignation)
 
         assert(assignationAst is AssignationAst)
@@ -136,7 +136,7 @@ class ParserImplTest {
             IntNumberLiteralToken(3, 0, 0),
             TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
         )
-        val assignationParser = AssignationParser()
+        val assignationParser = PrintScriptParser()
         val assignationAst = assignationParser.parse(assignation)
 
         assert(assignationAst is AssignationAst)
@@ -153,7 +153,7 @@ class ParserImplTest {
             StringLiteralToken("Hello World", 0, 0),
             TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
         )
-        val declAssiParser = DeclarationAssignationParser()
+        val declAssiParser = PrintScriptParser()
         val declAssiAst = declAssiParser.parse(declAssi)
 
         when (declAssiAst) {
@@ -177,7 +177,7 @@ class ParserImplTest {
             IntNumberLiteralToken(3, 0, 0),
             TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
         )
-        val declAssiParser = DeclarationAssignationParser()
+        val declAssiParser = PrintScriptParser()
         val declAssiAst = declAssiParser.parse(declAssi)
 
         when (declAssiAst) {
@@ -201,7 +201,7 @@ class ParserImplTest {
             IntNumberLiteralToken(3, 0, 0),
             TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
         )
-        val declAssiParser = DeclarationAssignationParser()
+        val declAssiParser = PrintScriptParser()
         val declAssiAst = declAssiParser.parse(declAssi)
 
         when (declAssiAst) {
@@ -239,7 +239,7 @@ class ParserImplTest {
             ClosedBracketToken(TokenName.RIGHT_PARENTHESIS, 0, 0),
             TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
         )
-        val printParser = PrintlnParser()
+        val printParser = PrintScriptParser()
         val printAst = printParser.parse(print)
 
         when (printAst) {
