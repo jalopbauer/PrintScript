@@ -1,4 +1,7 @@
 import lexer.LexerSentence
+import state.PrintScriptInterpreterState
+import state.PrintScriptInterpreterStateI
+import token.Token
 import java.io.InputStream
 
 interface PrintScriptApp {
@@ -9,9 +12,33 @@ interface PrintScriptApp {
 
 class MyPrintScriptApp : PrintScriptApp {
     private val lexer = LexerSentence()
-//    private val printScriptParser
+    private val parser = PrintScriptParser()
+    private val interpreter = PrintScriptInterpreter()
+    private var interpreterState: PrintScriptInterpreterState = PrintScriptInterpreterStateI()
 
-    override fun interpret(inputStream: InputStream) {
+    override fun interpret(inputStream: InputStream) =
+        loop(
+            inputStream
+        ) { tokens ->
+            parser.parse(tokens)
+                ?.let { interpreter.interpret(it, interpreterState) }
+                .let {
+                    when (it) {
+                        is PrintScriptInterpreterState -> {
+                            interpreterState = it
+                        }
+
+                        is Error -> {
+                            println(it.message)
+                        }
+                    }
+                }
+        }
+
+    private fun loop(
+        inputStream: InputStream,
+        lambda: (tokens: List<Token>) -> Unit
+    ) {
         var read = inputStream.read()
         var list = ""
         var line = 0
@@ -19,8 +46,8 @@ class MyPrintScriptApp : PrintScriptApp {
             val char = read.toChar()
             list += char
             if (char == ';') {
-                val buildTokenList = lexer.buildTokenList(Sentence(list, line))
-
+                lexer.buildTokenList(Sentence(list, line))
+                    .let { lambda.invoke(it) }
                 line += 1
             }
             read = inputStream.read()

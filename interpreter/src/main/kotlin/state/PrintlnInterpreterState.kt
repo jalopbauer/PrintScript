@@ -10,7 +10,7 @@ interface PrintlnInterpreterState : InterpreterState, VariableInterpreterState {
     fun printList(): String
 }
 
-data class PrintlnInterpreterStateI(val printList: List<String> = listOf(), val variableInterpreterState: VariableInterpreterState) : PrintlnInterpreterState {
+data class PrintlnInterpreterStateI(val printList: List<String> = listOf(), val variableInterpreterState: VariableInterpreterState = VariableInterpreterStateI()) : PrintlnInterpreterState {
     override fun println(value: String): InterpreterResponse =
         this.copy(printList = printList + value)
 

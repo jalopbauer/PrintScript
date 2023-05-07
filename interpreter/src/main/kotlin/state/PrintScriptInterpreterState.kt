@@ -7,7 +7,7 @@ import VariableNameNode
 
 interface PrintScriptInterpreterState : InterpreterState, PrintlnInterpreterState, VariableInterpreterState
 
-data class PrintScriptInterpreterStateI(private val printlnInterpreterState: PrintlnInterpreterState) : PrintScriptInterpreterState {
+data class PrintScriptInterpreterStateI(private val printlnInterpreterState: PrintlnInterpreterState = PrintlnInterpreterStateI()) : PrintScriptInterpreterState {
     override fun println(value: String): InterpreterResponse =
         printlnInterpreterState.println(value).let {
             when (it) {
