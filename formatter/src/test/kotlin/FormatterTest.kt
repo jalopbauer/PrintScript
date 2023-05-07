@@ -1,5 +1,6 @@
 import org.junit.jupiter.api.Test
 import token.ClosedBracketToken
+import token.IntNumberLiteralToken
 import token.OpenBracketToken
 import token.StringLiteralToken
 import token.Token
@@ -83,7 +84,7 @@ class FormatterTest {
     }
 
     @Test
-    fun printFormatterWorks() {
+    fun printStringParameterFormatter() {
         val tokens = listOf(
             TokenWithoutValue(TokenName.PRINT, 0, 0),
             OpenBracketToken(TokenName.LEFT_PARENTHESIS, 0, 0),
@@ -94,6 +95,36 @@ class FormatterTest {
         val formatter = ValidListOfTokensFormatter(PrintlnValidListOfTokensBuilder(), EnterBeforePrintln(OneSpaceBetweenEveryToken(), 1))
         val sentence = formatter.format(tokens)
         val sentenceCorrect = "println(\"Hello World\");"
+        assert(sentence == sentenceCorrect)
+    }
+
+    @Test
+    fun printNumberParameterFormatter() {
+        val tokens = listOf(
+            TokenWithoutValue(TokenName.PRINT, 0, 0),
+            OpenBracketToken(TokenName.LEFT_PARENTHESIS, 0, 0),
+            IntNumberLiteralToken(1, 0, 0),
+            ClosedBracketToken(TokenName.RIGHT_PARENTHESIS, 0, 0),
+            TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
+        )
+        val formatter = ValidListOfTokensFormatter(PrintlnValidListOfTokensBuilder(), EnterBeforePrintln(OneSpaceBetweenEveryToken(), 1))
+        val sentence = formatter.format(tokens)
+        val sentenceCorrect = "println(1);"
+        assert(sentence == sentenceCorrect)
+    }
+
+    @Test
+    fun printVariableParameterFormatter() {
+        val tokens = listOf(
+            TokenWithoutValue(TokenName.PRINT, 0, 0),
+            OpenBracketToken(TokenName.LEFT_PARENTHESIS, 0, 0),
+            VariableLiteralToken("HelloWorld", 0, 0),
+            ClosedBracketToken(TokenName.RIGHT_PARENTHESIS, 0, 0),
+            TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
+        )
+        val formatter = ValidListOfTokensFormatter(PrintlnValidListOfTokensBuilder(), EnterBeforePrintln(OneSpaceBetweenEveryToken(), 1))
+        val sentence = formatter.format(tokens)
+        val sentenceCorrect = "println(HelloWorld);"
         assert(sentence == sentenceCorrect)
     }
 }
