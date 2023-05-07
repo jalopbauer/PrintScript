@@ -126,7 +126,7 @@ class AssignationInterpreterTest {
     }
 
     @Test
-    fun testSetOperationResultToVariable() {
+    fun testSetSumResultToVariable() {
         val variableToBeSetName = "variableToBeSet"
         val variableToBeSet = VariableNameNode(variableToBeSetName)
 
@@ -134,6 +134,88 @@ class AssignationInterpreterTest {
         val rightNumberValue = 420
         val expectedResult = leftNumberValue + rightNumberValue
         val operation = Operation(IntNumberLiteral(leftNumberValue), Sum(), IntNumberLiteral(rightNumberValue))
+
+        val assignationInterpreterState = getState(
+            VariableInterpreterStateI(
+                variableTypeMap = mapOf(
+                    variableToBeSetName to IntType
+                )
+            )
+        )
+
+        val assignationAst = AssignationAst(
+            variableToBeSet,
+            operation
+        )
+
+        val interpreter = PrintScriptInterpreter()
+
+        val interpreterResponse = interpreter.interpret(
+            assignationAst,
+            assignationInterpreterState
+        )
+
+        assert(interpreterResponse is PrintScriptInterpreterState)
+        (interpreterResponse as PrintScriptInterpreterState).get(variableToBeSet)
+            ?.let {
+                assert(it is IntNumberLiteral)
+                assertEquals(expectedResult, (it as IntNumberLiteral).number)
+            }
+            ?: {
+                assert(false)
+            }
+    }
+
+    @Test
+    fun testSetSubResultToVariable() {
+        val variableToBeSetName = "variableToBeSet"
+        val variableToBeSet = VariableNameNode(variableToBeSetName)
+
+        val leftNumberValue = 69
+        val rightNumberValue = 420
+        val expectedResult = leftNumberValue - rightNumberValue
+        val operation = Operation(IntNumberLiteral(leftNumberValue), Sub(), IntNumberLiteral(rightNumberValue))
+
+        val assignationInterpreterState = getState(
+            VariableInterpreterStateI(
+                variableTypeMap = mapOf(
+                    variableToBeSetName to IntType
+                )
+            )
+        )
+
+        val assignationAst = AssignationAst(
+            variableToBeSet,
+            operation
+        )
+
+        val interpreter = PrintScriptInterpreter()
+
+        val interpreterResponse = interpreter.interpret(
+            assignationAst,
+            assignationInterpreterState
+        )
+
+        assert(interpreterResponse is PrintScriptInterpreterState)
+        (interpreterResponse as PrintScriptInterpreterState).get(variableToBeSet)
+            ?.let {
+                assert(it is IntNumberLiteral)
+                assertEquals(expectedResult, (it as IntNumberLiteral).number)
+            }
+            ?: {
+                assert(false)
+            }
+    }
+
+    @Test
+    fun testSetMultResultToVariable() {
+        val variableToBeSetName = "variableToBeSet"
+        val variableToBeSet = VariableNameNode(variableToBeSetName)
+
+        val leftNumberValue = 69
+        val rightNumberValue = 420
+        val expectedResult = leftNumberValue * rightNumberValue
+        val operation = Operation(IntNumberLiteral(leftNumberValue), Mult(), IntNumberLiteral(rightNumberValue))
 
         val assignationInterpreterState = getState(
             VariableInterpreterStateI(
