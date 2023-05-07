@@ -2,7 +2,7 @@ interface FormatterFactory {
     fun build(configString: String): Formatter?
 }
 
-class PrintScriptFormatterFactory() : FormatterFactory {
+class PrintScriptFormatterFactory : FormatterFactory {
     override fun build(configString: String): Formatter {
         val tokenListSpacingRule = TokenListSpacingRuleFactory().build(configString)
         val list: List<ValidListOfTokensFormatter<*>> = listOf()

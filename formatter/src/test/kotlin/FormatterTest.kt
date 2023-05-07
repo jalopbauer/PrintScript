@@ -10,7 +10,7 @@ import token.VariableLiteralToken
 class FormatterTest {
 
     @Test
-    fun declarationFormatterWorksInThreeDifferentWays() {
+    fun declarationFormatterSpacingBeforeAndAfterTest() {
         val tokens: List<Token> = listOf(
             TokenWithoutValue(TokenName.LET, 0, 0),
             VariableLiteralToken("test", 0, 4),
@@ -18,17 +18,50 @@ class FormatterTest {
             TokenWithoutValue(TokenName.NUMBER_TYPE, 0, 11),
             TokenWithoutValue(TokenName.SEMICOLON, 0, 17)
         )
-        val formatterBefore = ValidListOfTokensFormatter(DeclarationValidListOfTokensBuilder(), AddSpaceBeforeDeclaration())
-        val sentenceBefore = formatterBefore.format(tokens)
-        assert(sentenceBefore == "let test :number;")
 
-        val formatterAfter = ValidListOfTokensFormatter(DeclarationValidListOfTokensBuilder(), AddSpaceAfterDeclaration())
-        val sentenceAfter = formatterAfter.format(tokens)
-        assert(sentenceAfter == "let test: number;")
-
-        val formatterBoth = ValidListOfTokensFormatter(DeclarationValidListOfTokensBuilder(), AddSpaceBeforeAndAfterDeclaration())
+        val formatterBoth = PrintScriptFormatterFactory().build(
+            """
+                declaration-spacing-both
+            """.trimIndent()
+        )
         val sentenceBoth = formatterBoth.format(tokens)
         assert(sentenceBoth == "let test : number;")
+    }
+
+    @Test
+    fun declarationFormatterSpacingAfterTest() {
+        val tokens: List<Token> = listOf(
+            TokenWithoutValue(TokenName.LET, 0, 0),
+            VariableLiteralToken("test", 0, 4),
+            TokenWithoutValue(TokenName.DECLARATION, 0, 9),
+            TokenWithoutValue(TokenName.STRING_TYPE, 0, 11),
+            TokenWithoutValue(TokenName.SEMICOLON, 0, 17)
+        )
+        val formatterAfter = PrintScriptFormatterFactory().build(
+            """
+                    declaration-spacing-after
+            """.trimIndent()
+        )
+        val sentenceAfter = formatterAfter.format(tokens)
+        assert(sentenceAfter == "let test: string;")
+    }
+
+    @Test
+    fun declarationFormatterSpacingBeforeTest() {
+        val tokens: List<Token> = listOf(
+            TokenWithoutValue(TokenName.LET, 0, 0),
+            VariableLiteralToken("test", 0, 4),
+            TokenWithoutValue(TokenName.DECLARATION, 0, 9),
+            TokenWithoutValue(TokenName.NUMBER_TYPE, 0, 11),
+            TokenWithoutValue(TokenName.SEMICOLON, 0, 17)
+        )
+        val formatterBefore = PrintScriptFormatterFactory().build(
+            """
+                    declaration-spacing-before
+            """.trimIndent()
+        )
+        val sentenceBefore = formatterBefore.format(tokens)
+        assert(sentenceBefore == "let test :number;")
     }
 
     @Test
@@ -39,7 +72,11 @@ class FormatterTest {
             StringLiteralToken("Hello World", 0, 0),
             TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
         )
-        val formatter = ValidListOfTokensFormatter(AssignationValidListOfTokensBuilder(), AddSpaceBeforeAndAfterAssignation(OneSpaceBetweenEveryToken()))
+        val formatter = PrintScriptFormatterFactory().build(
+            """
+                assignation-spacing-both
+            """.trimIndent()
+        )
         val sentence = formatter.format(tokens)
         val correctSentence = "test = " + '"' + "Hello World" + '"' + ";"
         assert(sentence == correctSentence)
