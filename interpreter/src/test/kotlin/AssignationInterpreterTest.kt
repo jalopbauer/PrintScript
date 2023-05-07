@@ -1,5 +1,6 @@
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import state.PrintScriptInterpreterState
 import state.PrintScriptInterpreterStateI
 import state.PrintlnInterpreterStateI
 import state.VariableInterpreterStateI
@@ -122,5 +123,46 @@ class AssignationInterpreterTest {
             println(interpreterResponse)
             assert(false)
         }
+    }
+
+    @Test
+    fun testSetOperationResultToVariable() {
+        val variableToBeSetName = "variableToBeSet"
+        val variableToBeSet = VariableNameNode(variableToBeSetName)
+
+        val leftNumberValue = 69
+        val rightNumberValue = 420
+        val expectedResult = leftNumberValue + rightNumberValue
+        val operation = Operation(IntNumberLiteral(leftNumberValue), Sum(), IntNumberLiteral(rightNumberValue))
+
+        val assignationInterpreterState = getState(
+            VariableInterpreterStateI(
+                variableTypeMap = mapOf(
+                    variableToBeSetName to IntType
+                )
+            )
+        )
+
+        val assignationAst = AssignationAst(
+            variableToBeSet,
+            operation
+        )
+
+        val interpreter = PrintScriptInterpreter()
+
+        val interpreterResponse = interpreter.interpret(
+            assignationAst,
+            assignationInterpreterState
+        )
+
+        assert(interpreterResponse is PrintScriptInterpreterState)
+        (interpreterResponse as PrintScriptInterpreterState).get(variableToBeSet)
+            ?.let {
+                assert(it is IntNumberLiteral)
+                assertEquals(expectedResult, (it as IntNumberLiteral).number)
+            }
+            ?: {
+                assert(false)
+            }
     }
 }
