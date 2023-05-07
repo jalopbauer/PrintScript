@@ -14,6 +14,9 @@ dependencies {
     implementation project(path: ':parser')
     implementation project(path: ':ast')
     implementation project(path: ':validlistoftokens')
+    implementation project(path: ':interpreter')
+    implementation project(path: ':formatter')
+    implementation project(path: ':staticcodeanalyser')
 }
 
 application {
