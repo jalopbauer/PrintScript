@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import token.ClosedBracketToken
 import token.IntNumberLiteralToken
@@ -128,6 +129,7 @@ class FormatterTest {
         assert(sentence == sentenceCorrect)
     }
 
+    @Test
     fun oneSpaceBetweenEveryToken() {
         val tokens = listOf(
             VariableLiteralToken("test", 0, 0),
@@ -137,7 +139,21 @@ class FormatterTest {
         )
         val formatter = PrintScriptFormatterFactory().build("")
         val sentence = formatter.format(tokens)
-        val correctSentence = "test = \"Hello World\"(;\n"
-        assert(sentence == correctSentence)
+        val correctSentence = "test = \"Hello World\" ;\n"
+        assertEquals(correctSentence, sentence)
+    }
+
+    @Test
+    fun previousSpacingBetweenEveryToken() {
+        val tokens = listOf(
+            VariableLiteralToken("test", 0, 0),
+            TokenWithoutValue(TokenName.ASSIGNATION, 0, 4),
+            StringLiteralToken("Hello World", 0, 5),
+            TokenWithoutValue(TokenName.SEMICOLON, 0, 18)
+        )
+        val formatter = PrintScriptFormatterFactory().build("no-conventional")
+        val sentence = formatter.format(tokens)
+        val correctSentence = "test=\"Hello World\";\n"
+        assertEquals(correctSentence, sentence)
     }
 }

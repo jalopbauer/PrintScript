@@ -54,22 +54,19 @@ interface TokenListSpacingRule : Rule<List<Token>>
 class OneSpaceBetweenEveryToken : TokenListSpacingRule {
     override fun apply(listOfTokens: List<Token>): String =
         listOfTokens.joinToString(separator = " ") {
-            when (it) {
-                is StringLiteralToken -> "\"${it.value}\""
-                is IntNumberLiteralToken -> it.value.toString()
-                is DoubleNumberLiteralToken -> it.value.toString()
-                is VariableLiteralToken -> it.value
-                else -> it.toString()
-            }
+            TokenToString().apply(it)
         }
 }
 
 class PreviousSpacingBetweenEveryToken : TokenListSpacingRule {
     override fun apply(listOfTokens: List<Token>): String =
-        listOfTokens.drop(1).fold(Pair("", 0)) { (string, lastIndex), token ->
-            val tokenValueInStringForm = token.toString()
-            val newString = string + tokenValueInStringForm.padStart(token.position() - lastIndex, ' ')
-            val newLastIndex = lastIndex + tokenValueInStringForm.length
+
+        listOfTokens.fold(Pair("", 0)) { (string, lastIndex), token ->
+            val diff = token.position() - lastIndex
+            val tokenValueInStringForm = TokenToString().apply(token)
+            val newString = string + tokenValueInStringForm.padStart(diff, ' ')
+
+            val newLastIndex = newString.length
             Pair(newString, newLastIndex)
         }.first
 }
@@ -77,4 +74,21 @@ class PreviousSpacingBetweenEveryToken : TokenListSpacingRule {
 class EnterAfterEndOfLine : Rule<String> {
     override fun apply(listOfTokens: String): String =
         listOfTokens + '\n'
+}
+
+class TokenToString : Rule<Token> {
+    override fun apply(listOfTokens: Token): String =
+        when (listOfTokens) {
+            is StringLiteralToken -> "\"${listOfTokens.value}\""
+            is IntNumberLiteralToken -> listOfTokens.value.toString()
+            is DoubleNumberLiteralToken -> listOfTokens.value.toString()
+            is VariableLiteralToken -> listOfTokens.value
+            else -> {
+                when (listOfTokens.tokenName()) {
+                    TokenName.ASSIGNATION -> "="
+                    TokenName.SEMICOLON -> ";"
+                    else -> "error"
+                }
+            }
+        }
 }
