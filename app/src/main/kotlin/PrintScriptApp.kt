@@ -15,6 +15,12 @@ class MyPrintScriptApp : PrintScriptApp {
     private val parser = PrintScriptParser()
     private val interpreter = PrintScriptInterpreter()
     private var interpreterState: PrintScriptInterpreterState = PrintScriptInterpreterStateI()
+    private val formatter = PrintScriptFormatterFactory()
+        .build(
+            """
+            
+            """.trimIndent()
+        )
 
     override fun interpret(inputStream: InputStream) =
         loop(
@@ -35,6 +41,13 @@ class MyPrintScriptApp : PrintScriptApp {
                 }
         }
 
+    override fun format(inputStream: InputStream) =
+        loop(inputStream) { formatter.format(it) }
+
+    override fun lint(inputStream: InputStream) {
+        TODO("Not yet implemented")
+    }
+
     private fun loop(
         inputStream: InputStream,
         lambda: (tokens: List<Token>) -> Unit
@@ -52,13 +65,5 @@ class MyPrintScriptApp : PrintScriptApp {
             }
             read = inputStream.read()
         }
-    }
-
-    override fun format(inputStream: InputStream) {
-        TODO("Not yet implemented")
-    }
-
-    override fun lint(inputStream: InputStream) {
-        TODO("Not yet implemented")
     }
 }
