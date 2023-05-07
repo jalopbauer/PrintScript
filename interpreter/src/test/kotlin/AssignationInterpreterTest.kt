@@ -167,7 +167,7 @@ class AssignationInterpreterTest {
     }
 
     @Test
-    fun testSetConcatenationResultToVariable() {
+    fun testSetConcatenationStringResultToVariable() {
         val variableToBeSetName = "variableToBeSet"
         val variableToBeSet = VariableNameNode(variableToBeSetName)
 
@@ -175,6 +175,88 @@ class AssignationInterpreterTest {
         val rightNumberValue = "420"
         val expectedResult = leftNumberValue + rightNumberValue
         val operation = StringConcatenation(listOf(StringLiteral(leftNumberValue), StringLiteral(rightNumberValue)))
+
+        val assignationInterpreterState = getState(
+            VariableInterpreterStateI(
+                variableTypeMap = mapOf(
+                    variableToBeSetName to StringType
+                )
+            )
+        )
+
+        val assignationAst = AssignationAst(
+            variableToBeSet,
+            operation
+        )
+
+        val interpreter = PrintScriptInterpreter()
+
+        val interpreterResponse = interpreter.interpret(
+            assignationAst,
+            assignationInterpreterState
+        )
+
+        assert(interpreterResponse is PrintScriptInterpreterState)
+        (interpreterResponse as PrintScriptInterpreterState).get(variableToBeSet)
+            ?.let {
+                assert(it is StringLiteral)
+                assertEquals(expectedResult, (it as StringLiteral).value)
+            }
+            ?: {
+                assert(false)
+            }
+    }
+
+    @Test
+    fun testSetConcatenationStringNumberResultToVariable() {
+        val variableToBeSetName = "variableToBeSet"
+        val variableToBeSet = VariableNameNode(variableToBeSetName)
+
+        val leftNumberValue = "69"
+        val rightNumberValue = 420
+        val expectedResult = leftNumberValue + rightNumberValue
+        val operation = StringConcatenation(listOf(StringLiteral(leftNumberValue), IntNumberLiteral(rightNumberValue)))
+
+        val assignationInterpreterState = getState(
+            VariableInterpreterStateI(
+                variableTypeMap = mapOf(
+                    variableToBeSetName to StringType
+                )
+            )
+        )
+
+        val assignationAst = AssignationAst(
+            variableToBeSet,
+            operation
+        )
+
+        val interpreter = PrintScriptInterpreter()
+
+        val interpreterResponse = interpreter.interpret(
+            assignationAst,
+            assignationInterpreterState
+        )
+
+        assert(interpreterResponse is PrintScriptInterpreterState)
+        (interpreterResponse as PrintScriptInterpreterState).get(variableToBeSet)
+            ?.let {
+                assert(it is StringLiteral)
+                assertEquals(expectedResult, (it as StringLiteral).value)
+            }
+            ?: {
+                assert(false)
+            }
+    }
+
+    @Test
+    fun testSetConcatenationNumberNumberResultToVariable() {
+        val variableToBeSetName = "variableToBeSet"
+        val variableToBeSet = VariableNameNode(variableToBeSetName)
+
+        val leftNumberValue = 69
+        val rightNumberValue = 420
+        val expectedResult = "$leftNumberValue$rightNumberValue"
+        val operation = StringConcatenation(listOf(IntNumberLiteral(leftNumberValue), IntNumberLiteral(rightNumberValue)))
 
         val assignationInterpreterState = getState(
             VariableInterpreterStateI(

@@ -41,7 +41,7 @@ class ConcatMapperSolver : ConcatenationParameterSolver<ConcatenationParameter> 
             is DoubleNumberLiteral -> NumberConcatSolver().solve(concatenationParameter, variableInterpreterState)
             is IntNumberLiteral -> NumberConcatSolver().solve(concatenationParameter, variableInterpreterState)
             is VariableNameNode -> VariableConcatSolver().solve(concatenationParameter, variableInterpreterState)
-            is StringLiteral -> StringLiteralResponse(concatenationParameter)
+            is StringLiteral -> StringConcatSolver().solve(concatenationParameter, variableInterpreterState)
             else -> ConcatErrorResponse(InterpreterError())
         }
 }
