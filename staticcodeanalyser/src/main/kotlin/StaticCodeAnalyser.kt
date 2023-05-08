@@ -24,6 +24,6 @@ class PrintScriptStaticCodeAnalyser(
     override fun format(listOfTokens: List<Token>): String? =
         oneFormatterList.mapNotNull { it.format(listOfTokens) }
             .let {
-                if (it.isEmpty()) null else it.joinToString { "\n" }
+                if (it.isEmpty()) null else it.joinToString("\n")
             }
 }

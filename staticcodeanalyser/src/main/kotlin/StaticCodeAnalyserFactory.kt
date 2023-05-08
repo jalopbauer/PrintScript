@@ -3,7 +3,7 @@
 interface StaticCodeAnalyserFactory {
     fun build(configString: String): StaticCodeAnalyser?
 }
-class PrintScriptStaticCodeAnalyserFactory() : StaticCodeAnalyserFactory {
+class PrintScriptStaticCodeAnalyserFactory : StaticCodeAnalyserFactory {
     override fun build(configString: String): StaticCodeAnalyser {
         val list = listOf(
             RuleStaticCodeAnalyser(CheckVariableFactory().build(configString))
