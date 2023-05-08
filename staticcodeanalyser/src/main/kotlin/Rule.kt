@@ -25,7 +25,7 @@ class SnakeCaseRule : VariableRule {
     override fun apply(listOfTokens: Token): String? =
         when {
             listOfTokens is VariableLiteralToken &&
-                !Regex("[a-zA-Z]+(_[a-zA-Z]+)*").matches(listOfTokens.value) -> "Variable ${listOfTokens.value} is not snake-case"
+                !Regex("[a-z]+(?:_[a-z]+)*").matches(listOfTokens.value) -> "Variable ${listOfTokens.value} is not snake_case"
             else -> null
         }
 }
@@ -33,7 +33,7 @@ class CamelCaseRule : VariableRule {
     override fun apply(listOfTokens: Token): String? =
         when {
             listOfTokens is VariableLiteralToken &&
-                !Regex("/[a-z]+|[0-9]+|(?:[A-Z][a-z]+)|(?:[A-Z]+(?=(?:[A-Z][a-z])|[^AZa-z]|[\$\\d\\n]))/g").matches(listOfTokens.value) -> "Variable ${listOfTokens.value} is not camelCase"
+                !Regex("[a-z]+(?:[A-Z][a-z]*)*").matches(listOfTokens.value) -> "Variable ${listOfTokens.value} is not camelCase"
             else -> null
         }
 }
