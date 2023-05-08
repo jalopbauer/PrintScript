@@ -1,8 +1,13 @@
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import token.ClosedBracketToken
 import token.IntNumberLiteralToken
+import token.OpenBracketToken
+import token.OperatorHighToken
+import token.StringLiteralToken
+import token.TokenName
+import token.TokenWithoutValue
 import token.VariableLiteralToken
-
 class ScaTest {
     @Test
     fun onlyCamelCaseSendSnakeCaseShowsError() {
@@ -52,5 +57,61 @@ class ScaTest {
         )
         val scaCamel = PrintScriptStaticCodeAnalyserFactory().build("snake-case-variable")
         assertEquals(null, scaCamel.format(tokensCamel))
+    }
+
+    @Test
+    fun printLnStringLiteralValid() {
+        val tokens = listOf(
+            TokenWithoutValue(TokenName.PRINT, 0, 0),
+            OpenBracketToken(TokenName.LEFT_PARENTHESIS, 0, 0),
+            StringLiteralToken("HelloWorld", 0, 0),
+            ClosedBracketToken(TokenName.RIGHT_PARENTHESIS, 0, 0),
+            TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
+        )
+        val scaCamel = PrintScriptStaticCodeAnalyserFactory().build("allow-literals-or-variable-only")
+        assertEquals(null, scaCamel.format(tokens))
+    }
+
+    @Test
+    fun printLnNumberLiteralValid() {
+        val tokens = listOf(
+            TokenWithoutValue(TokenName.PRINT, 0, 0),
+            OpenBracketToken(TokenName.LEFT_PARENTHESIS, 0, 0),
+            IntNumberLiteralToken(1, 0, 0),
+            ClosedBracketToken(TokenName.RIGHT_PARENTHESIS, 0, 0),
+            TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
+        )
+        val scaCamel = PrintScriptStaticCodeAnalyserFactory().build("allow-literals-or-variable-only")
+        assertEquals(null, scaCamel.format(tokens))
+    }
+
+    @Test
+    fun printLnStringConcatenationLiteralNotValid() {
+        val tokens = listOf(
+            TokenWithoutValue(TokenName.PRINT, 0, 0),
+            OpenBracketToken(TokenName.LEFT_PARENTHESIS, 0, 0),
+            StringLiteralToken("HelloWorld", 0, 0),
+            OperatorHighToken(TokenName.SUM, 0, 0),
+            StringLiteralToken("HelloWorld", 0, 0),
+            ClosedBracketToken(TokenName.RIGHT_PARENTHESIS, 0, 0),
+            TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
+        )
+        val scaCamel = PrintScriptStaticCodeAnalyserFactory().build("allow-literals-or-variable-only")
+        assertEquals("StringConcat not valid", scaCamel.format(tokens))
+    }
+
+    @Test
+    fun printLnStringConcatenationLiteralValid() {
+        val tokens = listOf(
+            TokenWithoutValue(TokenName.PRINT, 0, 0),
+            OpenBracketToken(TokenName.LEFT_PARENTHESIS, 0, 0),
+            StringLiteralToken("HelloWorld", 0, 0),
+            OperatorHighToken(TokenName.SUM, 0, 0),
+            StringLiteralToken("HelloWorld", 0, 0),
+            ClosedBracketToken(TokenName.RIGHT_PARENTHESIS, 0, 0),
+            TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
+        )
+        val scaCamel = PrintScriptStaticCodeAnalyserFactory().build("")
+        assertEquals(null, scaCamel.format(tokens))
     }
 }
