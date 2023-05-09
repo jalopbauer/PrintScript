@@ -1,10 +1,10 @@
-import token.ClosedBracketToken
 import token.DoubleNumberLiteralToken
 import token.IntNumberLiteralToken
+import token.LeftParenthesisToken
 import token.NumberLiteralToken
-import token.OpenBracketToken
 import token.OperatorHighToken
 import token.OperatorLowToken
+import token.RightParenthesisToken
 import token.StringLiteralToken
 import token.Token
 import token.TokenName
@@ -20,8 +20,8 @@ class ShuntingYardImpl : ShuntingYard {
                 is VariableLiteralToken -> queue.add(token)
                 is OperatorHighToken -> checkOperators(stack, queue, token)
                 is OperatorLowToken -> stack.add(token)
-                is OpenBracketToken -> stack.add(token)
-                is ClosedBracketToken -> findBracket(stack, queue)
+                is LeftParenthesisToken -> stack.add(token)
+                is RightParenthesisToken -> findBracket(stack, queue)
             }
         }
         // los operadores restantes se van metiendo en la queue hasta que quede vacio el stack

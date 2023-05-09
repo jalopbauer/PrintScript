@@ -1,8 +1,8 @@
 import org.junit.jupiter.api.Test
-import token.ClosedBracketToken
 import token.DivToken
 import token.IntNumberLiteralToken
-import token.OpenBracketToken
+import token.LeftParenthesisToken
+import token.RightParenthesisToken
 import token.StringLiteralToken
 import token.SumToken
 import token.Token
@@ -213,9 +213,9 @@ class ParserImplTest {
     fun printParserWorks() {
         val print: List<Token> = listOf(
             TokenWithoutValue(TokenName.PRINT, 0, 0),
-            OpenBracketToken(TokenName.LEFT_PARENTHESIS, 0, 0),
+            LeftParenthesisToken(0, 0),
             StringLiteralToken("Hello World", 0, 0),
-            ClosedBracketToken(TokenName.RIGHT_PARENTHESIS, 0, 0),
+            RightParenthesisToken(0, 0),
             TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
         )
         val printParser = PrintlnParser()
@@ -231,11 +231,11 @@ class ParserImplTest {
     fun printWorksWithConcat() {
         val print: List<Token> = listOf(
             TokenWithoutValue(TokenName.PRINT, 0, 0),
-            OpenBracketToken(TokenName.LEFT_PARENTHESIS, 0, 0),
+            LeftParenthesisToken(0, 0),
             StringLiteralToken("Hello", 0, 0),
             SumToken(0, 0),
             StringLiteralToken("World", 0, 0),
-            ClosedBracketToken(TokenName.RIGHT_PARENTHESIS, 0, 0),
+            RightParenthesisToken(0, 0),
             TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
         )
         val printParser = PrintScriptParser()

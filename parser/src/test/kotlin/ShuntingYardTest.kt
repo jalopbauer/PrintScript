@@ -1,10 +1,10 @@
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import token.ClosedBracketToken
 import token.DivToken
 import token.IntNumberLiteralToken
+import token.LeftParenthesisToken
 import token.MultToken
-import token.OpenBracketToken
+import token.RightParenthesisToken
 import token.SubToken
 import token.SumToken
 import token.Token
@@ -33,20 +33,20 @@ class ShuntingYardTest {
     private val bracketsOperation: List<Token> = listOf(
         IntNumberLiteralToken(1, 0, 0),
         MultToken(0, 0),
-        OpenBracketToken(TokenName.LEFT_PARENTHESIS, 0, 0),
+        LeftParenthesisToken(0, 0),
         IntNumberLiteralToken(2, 0, 0),
         SumToken(0, 0),
         IntNumberLiteralToken(3, 0, 0),
-        ClosedBracketToken(TokenName.RIGHT_PARENTHESIS, 0, 0)
+        RightParenthesisToken(0, 0)
     )
     private val complexBracketsOperation: List<Token> = listOf(
         IntNumberLiteralToken(1, 0, 0),
         MultToken(0, 0),
-        OpenBracketToken(TokenName.LEFT_PARENTHESIS, 0, 0),
+        LeftParenthesisToken(0, 0),
         IntNumberLiteralToken(2, 0, 0),
         SumToken(0, 0),
         IntNumberLiteralToken(3, 0, 0),
-        ClosedBracketToken(TokenName.RIGHT_PARENTHESIS, 0, 0),
+        RightParenthesisToken(0, 0),
         DivToken(0, 0),
         IntNumberLiteralToken(4, 0, 0),
         SubToken(0, 0),

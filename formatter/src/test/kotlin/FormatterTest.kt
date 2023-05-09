@@ -1,8 +1,8 @@
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import token.ClosedBracketToken
 import token.IntNumberLiteralToken
-import token.OpenBracketToken
+import token.LeftParenthesisToken
+import token.RightParenthesisToken
 import token.StringLiteralToken
 import token.Token
 import token.TokenName
@@ -88,9 +88,9 @@ class FormatterTest {
     fun printStringParameterFormatter() {
         val tokens = listOf(
             TokenWithoutValue(TokenName.PRINT, 0, 0),
-            OpenBracketToken(TokenName.LEFT_PARENTHESIS, 0, 0),
+            LeftParenthesisToken(0, 0),
             StringLiteralToken("Hello World", 0, 0),
-            ClosedBracketToken(TokenName.RIGHT_PARENTHESIS, 0, 0),
+            RightParenthesisToken(0, 0),
             TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
         )
         val formatter = ValidListOfTokensFormatter(PrintlnValidListOfTokensBuilder(), EnterBeforePrintln(OneSpaceBetweenEveryToken(), 1))
@@ -103,9 +103,9 @@ class FormatterTest {
     fun printNumberParameterFormatter() {
         val tokens = listOf(
             TokenWithoutValue(TokenName.PRINT, 0, 0),
-            OpenBracketToken(TokenName.LEFT_PARENTHESIS, 0, 0),
+            LeftParenthesisToken(0, 0),
             IntNumberLiteralToken(1, 0, 0),
-            ClosedBracketToken(TokenName.RIGHT_PARENTHESIS, 0, 0),
+            RightParenthesisToken(0, 0),
             TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
         )
         val formatter = ValidListOfTokensFormatter(PrintlnValidListOfTokensBuilder(), EnterBeforePrintln(OneSpaceBetweenEveryToken(), 1))
@@ -118,9 +118,9 @@ class FormatterTest {
     fun printVariableParameterFormatter() {
         val tokens = listOf(
             TokenWithoutValue(TokenName.PRINT, 0, 0),
-            OpenBracketToken(TokenName.LEFT_PARENTHESIS, 0, 0),
+            LeftParenthesisToken(0, 0),
             VariableLiteralToken("HelloWorld", 0, 0),
-            ClosedBracketToken(TokenName.RIGHT_PARENTHESIS, 0, 0),
+            RightParenthesisToken(0, 0),
             TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
         )
         val formatter = ValidListOfTokensFormatter(PrintlnValidListOfTokensBuilder(), EnterBeforePrintln(OneSpaceBetweenEveryToken(), 1))

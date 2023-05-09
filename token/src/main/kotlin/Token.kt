@@ -140,9 +140,9 @@ data class DivToken(private val lineNumber: Int, private val position: Int) : Op
     }
 }
 
-data class OpenBracketToken(val tokenName: TokenName, private val lineNumber: Int, private val position: Int) : Token {
+data class LeftParenthesisToken(private val lineNumber: Int, private val position: Int) : Token {
     override fun tokenName(): TokenName {
-        return tokenName
+        return TokenName.LEFT_PARENTHESIS
     }
 
     override fun lineNumber(): Int {
@@ -154,9 +154,9 @@ data class OpenBracketToken(val tokenName: TokenName, private val lineNumber: In
     }
 }
 
-data class ClosedBracketToken(val tokenName: TokenName, private val lineNumber: Int, private val position: Int) : Token {
+data class RightParenthesisToken(private val lineNumber: Int, private val position: Int) : Token {
     override fun tokenName(): TokenName {
-        return tokenName
+        return TokenName.RIGHT_PARENTHESIS
     }
 
     override fun lineNumber(): Int {
