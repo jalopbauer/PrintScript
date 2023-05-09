@@ -3,21 +3,21 @@ import org.junit.jupiter.api.Test
 import token.ClosedBracketToken
 import token.IntNumberLiteralToken
 import token.OpenBracketToken
-import token.OperatorHighToken
 import token.OperatorLowToken
+import token.SubToken
+import token.SumToken
 import token.Token
 import token.TokenName
-
 class ShuntingYardTest {
 
     private val simpleOperation: List<Token> = listOf(
         IntNumberLiteralToken(1, 0, 0),
-        OperatorHighToken(TokenName.SUM, 0, 0),
+        SumToken(0, 0),
         IntNumberLiteralToken(2, 0, 0)
     )
     private val operationSumMUl: List<Token> = listOf(
         IntNumberLiteralToken(1, 0, 0),
-        OperatorHighToken(TokenName.SUM, 0, 0),
+        SumToken(0, 0),
         IntNumberLiteralToken(2, 0, 0),
         OperatorLowToken(TokenName.MULT, 0, 0),
         IntNumberLiteralToken(3, 0, 0)
@@ -26,7 +26,7 @@ class ShuntingYardTest {
         IntNumberLiteralToken(1, 0, 0),
         OperatorLowToken(TokenName.MULT, 0, 0),
         IntNumberLiteralToken(2, 0, 0),
-        OperatorHighToken(TokenName.SUM, 0, 0),
+        SumToken(0, 0),
         IntNumberLiteralToken(3, 0, 0)
     )
     private val bracketsOperation: List<Token> = listOf(
@@ -34,7 +34,7 @@ class ShuntingYardTest {
         OperatorLowToken(TokenName.MULT, 0, 0),
         OpenBracketToken(TokenName.LEFT_PARENTHESIS, 0, 0),
         IntNumberLiteralToken(2, 0, 0),
-        OperatorHighToken(TokenName.SUM, 0, 0),
+        SumToken(0, 0),
         IntNumberLiteralToken(3, 0, 0),
         ClosedBracketToken(TokenName.RIGHT_PARENTHESIS, 0, 0)
     )
@@ -43,12 +43,12 @@ class ShuntingYardTest {
         OperatorLowToken(TokenName.MULT, 0, 0),
         OpenBracketToken(TokenName.LEFT_PARENTHESIS, 0, 0),
         IntNumberLiteralToken(2, 0, 0),
-        OperatorHighToken(TokenName.SUM, 0, 0),
+        SumToken(0, 0),
         IntNumberLiteralToken(3, 0, 0),
         ClosedBracketToken(TokenName.RIGHT_PARENTHESIS, 0, 0),
         OperatorLowToken(TokenName.DIV, 0, 0),
         IntNumberLiteralToken(4, 0, 0),
-        OperatorHighToken(TokenName.SUB, 0, 0),
+        SubToken(0, 0),
         IntNumberLiteralToken(5, 0, 0)
     )
 

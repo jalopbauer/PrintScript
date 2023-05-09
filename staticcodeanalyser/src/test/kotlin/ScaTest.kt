@@ -3,8 +3,8 @@ import org.junit.jupiter.api.Test
 import token.ClosedBracketToken
 import token.IntNumberLiteralToken
 import token.OpenBracketToken
-import token.OperatorHighToken
 import token.StringLiteralToken
+import token.SumToken
 import token.TokenName
 import token.TokenWithoutValue
 import token.VariableLiteralToken
@@ -91,7 +91,7 @@ class ScaTest {
             TokenWithoutValue(TokenName.PRINT, 0, 0),
             OpenBracketToken(TokenName.LEFT_PARENTHESIS, 0, 0),
             StringLiteralToken("HelloWorld", 0, 0),
-            OperatorHighToken(TokenName.SUM, 0, 0),
+            SumToken(0, 0),
             StringLiteralToken("HelloWorld", 0, 0),
             ClosedBracketToken(TokenName.RIGHT_PARENTHESIS, 0, 0),
             TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
@@ -106,7 +106,7 @@ class ScaTest {
             TokenWithoutValue(TokenName.PRINT, 0, 0),
             OpenBracketToken(TokenName.LEFT_PARENTHESIS, 0, 0),
             StringLiteralToken("HelloWorld", 0, 0),
-            OperatorHighToken(TokenName.SUM, 0, 0),
+            SumToken(0, 0),
             StringLiteralToken("HelloWorld", 0, 0),
             ClosedBracketToken(TokenName.RIGHT_PARENTHESIS, 0, 0),
             TokenWithoutValue(TokenName.SEMICOLON, 0, 0)

@@ -2,14 +2,13 @@ import org.junit.jupiter.api.Test
 import token.ClosedBracketToken
 import token.IntNumberLiteralToken
 import token.OpenBracketToken
-import token.OperatorHighToken
 import token.OperatorLowToken
 import token.StringLiteralToken
+import token.SumToken
 import token.Token
 import token.TokenName
 import token.TokenWithoutValue
 import token.VariableLiteralToken
-
 class ParserImplTest {
 
     @Test
@@ -95,7 +94,7 @@ class ParserImplTest {
             VariableLiteralToken("test", 0, 0),
             TokenWithoutValue(TokenName.ASSIGNATION, 0, 0),
             StringLiteralToken("Hello", 0, 0),
-            OperatorHighToken(TokenName.SUM, 0, 0),
+            SumToken(0, 0),
             StringLiteralToken("World", 0, 0),
             TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
         )
@@ -114,7 +113,7 @@ class ParserImplTest {
             VariableLiteralToken("test", 0, 0),
             TokenWithoutValue(TokenName.ASSIGNATION, 0, 0),
             IntNumberLiteralToken(1, 0, 0),
-            OperatorHighToken(TokenName.SUM, 0, 0),
+            SumToken(0, 0),
             IntNumberLiteralToken(2, 0, 0),
             TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
         )
@@ -130,7 +129,7 @@ class ParserImplTest {
             VariableLiteralToken("test", 0, 0),
             TokenWithoutValue(TokenName.ASSIGNATION, 0, 0),
             IntNumberLiteralToken(1, 0, 0),
-            OperatorHighToken(TokenName.SUM, 0, 0),
+            SumToken(0, 0),
             IntNumberLiteralToken(2, 0, 0),
             OperatorLowToken(TokenName.DIV, 0, 0),
             IntNumberLiteralToken(3, 0, 0),
@@ -171,7 +170,7 @@ class ParserImplTest {
             TokenWithoutValue(TokenName.NUMBER_TYPE, 0, 0),
             TokenWithoutValue(TokenName.ASSIGNATION, 0, 0),
             IntNumberLiteralToken(1, 0, 0),
-            OperatorHighToken(TokenName.SUM, 0, 0),
+            SumToken(0, 0),
             IntNumberLiteralToken(2, 0, 0),
             OperatorLowToken(TokenName.DIV, 0, 0),
             IntNumberLiteralToken(3, 0, 0),
@@ -195,7 +194,7 @@ class ParserImplTest {
             TokenWithoutValue(TokenName.STRING_TYPE, 0, 0),
             TokenWithoutValue(TokenName.ASSIGNATION, 0, 0),
             IntNumberLiteralToken(1, 0, 0),
-            OperatorHighToken(TokenName.SUM, 0, 0),
+            SumToken(0, 0),
             IntNumberLiteralToken(2, 0, 0),
             OperatorLowToken(TokenName.DIV, 0, 0),
             IntNumberLiteralToken(3, 0, 0),
@@ -234,7 +233,7 @@ class ParserImplTest {
             TokenWithoutValue(TokenName.PRINT, 0, 0),
             OpenBracketToken(TokenName.LEFT_PARENTHESIS, 0, 0),
             StringLiteralToken("Hello", 0, 0),
-            OperatorHighToken(TokenName.SUM, 0, 0),
+            SumToken(0, 0),
             StringLiteralToken("World", 0, 0),
             ClosedBracketToken(TokenName.RIGHT_PARENTHESIS, 0, 0),
             TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
