@@ -1,8 +1,8 @@
 import org.junit.jupiter.api.Test
 import token.ClosedBracketToken
+import token.DivToken
 import token.IntNumberLiteralToken
 import token.OpenBracketToken
-import token.OperatorLowToken
 import token.StringLiteralToken
 import token.SumToken
 import token.Token
@@ -131,7 +131,7 @@ class ParserImplTest {
             IntNumberLiteralToken(1, 0, 0),
             SumToken(0, 0),
             IntNumberLiteralToken(2, 0, 0),
-            OperatorLowToken(TokenName.DIV, 0, 0),
+            DivToken(0, 0),
             IntNumberLiteralToken(3, 0, 0),
             TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
         )
@@ -172,7 +172,7 @@ class ParserImplTest {
             IntNumberLiteralToken(1, 0, 0),
             SumToken(0, 0),
             IntNumberLiteralToken(2, 0, 0),
-            OperatorLowToken(TokenName.DIV, 0, 0),
+            DivToken(0, 0),
             IntNumberLiteralToken(3, 0, 0),
             TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
         )
@@ -196,7 +196,7 @@ class ParserImplTest {
             IntNumberLiteralToken(1, 0, 0),
             SumToken(0, 0),
             IntNumberLiteralToken(2, 0, 0),
-            OperatorLowToken(TokenName.DIV, 0, 0),
+            DivToken(0, 0),
             IntNumberLiteralToken(3, 0, 0),
             TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
         )
