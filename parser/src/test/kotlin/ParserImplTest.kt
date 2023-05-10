@@ -7,6 +7,7 @@ import token.LetToken
 import token.NumberTypeToken
 import token.PrintToken
 import token.RightParenthesisToken
+import token.SemicolonToken
 import token.StringLiteralToken
 import token.SumToken
 import token.Token
@@ -22,7 +23,7 @@ class ParserImplTest {
             VariableLiteralToken("test", 0, 0),
             DeclarationToken(0, 0),
             NumberTypeToken(0, 0),
-            TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
+            SemicolonToken(0, 0)
         )
         val declarationParser = PrintScriptParser()
         val declarationAst = declarationParser.parse(declaration)
@@ -43,7 +44,7 @@ class ParserImplTest {
             VariableLiteralToken("test", 0, 0),
             DeclarationToken(0, 0),
             NumberTypeToken(0, 0),
-            TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
+            SemicolonToken(0, 0)
         )
         val declarationParser = PrintScriptParser()
         val declarationAst = declarationParser.parse(declaration)
@@ -58,7 +59,7 @@ class ParserImplTest {
             VariableLiteralToken("test", 0, 0),
             DeclarationToken(0, 0),
             TokenWithoutValue(TokenName.STRING_TYPE, 0, 0),
-            TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
+            SemicolonToken(0, 0)
         )
         val declarationParser = PrintScriptParser()
         val declarationAst = declarationParser.parse(declaration)
@@ -78,7 +79,7 @@ class ParserImplTest {
             VariableLiteralToken("test", 0, 0),
             TokenWithoutValue(TokenName.ASSIGNATION, 0, 0),
             StringLiteralToken("Hello World", 0, 0),
-            TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
+            SemicolonToken(0, 0)
         )
         val assignationParser = PrintScriptParser()
         val assignationAst = assignationParser.parse(assignation)
@@ -100,7 +101,7 @@ class ParserImplTest {
             StringLiteralToken("Hello", 0, 0),
             SumToken(0, 0),
             StringLiteralToken("World", 0, 0),
-            TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
+            SemicolonToken(0, 0)
         )
         val assignationParser = PrintScriptParser()
         val assignationAst = assignationParser.parse(assignation)
@@ -119,7 +120,7 @@ class ParserImplTest {
             IntNumberLiteralToken(1, 0, 0),
             SumToken(0, 0),
             IntNumberLiteralToken(2, 0, 0),
-            TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
+            SemicolonToken(0, 0)
         )
         val assignationParser = PrintScriptParser()
         val assignationAst = assignationParser.parse(assignation)
@@ -137,7 +138,7 @@ class ParserImplTest {
             IntNumberLiteralToken(2, 0, 0),
             DivToken(0, 0),
             IntNumberLiteralToken(3, 0, 0),
-            TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
+            SemicolonToken(0, 0)
         )
         val assignationParser = PrintScriptParser()
         val assignationAst = assignationParser.parse(assignation)
@@ -154,7 +155,7 @@ class ParserImplTest {
             TokenWithoutValue(TokenName.STRING_TYPE, 0, 0),
             TokenWithoutValue(TokenName.ASSIGNATION, 0, 0),
             StringLiteralToken("Hello World", 0, 0),
-            TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
+            SemicolonToken(0, 0)
         )
         val declAssiParser = PrintScriptParser()
         val declAssiAst = declAssiParser.parse(declAssi)
@@ -178,7 +179,7 @@ class ParserImplTest {
             IntNumberLiteralToken(2, 0, 0),
             DivToken(0, 0),
             IntNumberLiteralToken(3, 0, 0),
-            TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
+            SemicolonToken(0, 0)
         )
         val declAssiParser = PrintScriptParser()
         val declAssiAst = declAssiParser.parse(declAssi)
@@ -202,7 +203,7 @@ class ParserImplTest {
             IntNumberLiteralToken(2, 0, 0),
             DivToken(0, 0),
             IntNumberLiteralToken(3, 0, 0),
-            TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
+            SemicolonToken(0, 0)
         )
         val declAssiParser = PrintScriptParser()
         val declAssiAst = declAssiParser.parse(declAssi)
@@ -220,7 +221,7 @@ class ParserImplTest {
             LeftParenthesisToken(0, 0),
             StringLiteralToken("Hello World", 0, 0),
             RightParenthesisToken(0, 0),
-            TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
+            SemicolonToken(0, 0)
         )
         val printParser = PrintlnParser()
         val printAst = printParser.parse(print)
@@ -240,7 +241,7 @@ class ParserImplTest {
             SumToken(0, 0),
             StringLiteralToken("World", 0, 0),
             RightParenthesisToken(0, 0),
-            TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
+            SemicolonToken(0, 0)
         )
         val printParser = PrintScriptParser()
         val printAst = printParser.parse(print)

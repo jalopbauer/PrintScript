@@ -106,3 +106,17 @@ data class PrintToken(private val lineNumber: Int, private val position: Int) : 
         return position
     }
 }
+
+data class SemicolonToken(private val lineNumber: Int, private val position: Int) : Token {
+    override fun tokenName(): TokenName {
+        return TokenName.SEMICOLON
+    }
+
+    override fun lineNumber(): Int {
+        return lineNumber
+    }
+
+    override fun position(): Int {
+        return position
+    }
+}

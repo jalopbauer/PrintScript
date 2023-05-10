@@ -7,6 +7,7 @@ import token.LetToken
 import token.NumberTypeToken
 import token.PrintToken
 import token.RightParenthesisToken
+import token.SemicolonToken
 import token.StringLiteralToken
 import token.Token
 import token.TokenName
@@ -21,7 +22,7 @@ class FormatterTest {
             VariableLiteralToken("test", 0, 4),
             DeclarationToken(0, 9),
             NumberTypeToken(0, 11),
-            TokenWithoutValue(TokenName.SEMICOLON, 0, 17)
+            SemicolonToken(0, 17)
         )
 
         val formatterBoth = PrintScriptFormatterFactory().build(
@@ -40,7 +41,7 @@ class FormatterTest {
             VariableLiteralToken("test", 0, 4),
             DeclarationToken(0, 9),
             TokenWithoutValue(TokenName.STRING_TYPE, 0, 11),
-            TokenWithoutValue(TokenName.SEMICOLON, 0, 17)
+            SemicolonToken(0, 17)
         )
         val formatterAfter = PrintScriptFormatterFactory().build(
             """
@@ -58,7 +59,7 @@ class FormatterTest {
             VariableLiteralToken("test", 0, 4),
             DeclarationToken(0, 9),
             NumberTypeToken(0, 11),
-            TokenWithoutValue(TokenName.SEMICOLON, 0, 17)
+            SemicolonToken(0, 17)
         )
         val formatterBefore = PrintScriptFormatterFactory().build(
             """
@@ -75,7 +76,7 @@ class FormatterTest {
             VariableLiteralToken("test", 0, 0),
             TokenWithoutValue(TokenName.ASSIGNATION, 0, 0),
             StringLiteralToken("Hello World", 0, 0),
-            TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
+            SemicolonToken(0, 0)
         )
         val formatter = PrintScriptFormatterFactory().build(
             """
@@ -94,7 +95,7 @@ class FormatterTest {
             LeftParenthesisToken(0, 0),
             StringLiteralToken("Hello World", 0, 0),
             RightParenthesisToken(0, 0),
-            TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
+            SemicolonToken(0, 0)
         )
         val formatter = ValidListOfTokensFormatter(PrintlnValidListOfTokensBuilder(), EnterBeforePrintln(OneSpaceBetweenEveryToken(), 1))
         val sentence = formatter.format(tokens)
@@ -109,7 +110,7 @@ class FormatterTest {
             LeftParenthesisToken(0, 0),
             IntNumberLiteralToken(1, 0, 0),
             RightParenthesisToken(0, 0),
-            TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
+            SemicolonToken(0, 0)
         )
         val formatter = ValidListOfTokensFormatter(PrintlnValidListOfTokensBuilder(), EnterBeforePrintln(OneSpaceBetweenEveryToken(), 1))
         val sentence = formatter.format(tokens)
@@ -124,7 +125,7 @@ class FormatterTest {
             LeftParenthesisToken(0, 0),
             VariableLiteralToken("HelloWorld", 0, 0),
             RightParenthesisToken(0, 0),
-            TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
+            SemicolonToken(0, 0)
         )
         val formatter = ValidListOfTokensFormatter(PrintlnValidListOfTokensBuilder(), EnterBeforePrintln(OneSpaceBetweenEveryToken(), 1))
         val sentence = formatter.format(tokens)
@@ -138,7 +139,7 @@ class FormatterTest {
             VariableLiteralToken("test", 0, 0),
             TokenWithoutValue(TokenName.ASSIGNATION, 0, 0),
             StringLiteralToken("Hello World", 0, 0),
-            TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
+            SemicolonToken(0, 0)
         )
         val formatter = PrintScriptFormatterFactory().build("")
         val sentence = formatter.format(tokens)
@@ -152,7 +153,7 @@ class FormatterTest {
             VariableLiteralToken("test", 0, 0),
             TokenWithoutValue(TokenName.ASSIGNATION, 0, 4),
             StringLiteralToken("Hello World", 0, 5),
-            TokenWithoutValue(TokenName.SEMICOLON, 0, 18)
+            SemicolonToken(0, 18)
         )
         val formatter = PrintScriptFormatterFactory().build("no-conventional")
         val sentence = formatter.format(tokens)

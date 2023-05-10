@@ -4,10 +4,9 @@ import token.IntNumberLiteralToken
 import token.LeftParenthesisToken
 import token.PrintToken
 import token.RightParenthesisToken
+import token.SemicolonToken
 import token.StringLiteralToken
 import token.SumToken
-import token.TokenName
-import token.TokenWithoutValue
 import token.VariableLiteralToken
 class ScaTest {
     @Test
@@ -67,7 +66,7 @@ class ScaTest {
             LeftParenthesisToken(0, 0),
             StringLiteralToken("HelloWorld", 0, 0),
             RightParenthesisToken(0, 0),
-            TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
+            SemicolonToken(0, 0)
         )
         val scaCamel = PrintScriptStaticCodeAnalyserFactory().build("allow-literals-or-variable-only")
         assertEquals(null, scaCamel.format(tokens))
@@ -80,7 +79,7 @@ class ScaTest {
             LeftParenthesisToken(0, 0),
             IntNumberLiteralToken(1, 0, 0),
             RightParenthesisToken(0, 0),
-            TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
+            SemicolonToken(0, 0)
         )
         val scaCamel = PrintScriptStaticCodeAnalyserFactory().build("allow-literals-or-variable-only")
         assertEquals(null, scaCamel.format(tokens))
@@ -95,7 +94,7 @@ class ScaTest {
             SumToken(0, 0),
             StringLiteralToken("HelloWorld", 0, 0),
             RightParenthesisToken(0, 0),
-            TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
+            SemicolonToken(0, 0)
         )
         val scaCamel = PrintScriptStaticCodeAnalyserFactory().build("allow-literals-or-variable-only")
         assertEquals("StringConcat not valid", scaCamel.format(tokens))
@@ -110,7 +109,7 @@ class ScaTest {
             SumToken(0, 0),
             StringLiteralToken("HelloWorld", 0, 0),
             RightParenthesisToken(0, 0),
-            TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
+            SemicolonToken(0, 0)
         )
         val scaCamel = PrintScriptStaticCodeAnalyserFactory().build("")
         assertEquals(null, scaCamel.format(tokens))
