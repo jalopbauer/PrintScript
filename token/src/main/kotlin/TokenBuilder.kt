@@ -108,7 +108,11 @@ class StringEqualsTokenNameV1 : TokenBuilder {
             "(" to { lineNumber, position -> LeftParenthesisToken(position, lineNumber) },
             ")" to { lineNumber, position -> RightParenthesisToken(position, lineNumber) },
             ";" to { lineNumber, position -> SemicolonToken(position, lineNumber) },
-            "println" to { lineNumber, position -> PrintlnToken(position, lineNumber) }
+            "println" to { lineNumber, position -> PrintlnToken(position, lineNumber) },
+            "if" to { lineNumber, position -> IfToken(position, lineNumber) },
+            "else" to { lineNumber, position -> ElseToken(position, lineNumber) },
+            "{" to { lineNumber, position -> LeftCurlyBracketsToken(position, lineNumber) },
+            "}" to { lineNumber, position -> RightCurlyBracketsToken(position, lineNumber) }
         )
     }
 }

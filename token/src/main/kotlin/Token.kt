@@ -123,3 +123,55 @@ data class AssignationToken(private val lineNumber: Int, private val position: I
         return position
     }
 }
+data class IfToken(private val lineNumber: Int, private val position: Int) : Token {
+    override fun tokenName(): TokenName {
+        return TokenName.IF
+    }
+
+    override fun lineNumber(): Int {
+        return lineNumber
+    }
+
+    override fun position(): Int {
+        return position
+    }
+}
+data class ElseToken(private val lineNumber: Int, private val position: Int) : Token {
+    override fun tokenName(): TokenName {
+        return TokenName.ELSE
+    }
+
+    override fun lineNumber(): Int {
+        return lineNumber
+    }
+
+    override fun position(): Int {
+        return position
+    }
+}
+data class LeftCurlyBracketsToken(private val lineNumber: Int, private val position: Int) : Token {
+    override fun tokenName(): TokenName {
+        return TokenName.LEFT_CURLY_BRACKETS
+    }
+
+    override fun lineNumber(): Int {
+        return lineNumber
+    }
+
+    override fun position(): Int {
+        return position
+    }
+}
+data class RightCurlyBracketsToken(private val lineNumber: Int, private val position: Int) : Token {
+    override fun tokenName(): TokenName {
+        return TokenName.RIGHT_CURLY_BRACKETS
+    }
+
+    override fun lineNumber(): Int {
+        return lineNumber
+    }
+
+    override fun position(): Int {
+        return position
+    }
+}

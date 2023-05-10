@@ -20,5 +20,9 @@ enum class TokenName {
     SEMICOLON,
     ERROR,
     BOOLEAN_TYPE,
-    BOOLEAN_LITERAL
+    BOOLEAN_LITERAL,
+    IF,
+    ELSE,
+    LEFT_CURLY_BRACKETS,
+    RIGHT_CURLY_BRACKETS
 }
