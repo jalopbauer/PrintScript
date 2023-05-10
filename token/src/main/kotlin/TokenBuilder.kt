@@ -30,7 +30,7 @@ class PrintScript : TokenBuilder {
 class VariableBuilder : TokenBuilder {
     override fun build(string: String, position: Int, lineNumber: Int): Token? {
         return if (string.matches(Regex("[a-z][a-zA-Z]+"))) {
-            VariableLiteralToken(string, lineNumber, position)
+            VariableNameToken(string, lineNumber, position)
         } else {
             null
         }

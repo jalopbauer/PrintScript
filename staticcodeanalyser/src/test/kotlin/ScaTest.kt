@@ -7,13 +7,13 @@ import token.RightParenthesisToken
 import token.SemicolonToken
 import token.StringLiteralToken
 import token.SumToken
-import token.VariableLiteralToken
+import token.VariableNameToken
 class ScaTest {
     @Test
     fun onlyCamelCaseSendSnakeCaseShowsError() {
         val variableName = "test_case"
         val tokensCamel = listOf(
-            VariableLiteralToken(variableName, 0, 4)
+            VariableNameToken(variableName, 0, 4)
         )
         val scaCamel = PrintScriptStaticCodeAnalyserFactory().build("")
         assertEquals("Variable $variableName is not camelCase", scaCamel.format(tokensCamel))
@@ -23,7 +23,7 @@ class ScaTest {
     fun onlyCamelCaseSendCamelCaseShowsNothing() {
         val variableName = "testCase"
         val tokensCamel = listOf(
-            VariableLiteralToken(variableName, 0, 4)
+            VariableNameToken(variableName, 0, 4)
         )
         val scaCamel = PrintScriptStaticCodeAnalyserFactory().build("")
         assertEquals(null, scaCamel.format(tokensCamel))
@@ -34,7 +34,7 @@ class ScaTest {
         val variableName = "testCase"
 
         val tokensCamel = listOf(
-            VariableLiteralToken(variableName, 0, 4)
+            VariableNameToken(variableName, 0, 4)
         )
         val scaCamel = PrintScriptStaticCodeAnalyserFactory().build("snake-case-variable")
         assertEquals("Variable $variableName is not snake_case", scaCamel.format(tokensCamel))
@@ -44,7 +44,7 @@ class ScaTest {
     fun onlySnakeCaseSendSnakeCaseShowsNothing() {
         val variableName = "test_case"
         val tokensCamel = listOf(
-            VariableLiteralToken(variableName, 0, 4)
+            VariableNameToken(variableName, 0, 4)
         )
         val scaCamel = PrintScriptStaticCodeAnalyserFactory().build("snake-case-variable")
         assertEquals(null, scaCamel.format(tokensCamel))

@@ -12,14 +12,14 @@ import token.SemicolonToken
 import token.StringLiteralToken
 import token.StringTypeToken
 import token.Token
-import token.VariableLiteralToken
+import token.VariableNameToken
 class FormatterTest {
 
     @Test
     fun declarationFormatterSpacingBeforeAndAfterTest() {
         val tokens: List<Token> = listOf(
             LetToken(0, 0),
-            VariableLiteralToken("test", 0, 4),
+            VariableNameToken("test", 0, 4),
             DeclarationToken(0, 9),
             NumberTypeToken(0, 11),
             SemicolonToken(0, 17)
@@ -38,7 +38,7 @@ class FormatterTest {
     fun declarationFormatterSpacingAfterTest() {
         val tokens: List<Token> = listOf(
             LetToken(0, 0),
-            VariableLiteralToken("test", 0, 4),
+            VariableNameToken("test", 0, 4),
             DeclarationToken(0, 9),
             StringTypeToken(0, 11),
             SemicolonToken(0, 17)
@@ -56,7 +56,7 @@ class FormatterTest {
     fun declarationFormatterSpacingBeforeTest() {
         val tokens: List<Token> = listOf(
             LetToken(0, 0),
-            VariableLiteralToken("test", 0, 4),
+            VariableNameToken("test", 0, 4),
             DeclarationToken(0, 9),
             NumberTypeToken(0, 11),
             SemicolonToken(0, 17)
@@ -73,7 +73,7 @@ class FormatterTest {
     @Test
     fun assignationFormatterWorks() {
         val tokens = listOf(
-            VariableLiteralToken("test", 0, 0),
+            VariableNameToken("test", 0, 0),
             AssignationToken(0, 0),
             StringLiteralToken("Hello World", 0, 0),
             SemicolonToken(0, 0)
@@ -123,7 +123,7 @@ class FormatterTest {
         val tokens = listOf(
             PrintlnToken(0, 0),
             LeftParenthesisToken(0, 0),
-            VariableLiteralToken("HelloWorld", 0, 0),
+            VariableNameToken("HelloWorld", 0, 0),
             RightParenthesisToken(0, 0),
             SemicolonToken(0, 0)
         )
@@ -136,7 +136,7 @@ class FormatterTest {
     @Test
     fun oneSpaceBetweenEveryToken() {
         val tokens = listOf(
-            VariableLiteralToken("test", 0, 0),
+            VariableNameToken("test", 0, 0),
             AssignationToken(0, 0),
             StringLiteralToken("Hello World", 0, 0),
             SemicolonToken(0, 0)
@@ -150,7 +150,7 @@ class FormatterTest {
     @Test
     fun previousSpacingBetweenEveryToken() {
         val tokens = listOf(
-            VariableLiteralToken("test", 0, 0),
+            VariableNameToken("test", 0, 0),
             AssignationToken(0, 4),
             StringLiteralToken("Hello World", 0, 5),
             SemicolonToken(0, 18)

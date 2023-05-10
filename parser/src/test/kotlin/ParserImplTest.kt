@@ -13,14 +13,14 @@ import token.StringLiteralToken
 import token.StringTypeToken
 import token.SumToken
 import token.Token
-import token.VariableLiteralToken
+import token.VariableNameToken
 class ParserImplTest {
 
     @Test
     fun declarationParserWorksWithNumber() {
         val declaration: List<Token> = listOf(
             LetToken(0, 0),
-            VariableLiteralToken("test", 0, 0),
+            VariableNameToken("test", 0, 0),
             DeclarationToken(0, 0),
             NumberTypeToken(0, 0),
             SemicolonToken(0, 0)
@@ -40,7 +40,7 @@ class ParserImplTest {
     @Test
     fun declarationParserDoesntWork() {
         val declaration: List<Token> = listOf(
-            VariableLiteralToken("test", 0, 0),
+            VariableNameToken("test", 0, 0),
             DeclarationToken(0, 0),
             NumberTypeToken(0, 0),
             SemicolonToken(0, 0)
@@ -55,7 +55,7 @@ class ParserImplTest {
     fun declarationParserWorksWithString() {
         val declaration: List<Token> = listOf(
             LetToken(0, 0),
-            VariableLiteralToken("test", 0, 0),
+            VariableNameToken("test", 0, 0),
             DeclarationToken(0, 0),
             StringTypeToken(0, 0),
             SemicolonToken(0, 0)
@@ -75,7 +75,7 @@ class ParserImplTest {
     @Test
     fun assignationParserWorks() {
         val assignation: List<Token> = listOf(
-            VariableLiteralToken("test", 0, 0),
+            VariableNameToken("test", 0, 0),
             AssignationToken(0, 0),
             StringLiteralToken("Hello World", 0, 0),
             SemicolonToken(0, 0)
@@ -95,7 +95,7 @@ class ParserImplTest {
     @Test
     fun assignationWorksWithConcat() {
         val assignation: List<Token> = listOf(
-            VariableLiteralToken("test", 0, 0),
+            VariableNameToken("test", 0, 0),
             AssignationToken(0, 0),
             StringLiteralToken("Hello", 0, 0),
             SumToken(0, 0),
@@ -114,7 +114,7 @@ class ParserImplTest {
     @Test
     fun assignationWorksWithOperation() {
         val assignation: List<Token> = listOf(
-            VariableLiteralToken("test", 0, 0),
+            VariableNameToken("test", 0, 0),
             AssignationToken(0, 0),
             IntNumberLiteralToken(1, 0, 0),
             SumToken(0, 0),
@@ -130,7 +130,7 @@ class ParserImplTest {
     @Test
     fun assignationWorksWithComplexOperation() {
         val assignation: List<Token> = listOf(
-            VariableLiteralToken("test", 0, 0),
+            VariableNameToken("test", 0, 0),
             AssignationToken(0, 0),
             IntNumberLiteralToken(1, 0, 0),
             SumToken(0, 0),
@@ -149,7 +149,7 @@ class ParserImplTest {
     fun declAssiParserWorks() {
         val declAssi: List<Token> = listOf(
             LetToken(0, 0),
-            VariableLiteralToken("test", 0, 0),
+            VariableNameToken("test", 0, 0),
             DeclarationToken(0, 0),
             StringTypeToken(0, 0),
             AssignationToken(0, 0),
@@ -169,7 +169,7 @@ class ParserImplTest {
     fun declAssiWorksWithOperation() {
         val declAssi: List<Token> = listOf(
             LetToken(0, 0),
-            VariableLiteralToken("test", 0, 0),
+            VariableNameToken("test", 0, 0),
             DeclarationToken(0, 0),
             NumberTypeToken(0, 0),
             AssignationToken(0, 0),
@@ -193,7 +193,7 @@ class ParserImplTest {
     fun declAssiWithWrongAssignation() {
         val declAssi: List<Token> = listOf(
             LetToken(0, 0),
-            VariableLiteralToken("test", 0, 0),
+            VariableNameToken("test", 0, 0),
             DeclarationToken(0, 0),
             StringTypeToken(0, 0),
             AssignationToken(0, 0),

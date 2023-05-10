@@ -8,7 +8,7 @@ import token.RightParenthesisToken
 import token.StringLiteralToken
 import token.Token
 import token.TokenName
-import token.VariableLiteralToken
+import token.VariableNameToken
 
 class ShuntingYardImpl : ShuntingYard {
     override fun check(tokens: List<Token>): List<Token> {
@@ -17,7 +17,7 @@ class ShuntingYardImpl : ShuntingYard {
         for (token in tokens) {
             when (token) {
                 is NumberLiteralToken -> queue.add(token)
-                is VariableLiteralToken -> queue.add(token)
+                is VariableNameToken -> queue.add(token)
                 is OperatorHighToken -> checkOperators(stack, queue, token)
                 is OperatorLowToken -> stack.add(token)
                 is LeftParenthesisToken -> stack.add(token)
@@ -55,14 +55,14 @@ class ShuntingYardImpl : ShuntingYard {
         if (content.size == 1) {
             when (val stringToken = content.component1()) {
                 is StringLiteralToken -> concatenation.add(StringLiteral(stringToken.value))
-                is VariableLiteralToken -> concatenation.add(VariableNameNode(stringToken.value))
+                is VariableNameToken -> concatenation.add(VariableNameNode(stringToken.value))
             }
             return StringConcatenation(concatenation)
         }
         for (token in content) {
             when (token) {
                 is StringLiteralToken -> concatenation.add(StringLiteral(token.value))
-                is VariableLiteralToken -> concatenation.add(VariableNameNode(token.value))
+                is VariableNameToken -> concatenation.add(VariableNameNode(token.value))
             }
         }
         return StringConcatenation(concatenation)
@@ -82,7 +82,7 @@ class ShuntingYardImpl : ShuntingYard {
             when (token) {
                 is IntNumberLiteralToken -> stack.add(IntNumberLiteral(token.value))
                 is DoubleNumberLiteralToken -> stack.add(DoubleNumberLiteral(token.value))
-                is VariableLiteralToken -> stack.add(VariableNameNode(token.value))
+                is VariableNameToken -> stack.add(VariableNameNode(token.value))
                 is OperatorHighToken, is OperatorLowToken -> getOperationType(token, stack)
             }
         }

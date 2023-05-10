@@ -1,7 +1,7 @@
 import token.NumberLiteralToken
 import token.Token
 import token.TokenName
-import token.VariableLiteralToken
+import token.VariableNameToken
 
 interface ValidListOfTokensBuilder<T : ValidListOfTokens> {
     fun validate(tokens: List<Token>): T?
@@ -27,7 +27,7 @@ class PrintlnValidListOfTokensBuilder : ValidListOfTokensBuilder<PrintlnValidLis
 class PrintlnParameterValidListOfTokensBuilder : ValidListOfTokensBuilder<PrintlnParameterValidListOfTokens> {
     override fun validate(tokens: List<Token>): PrintlnParameterValidListOfTokens? =
         when {
-            tokens.size == 1 && tokens.component1() is VariableLiteralToken -> VariableParameter(tokens.component1() as VariableLiteralToken)
+            tokens.size == 1 && tokens.component1() is VariableNameToken -> VariableParameter(tokens.component1() as VariableNameToken)
             tokens.size == 1 && tokens.component1() is NumberLiteralToken -> NumberLiteralParameter(tokens.component1() as NumberLiteralToken)
             else -> StringLiteralOrConcatValidListOfTokensBuilder().validate(tokens)
         }
@@ -73,7 +73,7 @@ class DeclarationValidListOfTokensBuilder : ValidListOfTokensBuilder<Declaration
             tokens.component3().tokenName() == TokenName.DECLARATION &&
             (tokens.component4().tokenName() == TokenName.STRING_TYPE || tokens.component4().tokenName() == TokenName.NUMBER_TYPE)
         ) {
-            return DeclarationValidListOfTokens(tokens.component4(), tokens.component2() as VariableLiteralToken)
+            return DeclarationValidListOfTokens(tokens.component4(), tokens.component2() as VariableNameToken)
         }
         return null
     }
@@ -87,7 +87,7 @@ class AssignationValidListOfTokensBuilder : ValidListOfTokensBuilder<Assignation
             (tokens.component3().tokenName() == TokenName.VARIABLE || StringLiteralOrConcatValidListOfTokensBuilder().validateChain(tokens.subList(2, (tokens.size - 1))) || OperationValidListOfTokensBuilder().validateChain(tokens.subList(2, (tokens.size - 1))))
         ) {
             return AssignationValidListOfTokens(
-                tokens.component1() as VariableLiteralToken,
+                tokens.component1() as VariableNameToken,
                 tokens.subList(2, (tokens.size - 1))
             )
         }
@@ -106,7 +106,7 @@ class DeclarationAssignationValidListOfTokensBuilder :
             (StringLiteralOrConcatValidListOfTokensBuilder().validateChain(tokens.subList(5, (tokens.size - 1))) || OperationValidListOfTokensBuilder().validateChain(tokens.subList(5, (tokens.size - 1))))
         ) {
             return DeclarationAssignationValidListOfTokens(
-                tokens.component2() as VariableLiteralToken,
+                tokens.component2() as VariableNameToken,
                 tokens.subList(5, (tokens.size - 1)),
                 tokens.component4()
             )

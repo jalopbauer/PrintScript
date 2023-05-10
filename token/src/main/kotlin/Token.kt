@@ -17,7 +17,7 @@ data class ErrorToken(private val lineNumber: Int, private val position: Int) : 
         return position
     }
 }
-data class VariableLiteralToken(val value: String, private val lineNumber: Int, private val position: Int) : Token {
+data class VariableNameToken(val value: String, private val lineNumber: Int, private val position: Int) : Token {
     override fun tokenName(): TokenName {
         return TokenName.VARIABLE
     }

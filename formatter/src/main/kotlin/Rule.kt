@@ -3,7 +3,7 @@ import token.IntNumberLiteralToken
 import token.StringLiteralToken
 import token.Token
 import token.TokenName
-import token.VariableLiteralToken
+import token.VariableNameToken
 
 interface Rule<T> {
     fun apply(listOfTokens: T): String
@@ -82,7 +82,7 @@ class TokenToString : Rule<Token> {
             is StringLiteralToken -> "\"${listOfTokens.value}\""
             is IntNumberLiteralToken -> listOfTokens.value.toString()
             is DoubleNumberLiteralToken -> listOfTokens.value.toString()
-            is VariableLiteralToken -> listOfTokens.value
+            is VariableNameToken -> listOfTokens.value
             else -> {
                 when (listOfTokens.tokenName()) {
                     TokenName.ASSIGNATION -> "="

@@ -1,5 +1,5 @@
 import token.Token
-import token.VariableLiteralToken
+import token.VariableNameToken
 
 interface Rule<T> {
     fun apply(listOfTokens: T): String?
@@ -24,7 +24,7 @@ interface VariableRule : Rule<Token>
 class SnakeCaseRule : VariableRule {
     override fun apply(listOfTokens: Token): String? =
         when {
-            listOfTokens is VariableLiteralToken &&
+            listOfTokens is VariableNameToken &&
                 !Regex("[a-z]+(?:_[a-z]+)*").matches(listOfTokens.value) -> "Variable ${listOfTokens.value} is not snake_case"
             else -> null
         }
@@ -32,7 +32,7 @@ class SnakeCaseRule : VariableRule {
 class CamelCaseRule : VariableRule {
     override fun apply(listOfTokens: Token): String? =
         when {
-            listOfTokens is VariableLiteralToken &&
+            listOfTokens is VariableNameToken &&
                 !Regex("[a-z]+(?:[A-Z][a-z]*)*").matches(listOfTokens.value) -> "Variable ${listOfTokens.value} is not camelCase"
             else -> null
         }
