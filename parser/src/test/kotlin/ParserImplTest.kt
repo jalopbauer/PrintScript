@@ -4,6 +4,7 @@ import token.DivToken
 import token.IntNumberLiteralToken
 import token.LeftParenthesisToken
 import token.LetToken
+import token.PrintToken
 import token.RightParenthesisToken
 import token.StringLiteralToken
 import token.SumToken
@@ -214,7 +215,7 @@ class ParserImplTest {
     @Test
     fun printParserWorks() {
         val print: List<Token> = listOf(
-            TokenWithoutValue(TokenName.PRINT, 0, 0),
+            PrintToken(0, 0),
             LeftParenthesisToken(0, 0),
             StringLiteralToken("Hello World", 0, 0),
             RightParenthesisToken(0, 0),
@@ -232,7 +233,7 @@ class ParserImplTest {
     @Test
     fun printWorksWithConcat() {
         val print: List<Token> = listOf(
-            TokenWithoutValue(TokenName.PRINT, 0, 0),
+            PrintToken(0, 0),
             LeftParenthesisToken(0, 0),
             StringLiteralToken("Hello", 0, 0),
             SumToken(0, 0),
