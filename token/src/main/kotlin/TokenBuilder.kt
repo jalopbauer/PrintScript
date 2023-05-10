@@ -15,6 +15,7 @@ class PrintScript : TokenBuilder {
         SingleQuoteStringLiteral(),
         DoubleQuoteStringLiteral(),
         IntNumberLiteralBuilder(),
+        DoubleNumberLiteralBuilder(),
         VariableBuilder()
     )
     override fun build(string: String, position: Int, lineNumber: Int): Token {
@@ -117,6 +118,7 @@ class PrintScriptV1 : TokenBuilder {
         SingleQuoteStringLiteral(),
         DoubleQuoteStringLiteral(),
         IntNumberLiteralBuilder(),
+        DoubleNumberLiteralBuilder(),
         VariableBuilder()
     )
     override fun build(string: String, position: Int, lineNumber: Int): Token {
