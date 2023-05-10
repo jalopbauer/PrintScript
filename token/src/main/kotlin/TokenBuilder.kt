@@ -89,3 +89,28 @@ class StringEqualsTokenName : TokenBuilder {
         )
     }
 }
+
+class StringEqualsTokenNameV1 : TokenBuilder {
+    override fun build(string: String, position: Int, lineNumber: Int): Token? {
+        return stringTokenMap[string]?.invoke(position, lineNumber)
+    }
+
+    companion object {
+        val stringTokenMap: Map<String, (position: Int, lineNumber: Int) -> Token> = mapOf(
+            "let" to { lineNumber, position -> LetToken(position, lineNumber) },
+            ":" to { lineNumber, position -> DeclarationToken(position, lineNumber) },
+            "string" to { lineNumber, position -> StringTypeToken(position, lineNumber) },
+            "number" to { lineNumber, position -> NumberTypeToken(position, lineNumber) },
+            "boolean" to { lineNumber, position -> BooleanTypeToken(position, lineNumber) },
+            "=" to { lineNumber, position -> AssignationToken(position, lineNumber) },
+            "+" to { lineNumber, position -> SumToken(position, lineNumber) },
+            "-" to { lineNumber, position -> SubToken(position, lineNumber) },
+            "*" to { lineNumber, position -> MultToken(position, lineNumber) },
+            "/" to { lineNumber, position -> DivToken(position, lineNumber) },
+            "(" to { lineNumber, position -> LeftParenthesisToken(position, lineNumber) },
+            ")" to { lineNumber, position -> RightParenthesisToken(position, lineNumber) },
+            ";" to { lineNumber, position -> SemicolonToken(position, lineNumber) },
+            "println" to { lineNumber, position -> PrintlnToken(position, lineNumber) }
+        )
+    }
+}

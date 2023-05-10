@@ -26,3 +26,16 @@ data class StringTypeToken(private val lineNumber: Int, private val position: In
         return position
     }
 }
+data class BooleanTypeToken(private val lineNumber: Int, private val position: Int) : TypeToken {
+    override fun tokenName(): TokenName {
+        return TokenName.BOOLEAN_TYPE
+    }
+
+    override fun lineNumber(): Int {
+        return lineNumber
+    }
+
+    override fun position(): Int {
+        return position
+    }
+}
