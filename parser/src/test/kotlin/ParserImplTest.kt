@@ -1,4 +1,5 @@
 import org.junit.jupiter.api.Test
+import token.DeclarationToken
 import token.DivToken
 import token.IntNumberLiteralToken
 import token.LeftParenthesisToken
@@ -17,7 +18,7 @@ class ParserImplTest {
         val declaration: List<Token> = listOf(
             LetToken(0, 0),
             VariableLiteralToken("test", 0, 0),
-            TokenWithoutValue(TokenName.DECLARATION, 0, 0),
+            DeclarationToken(0, 0),
             TokenWithoutValue(TokenName.NUMBER_TYPE, 0, 0),
             TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
         )
@@ -38,7 +39,7 @@ class ParserImplTest {
         val declaration: List<Token> = listOf(
             TokenWithoutValue(TokenName.VARIABLE, 0, 0),
             VariableLiteralToken("test", 0, 0),
-            TokenWithoutValue(TokenName.DECLARATION, 0, 0),
+            DeclarationToken(0, 0),
             TokenWithoutValue(TokenName.NUMBER_TYPE, 0, 0),
             TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
         )
@@ -53,7 +54,7 @@ class ParserImplTest {
         val declaration: List<Token> = listOf(
             LetToken(0, 0),
             VariableLiteralToken("test", 0, 0),
-            TokenWithoutValue(TokenName.DECLARATION, 0, 0),
+            DeclarationToken(0, 0),
             TokenWithoutValue(TokenName.STRING_TYPE, 0, 0),
             TokenWithoutValue(TokenName.SEMICOLON, 0, 0)
         )
@@ -147,7 +148,7 @@ class ParserImplTest {
         val declAssi: List<Token> = listOf(
             LetToken(0, 0),
             VariableLiteralToken("test", 0, 0),
-            TokenWithoutValue(TokenName.DECLARATION, 0, 0),
+            DeclarationToken(0, 0),
             TokenWithoutValue(TokenName.STRING_TYPE, 0, 0),
             TokenWithoutValue(TokenName.ASSIGNATION, 0, 0),
             StringLiteralToken("Hello World", 0, 0),
@@ -167,7 +168,7 @@ class ParserImplTest {
         val declAssi: List<Token> = listOf(
             LetToken(0, 0),
             VariableLiteralToken("test", 0, 0),
-            TokenWithoutValue(TokenName.DECLARATION, 0, 0),
+            DeclarationToken(0, 0),
             TokenWithoutValue(TokenName.NUMBER_TYPE, 0, 0),
             TokenWithoutValue(TokenName.ASSIGNATION, 0, 0),
             IntNumberLiteralToken(1, 0, 0),
@@ -191,7 +192,7 @@ class ParserImplTest {
         val declAssi: List<Token> = listOf(
             LetToken(0, 0),
             VariableLiteralToken("test", 0, 0),
-            TokenWithoutValue(TokenName.DECLARATION, 0, 0),
+            DeclarationToken(0, 0),
             TokenWithoutValue(TokenName.STRING_TYPE, 0, 0),
             TokenWithoutValue(TokenName.ASSIGNATION, 0, 0),
             IntNumberLiteralToken(1, 0, 0),

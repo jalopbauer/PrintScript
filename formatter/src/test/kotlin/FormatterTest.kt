@@ -1,5 +1,6 @@
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import token.DeclarationToken
 import token.IntNumberLiteralToken
 import token.LeftParenthesisToken
 import token.LetToken
@@ -16,7 +17,7 @@ class FormatterTest {
         val tokens: List<Token> = listOf(
             LetToken(0, 0),
             VariableLiteralToken("test", 0, 4),
-            TokenWithoutValue(TokenName.DECLARATION, 0, 9),
+            DeclarationToken(0, 9),
             TokenWithoutValue(TokenName.NUMBER_TYPE, 0, 11),
             TokenWithoutValue(TokenName.SEMICOLON, 0, 17)
         )
@@ -35,7 +36,7 @@ class FormatterTest {
         val tokens: List<Token> = listOf(
             LetToken(0, 0),
             VariableLiteralToken("test", 0, 4),
-            TokenWithoutValue(TokenName.DECLARATION, 0, 9),
+            DeclarationToken(0, 9),
             TokenWithoutValue(TokenName.STRING_TYPE, 0, 11),
             TokenWithoutValue(TokenName.SEMICOLON, 0, 17)
         )
@@ -53,7 +54,7 @@ class FormatterTest {
         val tokens: List<Token> = listOf(
             LetToken(0, 0),
             VariableLiteralToken("test", 0, 4),
-            TokenWithoutValue(TokenName.DECLARATION, 0, 9),
+            DeclarationToken(0, 9),
             TokenWithoutValue(TokenName.NUMBER_TYPE, 0, 11),
             TokenWithoutValue(TokenName.SEMICOLON, 0, 17)
         )

@@ -80,3 +80,16 @@ data class LetToken(private val lineNumber: Int, private val position: Int) : To
         return position
     }
 }
+data class DeclarationToken(private val lineNumber: Int, private val position: Int) : Token {
+    override fun tokenName(): TokenName {
+        return TokenName.DECLARATION
+    }
+
+    override fun lineNumber(): Int {
+        return lineNumber
+    }
+
+    override fun position(): Int {
+        return position
+    }
+}
