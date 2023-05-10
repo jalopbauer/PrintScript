@@ -6,13 +6,8 @@ interface TokenBuilder {
 }
 
 class ListBuilder(private val tokenBuilders: List<TokenBuilder>) : TokenBuilder {
-    override fun build(string: String, position: Int, lineNumber: Int): Token? {
-        return try {
-            tokenBuilders.first { tokenIdentifier -> tokenIdentifier.build(string, position, lineNumber) != null }.build(string, position, lineNumber)
-        } catch (_: Exception) {
-            null
-        }
-    }
+    override fun build(string: String, position: Int, lineNumber: Int): Token =
+        tokenBuilders.first { it.build(string, position, lineNumber) != null }.build(string, position, lineNumber) ?: ErrorToken(lineNumber, position)
 }
 class PrintScript : TokenBuilder {
     private val tokenIdentifiers = listOf(
@@ -23,7 +18,7 @@ class PrintScript : TokenBuilder {
         VariableBuilder()
     )
     override fun build(string: String, position: Int, lineNumber: Int): Token {
-        return ListBuilder(tokenIdentifiers).build(string, position, lineNumber) ?: ErrorToken(lineNumber, position)
+        return ListBuilder(tokenIdentifiers).build(string, position, lineNumber)
     }
 }
 
