@@ -111,3 +111,15 @@ class StringEqualsTokenNameV1 : TokenBuilder {
         )
     }
 }
+class PrintScriptV1 : TokenBuilder {
+    private val tokenIdentifiers = listOf(
+        StringEqualsTokenNameV1(),
+        SingleQuoteStringLiteral(),
+        DoubleQuoteStringLiteral(),
+        IntNumberLiteralBuilder(),
+        VariableBuilder()
+    )
+    override fun build(string: String, position: Int, lineNumber: Int): Token {
+        return ListBuilder(tokenIdentifiers).build(string, position, lineNumber)
+    }
+}
