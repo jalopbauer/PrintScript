@@ -4,17 +4,6 @@ interface Token {
     fun lineNumber(): Int
     fun position(): Int
 }
-data class TokenWithoutValue(val tokenName: TokenName, private val lineNumber: Int, private val position: Int) : Token {
-    override fun tokenName(): TokenName {
-        return tokenName
-    }
-    override fun lineNumber(): Int {
-        return lineNumber
-    }
-    override fun position(): Int {
-        return position
-    }
-}
 data class ErrorToken(private val lineNumber: Int, private val position: Int) : Token {
     override fun tokenName(): TokenName {
         return TokenName.ERROR
