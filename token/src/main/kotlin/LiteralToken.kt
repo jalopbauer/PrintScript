@@ -40,3 +40,30 @@ data class DoubleNumberLiteralToken(val value: Double, private val lineNumber: I
         return position
     }
 }
+sealed interface BooleanLiteralToken : Token
+data class FalseLiteralToken(private val lineNumber: Int, private val position: Int) : BooleanLiteralToken {
+    override fun tokenName(): TokenName {
+        return TokenName.BOOLEAN_LITERAL
+    }
+
+    override fun lineNumber(): Int {
+        return lineNumber
+    }
+
+    override fun position(): Int {
+        return position
+    }
+}
+data class TrueLiteralToken(private val lineNumber: Int, private val position: Int) : BooleanLiteralToken {
+    override fun tokenName(): TokenName {
+        return TokenName.BOOLEAN_LITERAL
+    }
+
+    override fun lineNumber(): Int {
+        return lineNumber
+    }
+
+    override fun position(): Int {
+        return position
+    }
+}

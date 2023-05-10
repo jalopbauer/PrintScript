@@ -19,5 +19,6 @@ enum class TokenName {
     RIGHT_PARENTHESIS,
     SEMICOLON,
     ERROR,
-    BOOLEAN_TYPE
+    BOOLEAN_TYPE,
+    BOOLEAN_LITERAL
 }

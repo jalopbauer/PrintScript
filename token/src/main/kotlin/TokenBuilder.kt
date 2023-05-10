@@ -102,6 +102,8 @@ class StringEqualsTokenNameV1 : TokenBuilder {
             "string" to { lineNumber, position -> StringTypeToken(position, lineNumber) },
             "number" to { lineNumber, position -> NumberTypeToken(position, lineNumber) },
             "boolean" to { lineNumber, position -> BooleanTypeToken(position, lineNumber) },
+            "false" to { lineNumber, position -> FalseLiteralToken(position, lineNumber) },
+            "true" to { lineNumber, position -> TrueLiteralToken(position, lineNumber) },
             "=" to { lineNumber, position -> AssignationToken(position, lineNumber) },
             "+" to { lineNumber, position -> SumToken(position, lineNumber) },
             "-" to { lineNumber, position -> SubToken(position, lineNumber) },
