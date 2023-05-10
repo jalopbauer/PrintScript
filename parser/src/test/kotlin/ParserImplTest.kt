@@ -9,6 +9,7 @@ import token.PrintToken
 import token.RightParenthesisToken
 import token.SemicolonToken
 import token.StringLiteralToken
+import token.StringTypeToken
 import token.SumToken
 import token.Token
 import token.TokenName
@@ -58,7 +59,7 @@ class ParserImplTest {
             LetToken(0, 0),
             VariableLiteralToken("test", 0, 0),
             DeclarationToken(0, 0),
-            TokenWithoutValue(TokenName.STRING_TYPE, 0, 0),
+            StringTypeToken(0, 0),
             SemicolonToken(0, 0)
         )
         val declarationParser = PrintScriptParser()
@@ -152,7 +153,7 @@ class ParserImplTest {
             LetToken(0, 0),
             VariableLiteralToken("test", 0, 0),
             DeclarationToken(0, 0),
-            TokenWithoutValue(TokenName.STRING_TYPE, 0, 0),
+            StringTypeToken(0, 0),
             TokenWithoutValue(TokenName.ASSIGNATION, 0, 0),
             StringLiteralToken("Hello World", 0, 0),
             SemicolonToken(0, 0)
@@ -196,7 +197,7 @@ class ParserImplTest {
             LetToken(0, 0),
             VariableLiteralToken("test", 0, 0),
             DeclarationToken(0, 0),
-            TokenWithoutValue(TokenName.STRING_TYPE, 0, 0),
+            StringTypeToken(0, 0),
             TokenWithoutValue(TokenName.ASSIGNATION, 0, 0),
             IntNumberLiteralToken(1, 0, 0),
             SumToken(0, 0),
