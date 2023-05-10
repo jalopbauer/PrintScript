@@ -1,4 +1,5 @@
 import org.junit.jupiter.api.Test
+import token.AssignationToken
 import token.DeclarationToken
 import token.DivToken
 import token.IntNumberLiteralToken
@@ -78,7 +79,7 @@ class ParserImplTest {
     fun assignationParserWorks() {
         val assignation: List<Token> = listOf(
             VariableLiteralToken("test", 0, 0),
-            TokenWithoutValue(TokenName.ASSIGNATION, 0, 0),
+            AssignationToken(0, 0),
             StringLiteralToken("Hello World", 0, 0),
             SemicolonToken(0, 0)
         )
@@ -98,7 +99,7 @@ class ParserImplTest {
     fun assignationWorksWithConcat() {
         val assignation: List<Token> = listOf(
             VariableLiteralToken("test", 0, 0),
-            TokenWithoutValue(TokenName.ASSIGNATION, 0, 0),
+            AssignationToken(0, 0),
             StringLiteralToken("Hello", 0, 0),
             SumToken(0, 0),
             StringLiteralToken("World", 0, 0),
@@ -117,7 +118,7 @@ class ParserImplTest {
     fun assignationWorksWithOperation() {
         val assignation: List<Token> = listOf(
             VariableLiteralToken("test", 0, 0),
-            TokenWithoutValue(TokenName.ASSIGNATION, 0, 0),
+            AssignationToken(0, 0),
             IntNumberLiteralToken(1, 0, 0),
             SumToken(0, 0),
             IntNumberLiteralToken(2, 0, 0),
@@ -133,7 +134,7 @@ class ParserImplTest {
     fun assignationWorksWithComplexOperation() {
         val assignation: List<Token> = listOf(
             VariableLiteralToken("test", 0, 0),
-            TokenWithoutValue(TokenName.ASSIGNATION, 0, 0),
+            AssignationToken(0, 0),
             IntNumberLiteralToken(1, 0, 0),
             SumToken(0, 0),
             IntNumberLiteralToken(2, 0, 0),
@@ -154,7 +155,7 @@ class ParserImplTest {
             VariableLiteralToken("test", 0, 0),
             DeclarationToken(0, 0),
             StringTypeToken(0, 0),
-            TokenWithoutValue(TokenName.ASSIGNATION, 0, 0),
+            AssignationToken(0, 0),
             StringLiteralToken("Hello World", 0, 0),
             SemicolonToken(0, 0)
         )
@@ -174,7 +175,7 @@ class ParserImplTest {
             VariableLiteralToken("test", 0, 0),
             DeclarationToken(0, 0),
             NumberTypeToken(0, 0),
-            TokenWithoutValue(TokenName.ASSIGNATION, 0, 0),
+            AssignationToken(0, 0),
             IntNumberLiteralToken(1, 0, 0),
             SumToken(0, 0),
             IntNumberLiteralToken(2, 0, 0),
@@ -198,7 +199,7 @@ class ParserImplTest {
             VariableLiteralToken("test", 0, 0),
             DeclarationToken(0, 0),
             StringTypeToken(0, 0),
-            TokenWithoutValue(TokenName.ASSIGNATION, 0, 0),
+            AssignationToken(0, 0),
             IntNumberLiteralToken(1, 0, 0),
             SumToken(0, 0),
             IntNumberLiteralToken(2, 0, 0),

@@ -1,5 +1,6 @@
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import token.AssignationToken
 import token.DeclarationToken
 import token.IntNumberLiteralToken
 import token.LeftParenthesisToken
@@ -11,8 +12,6 @@ import token.SemicolonToken
 import token.StringLiteralToken
 import token.StringTypeToken
 import token.Token
-import token.TokenName
-import token.TokenWithoutValue
 import token.VariableLiteralToken
 class FormatterTest {
 
@@ -75,7 +74,7 @@ class FormatterTest {
     fun assignationFormatterWorks() {
         val tokens = listOf(
             VariableLiteralToken("test", 0, 0),
-            TokenWithoutValue(TokenName.ASSIGNATION, 0, 0),
+            AssignationToken(0, 0),
             StringLiteralToken("Hello World", 0, 0),
             SemicolonToken(0, 0)
         )
@@ -138,7 +137,7 @@ class FormatterTest {
     fun oneSpaceBetweenEveryToken() {
         val tokens = listOf(
             VariableLiteralToken("test", 0, 0),
-            TokenWithoutValue(TokenName.ASSIGNATION, 0, 0),
+            AssignationToken(0, 0),
             StringLiteralToken("Hello World", 0, 0),
             SemicolonToken(0, 0)
         )
@@ -152,7 +151,7 @@ class FormatterTest {
     fun previousSpacingBetweenEveryToken() {
         val tokens = listOf(
             VariableLiteralToken("test", 0, 0),
-            TokenWithoutValue(TokenName.ASSIGNATION, 0, 4),
+            AssignationToken(0, 4),
             StringLiteralToken("Hello World", 0, 5),
             SemicolonToken(0, 18)
         )

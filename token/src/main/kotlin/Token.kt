@@ -120,3 +120,17 @@ data class SemicolonToken(private val lineNumber: Int, private val position: Int
         return position
     }
 }
+
+data class AssignationToken(private val lineNumber: Int, private val position: Int) : Token {
+    override fun tokenName(): TokenName {
+        return TokenName.ASSIGNATION
+    }
+
+    override fun lineNumber(): Int {
+        return lineNumber
+    }
+
+    override fun position(): Int {
+        return position
+    }
+}
