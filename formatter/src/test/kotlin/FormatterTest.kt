@@ -4,6 +4,7 @@ import token.DeclarationToken
 import token.IntNumberLiteralToken
 import token.LeftParenthesisToken
 import token.LetToken
+import token.NumberTypeToken
 import token.PrintToken
 import token.RightParenthesisToken
 import token.StringLiteralToken
@@ -19,7 +20,7 @@ class FormatterTest {
             LetToken(0, 0),
             VariableLiteralToken("test", 0, 4),
             DeclarationToken(0, 9),
-            TokenWithoutValue(TokenName.NUMBER_TYPE, 0, 11),
+            NumberTypeToken(0, 11),
             TokenWithoutValue(TokenName.SEMICOLON, 0, 17)
         )
 
@@ -56,7 +57,7 @@ class FormatterTest {
             LetToken(0, 0),
             VariableLiteralToken("test", 0, 4),
             DeclarationToken(0, 9),
-            TokenWithoutValue(TokenName.NUMBER_TYPE, 0, 11),
+            NumberTypeToken(0, 11),
             TokenWithoutValue(TokenName.SEMICOLON, 0, 17)
         )
         val formatterBefore = PrintScriptFormatterFactory().build(
