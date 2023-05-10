@@ -93,7 +93,7 @@ data class DeclarationToken(private val lineNumber: Int, private val position: I
         return position
     }
 }
-data class PrintToken(private val lineNumber: Int, private val position: Int) : Token {
+data class PrintlnToken(private val lineNumber: Int, private val position: Int) : Token {
     override fun tokenName(): TokenName {
         return TokenName.PRINT
     }

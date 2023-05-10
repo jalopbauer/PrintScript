@@ -6,7 +6,7 @@ import token.IntNumberLiteralToken
 import token.LeftParenthesisToken
 import token.LetToken
 import token.NumberTypeToken
-import token.PrintToken
+import token.PrintlnToken
 import token.RightParenthesisToken
 import token.SemicolonToken
 import token.StringLiteralToken
@@ -91,7 +91,7 @@ class FormatterTest {
     @Test
     fun printStringParameterFormatter() {
         val tokens = listOf(
-            PrintToken(0, 0),
+            PrintlnToken(0, 0),
             LeftParenthesisToken(0, 0),
             StringLiteralToken("Hello World", 0, 0),
             RightParenthesisToken(0, 0),
@@ -106,7 +106,7 @@ class FormatterTest {
     @Test
     fun printNumberParameterFormatter() {
         val tokens = listOf(
-            PrintToken(0, 0),
+            PrintlnToken(0, 0),
             LeftParenthesisToken(0, 0),
             IntNumberLiteralToken(1, 0, 0),
             RightParenthesisToken(0, 0),
@@ -121,7 +121,7 @@ class FormatterTest {
     @Test
     fun printVariableParameterFormatter() {
         val tokens = listOf(
-            PrintToken(0, 0),
+            PrintlnToken(0, 0),
             LeftParenthesisToken(0, 0),
             VariableLiteralToken("HelloWorld", 0, 0),
             RightParenthesisToken(0, 0),

@@ -68,24 +68,24 @@ class DoubleNumberLiteralBuilder : TokenBuilder {
 }
 class StringEqualsTokenName : TokenBuilder {
     override fun build(string: String, position: Int, lineNumber: Int): Token? {
-        return stringTokenNameMap[string]?.let { tokenName -> TokenWithoutValue(tokenName, lineNumber, position) }
+        return stringTokenMap[string]?.invoke(position, lineNumber)
     }
 
     companion object {
-        val stringTokenNameMap: Map<String, TokenName> = mapOf(
-            "let" to TokenName.LET,
-            ":" to TokenName.DECLARATION,
-            "string" to TokenName.STRING_TYPE,
-            "number" to TokenName.NUMBER_TYPE,
-            "=" to TokenName.ASSIGNATION,
-            "+" to TokenName.SUM,
-            "-" to TokenName.SUB,
-            "*" to TokenName.MULT,
-            "/" to TokenName.DIV,
-            "(" to TokenName.LEFT_PARENTHESIS,
-            ")" to TokenName.RIGHT_PARENTHESIS,
-            ";" to TokenName.SEMICOLON,
-            "println" to TokenName.PRINT
+        val stringTokenMap: Map<String, (position: Int, lineNumber: Int) -> Token> = mapOf(
+            "let" to { lineNumber, position -> LetToken(position, lineNumber) },
+            ":" to { lineNumber, position -> DeclarationToken(position, lineNumber) },
+            "string" to { lineNumber, position -> StringTypeToken(position, lineNumber) },
+            "number" to { lineNumber, position -> NumberTypeToken(position, lineNumber) },
+            "=" to { lineNumber, position -> AssignationToken(position, lineNumber) },
+            "+" to { lineNumber, position -> SumToken(position, lineNumber) },
+            "-" to { lineNumber, position -> SubToken(position, lineNumber) },
+            "*" to { lineNumber, position -> MultToken(position, lineNumber) },
+            "/" to { lineNumber, position -> DivToken(position, lineNumber) },
+            "(" to { lineNumber, position -> LeftParenthesisToken(position, lineNumber) },
+            ")" to { lineNumber, position -> RightParenthesisToken(position, lineNumber) },
+            ";" to { lineNumber, position -> SemicolonToken(position, lineNumber) },
+            "println" to { lineNumber, position -> PrintlnToken(position, lineNumber) }
         )
     }
 }

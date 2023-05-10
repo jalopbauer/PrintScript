@@ -6,15 +6,13 @@ import token.IntNumberLiteralToken
 import token.LeftParenthesisToken
 import token.LetToken
 import token.NumberTypeToken
-import token.PrintToken
+import token.PrintlnToken
 import token.RightParenthesisToken
 import token.SemicolonToken
 import token.StringLiteralToken
 import token.StringTypeToken
 import token.SumToken
 import token.Token
-import token.TokenName
-import token.TokenWithoutValue
 import token.VariableLiteralToken
 class ParserImplTest {
 
@@ -42,7 +40,6 @@ class ParserImplTest {
     @Test
     fun declarationParserDoesntWork() {
         val declaration: List<Token> = listOf(
-            TokenWithoutValue(TokenName.VARIABLE, 0, 0),
             VariableLiteralToken("test", 0, 0),
             DeclarationToken(0, 0),
             NumberTypeToken(0, 0),
@@ -219,7 +216,7 @@ class ParserImplTest {
     @Test
     fun printParserWorks() {
         val print: List<Token> = listOf(
-            PrintToken(0, 0),
+            PrintlnToken(0, 0),
             LeftParenthesisToken(0, 0),
             StringLiteralToken("Hello World", 0, 0),
             RightParenthesisToken(0, 0),
@@ -237,7 +234,7 @@ class ParserImplTest {
     @Test
     fun printWorksWithConcat() {
         val print: List<Token> = listOf(
-            PrintToken(0, 0),
+            PrintlnToken(0, 0),
             LeftParenthesisToken(0, 0),
             StringLiteralToken("Hello", 0, 0),
             SumToken(0, 0),

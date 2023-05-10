@@ -2,7 +2,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import token.IntNumberLiteralToken
 import token.LeftParenthesisToken
-import token.PrintToken
+import token.PrintlnToken
 import token.RightParenthesisToken
 import token.SemicolonToken
 import token.StringLiteralToken
@@ -62,7 +62,7 @@ class ScaTest {
     @Test
     fun printLnStringLiteralValid() {
         val tokens = listOf(
-            PrintToken(0, 0),
+            PrintlnToken(0, 0),
             LeftParenthesisToken(0, 0),
             StringLiteralToken("HelloWorld", 0, 0),
             RightParenthesisToken(0, 0),
@@ -75,7 +75,7 @@ class ScaTest {
     @Test
     fun printLnNumberLiteralValid() {
         val tokens = listOf(
-            PrintToken(0, 0),
+            PrintlnToken(0, 0),
             LeftParenthesisToken(0, 0),
             IntNumberLiteralToken(1, 0, 0),
             RightParenthesisToken(0, 0),
@@ -88,7 +88,7 @@ class ScaTest {
     @Test
     fun printLnStringConcatenationLiteralNotValid() {
         val tokens = listOf(
-            PrintToken(0, 0),
+            PrintlnToken(0, 0),
             LeftParenthesisToken(0, 0),
             StringLiteralToken("HelloWorld", 0, 0),
             SumToken(0, 0),
@@ -103,7 +103,7 @@ class ScaTest {
     @Test
     fun printLnStringConcatenationLiteralValid() {
         val tokens = listOf(
-            PrintToken(0, 0),
+            PrintlnToken(0, 0),
             LeftParenthesisToken(0, 0),
             StringLiteralToken("HelloWorld", 0, 0),
             SumToken(0, 0),
