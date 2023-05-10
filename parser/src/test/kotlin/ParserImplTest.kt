@@ -2,6 +2,7 @@ import org.junit.jupiter.api.Test
 import token.DivToken
 import token.IntNumberLiteralToken
 import token.LeftParenthesisToken
+import token.LetToken
 import token.RightParenthesisToken
 import token.StringLiteralToken
 import token.SumToken
@@ -14,7 +15,7 @@ class ParserImplTest {
     @Test
     fun declarationParserWorksWithNumber() {
         val declaration: List<Token> = listOf(
-            TokenWithoutValue(TokenName.LET, 0, 0),
+            LetToken(0, 0),
             VariableLiteralToken("test", 0, 0),
             TokenWithoutValue(TokenName.DECLARATION, 0, 0),
             TokenWithoutValue(TokenName.NUMBER_TYPE, 0, 0),
@@ -50,7 +51,7 @@ class ParserImplTest {
     @Test
     fun declarationParserWorksWithString() {
         val declaration: List<Token> = listOf(
-            TokenWithoutValue(TokenName.LET, 0, 0),
+            LetToken(0, 0),
             VariableLiteralToken("test", 0, 0),
             TokenWithoutValue(TokenName.DECLARATION, 0, 0),
             TokenWithoutValue(TokenName.STRING_TYPE, 0, 0),
@@ -144,7 +145,7 @@ class ParserImplTest {
     @Test
     fun declAssiParserWorks() {
         val declAssi: List<Token> = listOf(
-            TokenWithoutValue(TokenName.LET, 0, 0),
+            LetToken(0, 0),
             VariableLiteralToken("test", 0, 0),
             TokenWithoutValue(TokenName.DECLARATION, 0, 0),
             TokenWithoutValue(TokenName.STRING_TYPE, 0, 0),
@@ -164,7 +165,7 @@ class ParserImplTest {
     @Test
     fun declAssiWorksWithOperation() {
         val declAssi: List<Token> = listOf(
-            TokenWithoutValue(TokenName.LET, 0, 0),
+            LetToken(0, 0),
             VariableLiteralToken("test", 0, 0),
             TokenWithoutValue(TokenName.DECLARATION, 0, 0),
             TokenWithoutValue(TokenName.NUMBER_TYPE, 0, 0),
@@ -188,7 +189,7 @@ class ParserImplTest {
     @Test
     fun declAssiWithWrongAssignation() {
         val declAssi: List<Token> = listOf(
-            TokenWithoutValue(TokenName.LET, 0, 0),
+            LetToken(0, 0),
             VariableLiteralToken("test", 0, 0),
             TokenWithoutValue(TokenName.DECLARATION, 0, 0),
             TokenWithoutValue(TokenName.STRING_TYPE, 0, 0),

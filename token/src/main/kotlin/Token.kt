@@ -67,3 +67,16 @@ data class RightParenthesisToken(private val lineNumber: Int, private val positi
         return position
     }
 }
+data class LetToken(private val lineNumber: Int, private val position: Int) : Token {
+    override fun tokenName(): TokenName {
+        return TokenName.LET
+    }
+
+    override fun lineNumber(): Int {
+        return lineNumber
+    }
+
+    override fun position(): Int {
+        return position
+    }
+}
