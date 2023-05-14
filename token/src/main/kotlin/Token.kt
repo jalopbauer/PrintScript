@@ -175,3 +175,16 @@ data class RightCurlyBracketsToken(private val lineNumber: Int, private val posi
         return position
     }
 }
+data class ReadInputToken(private val lineNumber: Int, private val position: Int) : Token {
+    override fun tokenName(): TokenName {
+        return TokenName.READ_INPUT
+    }
+
+    override fun lineNumber(): Int {
+        return lineNumber
+    }
+
+    override fun position(): Int {
+        return position
+    }
+}

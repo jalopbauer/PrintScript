@@ -24,5 +24,6 @@ enum class TokenName {
     IF,
     ELSE,
     LEFT_CURLY_BRACKETS,
-    RIGHT_CURLY_BRACKETS
+    RIGHT_CURLY_BRACKETS,
+    READ_INPUT
 }
