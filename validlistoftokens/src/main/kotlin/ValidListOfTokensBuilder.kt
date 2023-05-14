@@ -1,4 +1,6 @@
+import token.BooleanLiteralToken
 import token.NumberLiteralToken
+import token.ReadInputToken
 import token.Token
 import token.TokenName
 import token.VariableNameToken
@@ -26,9 +28,16 @@ class PrintlnValidListOfTokensBuilder : ValidListOfTokensBuilder<PrintlnValidLis
 
 class PrintlnParameterValidListOfTokensBuilder : ValidListOfTokensBuilder<PrintlnParameterValidListOfTokens> {
     override fun validate(tokens: List<Token>): PrintlnParameterValidListOfTokens? =
-        when {
-            tokens.size == 1 && tokens.component1() is VariableNameToken -> VariableParameter(tokens.component1() as VariableNameToken)
-            tokens.size == 1 && tokens.component1() is NumberLiteralToken -> NumberLiteralParameter(tokens.component1() as NumberLiteralToken)
+        when (tokens.size) {
+            1 -> {
+                when (val singleToken = tokens.component1()) {
+                    is ReadInputToken -> ReadInputParameter(singleToken)
+                    is VariableNameToken -> VariableParameter(singleToken)
+                    is NumberLiteralToken -> NumberLiteralParameter(singleToken)
+                    is BooleanLiteralToken -> BooleanLiteralParameter(singleToken)
+                    else -> null
+                }
+            }
             else -> StringLiteralOrConcatValidListOfTokensBuilder().validate(tokens)
         }
 }

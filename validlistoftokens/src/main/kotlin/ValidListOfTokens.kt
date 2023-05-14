@@ -1,4 +1,6 @@
+import token.BooleanLiteralToken
 import token.NumberLiteralToken
+import token.ReadInputToken
 import token.Token
 import token.VariableNameToken
 
@@ -21,3 +23,9 @@ class StringLiteralOrStringConcatValidListOfTokens(val stringOrConcat: List<Toke
     PrintlnParameterValidListOfTokens
 interface OperationValidListOfTokens : ValidListOfTokens
 class OperationValidListOfConcatTokens(val operationConcat: List<Token>) : OperationValidListOfTokens
+
+class BooleanLiteralParameter(val booleanLiteralToken: BooleanLiteralToken) :
+    PrintlnParameterValidListOfTokens
+
+class ReadInputParameter(val readInputToken: ReadInputToken) :
+    PrintlnParameterValidListOfTokens

@@ -1,9 +1,10 @@
 import token.DoubleNumberLiteralToken
+import token.FalseLiteralToken
 import token.IntNumberLiteralToken
 import token.NumberLiteralToken
 import token.Token
 import token.TokenName
-
+import token.TrueLiteralToken
 interface AstBuilder<T : ValidListOfTokens> {
     fun build(validListOfTokens: T): AbstractSyntaxTree
 
@@ -22,6 +23,14 @@ class PrintlnBuilder : AstBuilder<PrintlnValidListOfTokens> {
             is VariableParameter -> PrintlnAst(VariableNameNode(parameter.variableToken.value))
             is StringLiteralOrStringConcatValidListOfTokens -> PrintlnAst(getConcat(parameter.stringOrConcat))
             is NumberLiteralParameter -> PrintlnAst(getNumberNode(parameter.numberLiteralToken))
+            is BooleanLiteralParameter ->
+                PrintlnAst(
+                    when (parameter.booleanLiteralToken) {
+                        is FalseLiteralToken -> FalseLiteral
+                        is TrueLiteralToken -> TrueLiteral
+                    }
+                )
+            is ReadInputParameter -> PrintlnAst(ReadInputAst())
         }
     }
 

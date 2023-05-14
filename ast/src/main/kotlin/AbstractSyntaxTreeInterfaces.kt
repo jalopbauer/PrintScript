@@ -10,3 +10,4 @@ open class NumberType : Type
 object IntType : NumberType()
 object DoubleType : NumberType()
 object ErrorType : Type
+class ReadInputAst : AbstractSyntaxTree, PrintlnAstParameter
