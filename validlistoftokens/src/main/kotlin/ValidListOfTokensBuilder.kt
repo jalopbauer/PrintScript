@@ -1,6 +1,7 @@
 import token.BooleanLiteralToken
 import token.NumberLiteralToken
 import token.ReadInputToken
+import token.StringLiteralToken
 import token.Token
 import token.TokenName
 import token.VariableNameToken
@@ -16,6 +17,7 @@ class PrintlnValidListOfTokensBuilder : ValidListOfTokensBuilder<PrintlnValidLis
             tokens.component2().tokenName() != TokenName.LEFT_PARENTHESIS ||
             tokens[tokens.size - 2].tokenName() != TokenName.RIGHT_PARENTHESIS
         ) {
+            println("not println")
             null
         } else {
             PrintlnParameterValidListOfTokensBuilder().validate(tokens.subList(2, tokens.size - 2))?.let {
@@ -33,6 +35,7 @@ class PrintlnParameterValidListOfTokensBuilder : ValidListOfTokensBuilder<Printl
                 when (val singleToken = tokens.component1()) {
                     is ReadInputToken -> ReadInputParameter(singleToken)
                     is VariableNameToken -> VariableParameter(singleToken)
+                    is StringLiteralToken -> StringLiteralOrStringConcatValidListOfTokens(listOf(singleToken))
                     is NumberLiteralToken -> NumberLiteralParameter(singleToken)
                     is BooleanLiteralToken -> BooleanLiteralParameter(singleToken)
                     else -> null

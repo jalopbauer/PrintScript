@@ -46,6 +46,8 @@ class EnterBeforePrintln(private val tokenListSpacingRule: TokenListSpacingRule,
                 is NumberLiteralParameter -> listOf(printlnValidParameter.numberLiteralToken)
                 is StringLiteralOrStringConcatValidListOfTokens -> printlnValidParameter.stringOrConcat
                 is VariableParameter -> listOf(printlnValidParameter.variableToken)
+                is BooleanLiteralParameter -> TODO()
+                is ReadInputParameter -> TODO()
             }
         ).padStart(amount, '\n') + ");"
 }
