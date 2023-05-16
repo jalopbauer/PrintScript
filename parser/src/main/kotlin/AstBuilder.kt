@@ -1,23 +1,23 @@
+import token.BooleanTypeToken
 import token.DoubleNumberLiteralToken
 import token.FalseLiteralToken
 import token.IntNumberLiteralToken
 import token.NumberLiteralToken
+import token.NumberTypeToken
+import token.StringTypeToken
 import token.Token
-import token.TokenName
 import token.TrueLiteralToken
+import token.TypeToken
 interface AstBuilder<T : ValidListOfTokens> {
     fun build(validListOfTokens: T): AbstractSyntaxTree
 
-    fun findType(token: Token): Type {
-        return when (token.tokenName()) {
-            TokenName.STRING_TYPE -> StringType
-            TokenName.NUMBER_TYPE -> NumberType()
-            TokenName.BOOLEAN_TYPE -> BooleanType
-            else -> ErrorType
+    fun findType(token: TypeToken): Type =
+        when (token) {
+            is BooleanTypeToken -> BooleanType
+            is NumberTypeToken -> NumberType()
+            is StringTypeToken -> StringType
         }
-    }
 }
-
 class PrintlnBuilder : AstBuilder<PrintlnValidListOfTokens> {
     override fun build(validListOfTokens: PrintlnValidListOfTokens): PrintlnAst {
         return when (val parameter = validListOfTokens.printLnParameterValidListOfTokens) {

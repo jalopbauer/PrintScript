@@ -9,7 +9,7 @@ class PrintlnValidListOfTokens(val printLnParameterValidListOfTokens: PrintlnPar
     ValidListOfTokens
 class DeclarationValidListOfTokens(val type: TypeToken, val variable: VariableNameToken) : ValidListOfTokens
 class AssignationValidListOfTokens(val variable: VariableNameToken, val content: List<Token>) : ValidListOfTokens
-class DeclarationAssignationValidListOfTokens(val variable: VariableNameToken, val content: List<Token>, val type: Token) :
+class DeclarationAssignationValidListOfTokens(val variable: VariableNameToken, val content: List<Token>, val type: TypeToken) :
     ValidListOfTokens
 
 sealed interface PrintlnParameterValidListOfTokens : ValidListOfTokens

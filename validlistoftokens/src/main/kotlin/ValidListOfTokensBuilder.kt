@@ -115,14 +115,14 @@ class DeclarationAssignationValidListOfTokensBuilder :
             tokens.component1().tokenName() == TokenName.LET &&
             tokens.component2().tokenName() == TokenName.VARIABLE &&
             tokens.component3().tokenName() == TokenName.DECLARATION &&
-            (tokens.component4().tokenName() == TokenName.STRING_TYPE || tokens.component4().tokenName() == TokenName.NUMBER_TYPE) &&
+            (tokens.component4() is TypeToken) &&
             tokens.component5().tokenName() == TokenName.ASSIGNATION &&
             (StringLiteralOrConcatValidListOfTokensBuilder().validateChain(tokens.subList(5, (tokens.size - 1))) || OperationValidListOfTokensBuilder().validateChain(tokens.subList(5, (tokens.size - 1))))
         ) {
             return DeclarationAssignationValidListOfTokens(
                 tokens.component2() as VariableNameToken,
                 tokens.subList(5, (tokens.size - 1)),
-                tokens.component4()
+                tokens.component4() as TypeToken
             )
         }
         return null
