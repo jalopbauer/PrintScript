@@ -94,6 +94,7 @@ class StringEqualsTokenNameV1 : TokenBuilder {
     companion object {
         val stringTokenMap: Map<String, (position: Int, lineNumber: Int) -> Token> = mapOf(
             "let" to { lineNumber, position -> LetToken(position, lineNumber) },
+            "const" to { lineNumber, position -> ConstToken(position, lineNumber) },
             ":" to { lineNumber, position -> DeclarationToken(position, lineNumber) },
             "string" to { lineNumber, position -> StringTypeToken(position, lineNumber) },
             "number" to { lineNumber, position -> NumberTypeToken(position, lineNumber) },

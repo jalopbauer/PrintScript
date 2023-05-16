@@ -25,5 +25,6 @@ enum class TokenName {
     ELSE,
     LEFT_CURLY_BRACKETS,
     RIGHT_CURLY_BRACKETS,
-    READ_INPUT
+    READ_INPUT,
+    CONST
 }
