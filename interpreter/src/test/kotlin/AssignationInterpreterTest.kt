@@ -1,9 +1,25 @@
+import ast.AssignationAst
+import ast.Div
+import ast.DoubleNumberLiteral
+import ast.IntNumberLiteral
+import ast.IntType
+import ast.Literal
+import ast.Mult
+import ast.Operation
+import ast.StringConcatenation
+import ast.StringLiteral
+import ast.StringType
+import ast.Sub
+import ast.Sum
+import ast.VariableNameNode
+import interpreter.InterpreterError
+import interpreter.PrintScriptInterpreter
+import interpreter.state.PrintScriptInterpreterState
+import interpreter.state.PrintScriptInterpreterStateI
+import interpreter.state.PrintlnInterpreterStateI
+import interpreter.state.VariableInterpreterStateI
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import state.PrintScriptInterpreterState
-import state.PrintScriptInterpreterStateI
-import state.PrintlnInterpreterStateI
-import state.VariableInterpreterStateI
 
 class AssignationInterpreterTest {
 

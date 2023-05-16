@@ -1,3 +1,7 @@
+import formatter.EnterBeforePrintln
+import formatter.OneSpaceBetweenEveryToken
+import formatter.PrintScriptFormatterFactory
+import formatter.ValidListOfTokensFormatter
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import token.AssignationToken
@@ -13,6 +17,8 @@ import token.StringLiteralToken
 import token.StringTypeToken
 import token.Token
 import token.VariableNameToken
+import validlistoftokens.PrintlnValidListOfTokensBuilder
+
 class FormatterTest {
 
     @Test

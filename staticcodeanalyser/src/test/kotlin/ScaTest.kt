@@ -1,5 +1,6 @@
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import staticcodeanalyser.PrintScriptStaticCodeAnalyserFactory
 import token.IntNumberLiteralToken
 import token.LeftParenthesisToken
 import token.PrintlnToken

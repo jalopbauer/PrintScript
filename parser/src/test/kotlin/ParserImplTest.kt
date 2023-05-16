@@ -1,4 +1,14 @@
+import ast.AssignationAst
+import ast.AssignationDeclarationAst
+import ast.DeclarationAst
+import ast.NumberType
+import ast.PrintlnAst
+import ast.StringConcatenation
+import ast.StringLiteral
+import ast.StringType
 import org.junit.jupiter.api.Test
+import parser.PrintScriptParser
+import parser.PrintlnParser
 import token.AssignationToken
 import token.DeclarationToken
 import token.DivToken

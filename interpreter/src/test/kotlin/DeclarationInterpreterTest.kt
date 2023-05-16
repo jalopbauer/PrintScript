@@ -1,7 +1,13 @@
+import ast.DeclarationAst
+import ast.StringLiteral
+import ast.StringType
+import ast.VariableNameNode
+import interpreter.InterpreterError
+import interpreter.PrintScriptInterpreter
+import interpreter.state.PrintScriptInterpreterStateI
+import interpreter.state.PrintlnInterpreterStateI
+import interpreter.state.VariableInterpreterStateI
 import org.junit.jupiter.api.Test
-import state.PrintScriptInterpreterStateI
-import state.PrintlnInterpreterStateI
-import state.VariableInterpreterStateI
 
 class DeclarationInterpreterTest {
 

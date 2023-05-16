@@ -3,7 +3,7 @@
  */
 package printscript.app
 
-import MessageUtils
+import app.MessageUtils
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 

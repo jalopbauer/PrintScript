@@ -1,10 +1,20 @@
 
+import ast.ConcatenationParameter
+import ast.IntNumberLiteral
+import ast.PrintlnAst
+import ast.StringConcatenation
+import ast.StringLiteral
+import ast.StringType
+import ast.VariableNameNode
+import interpreter.InterpreterError
+import interpreter.InterpreterResponse
+import interpreter.PrintScriptInterpreter
+import interpreter.state.PrintScriptInterpreterState
+import interpreter.state.PrintScriptInterpreterStateI
+import interpreter.state.PrintlnInterpreterStateI
+import interpreter.state.VariableInterpreterStateI
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import state.PrintScriptInterpreterState
-import state.PrintScriptInterpreterStateI
-import state.PrintlnInterpreterStateI
-import state.VariableInterpreterStateI
 
 class PrintlnInterpreterTest {
 
