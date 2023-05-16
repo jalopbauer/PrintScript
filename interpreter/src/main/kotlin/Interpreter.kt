@@ -28,6 +28,7 @@ class PrintlnParameterInterpreter : Interpreter<PrintlnAstParameter, PrintlnInte
                     ?.let { this.interpret(it as PrintlnAstParameter, interpreterState) }
                     ?: InterpreterError()
             is NumberLiteral -> interpreterState.println(abstractSyntaxTree.value().toString())
+            is BooleanLiteral -> interpreterState.println(abstractSyntaxTree.toString())
             is StringLiteral -> interpreterState.println(abstractSyntaxTree.value)
             is StringConcatenation ->
                 when (val solve = ConcatenationSolver().solve(abstractSyntaxTree, interpreterState)) {
