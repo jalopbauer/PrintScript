@@ -17,6 +17,9 @@ class PrintlnParameterRule :
                 } else {
                     "StringConcat not valid"
                 }
+
+            is BooleanLiteralParameter -> TODO()
+            is ReadInputParameter -> TODO()
         }
 }
 interface VariableRule : Rule<Token>

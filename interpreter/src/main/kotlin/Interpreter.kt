@@ -28,6 +28,7 @@ class PrintlnParameterInterpreter : Interpreter<PrintlnAstParameter, PrintlnInte
                     ?.let { this.interpret(it as PrintlnAstParameter, interpreterState) }
                     ?: InterpreterError()
             is NumberLiteral -> interpreterState.println(abstractSyntaxTree.value().toString())
+            is BooleanLiteral -> interpreterState.println(abstractSyntaxTree.toString())
             is StringLiteral -> interpreterState.println(abstractSyntaxTree.value)
             is StringConcatenation ->
                 when (val solve = ConcatenationSolver().solve(abstractSyntaxTree, interpreterState)) {
@@ -42,10 +43,9 @@ class AssignationParameterInterpreter : Interpreter<AssignationAst, VariableInte
         when (val assignationParameterNode = abstractSyntaxTree.rightValue()) {
             is IntNumberLiteral,
             is StringLiteral,
-            is DoubleNumberLiteral -> interpreterState.setLiteralToVariable(abstractSyntaxTree.leftValue(), assignationParameterNode as Literal)
-            is VariableNameNode -> {
-                interpreterState.setVariableValueToVariable(abstractSyntaxTree.leftValue(), assignationParameterNode)
-            }
+            is DoubleNumberLiteral,
+            is BooleanLiteral -> interpreterState.setLiteralToVariable(abstractSyntaxTree.leftValue(), assignationParameterNode as Literal)
+            is VariableNameNode -> interpreterState.setVariableValueToVariable(abstractSyntaxTree.leftValue(), assignationParameterNode)
             is Operation ->
                 when (val literalOrError = FullSolver().solve(assignationParameterNode, interpreterState)) {
                     is InterpreterErrorResponse -> literalOrError.interpreterError

@@ -1,8 +1,14 @@
+import token.AssignationToken
 import token.BooleanLiteralToken
+import token.ConstToken
+import token.DeclarationToken
+import token.LetToken
 import token.NumberLiteralToken
 import token.ReadInputToken
+import token.StringLiteralToken
 import token.Token
 import token.TokenName
+import token.TypeToken
 import token.VariableNameToken
 
 interface ValidListOfTokensBuilder<T : ValidListOfTokens> {
@@ -33,6 +39,7 @@ class PrintlnParameterValidListOfTokensBuilder : ValidListOfTokensBuilder<Printl
                 when (val singleToken = tokens.component1()) {
                     is ReadInputToken -> ReadInputParameter(singleToken)
                     is VariableNameToken -> VariableParameter(singleToken)
+                    is StringLiteralToken -> StringLiteralOrStringConcatValidListOfTokens(listOf(singleToken))
                     is NumberLiteralToken -> NumberLiteralParameter(singleToken)
                     is BooleanLiteralToken -> BooleanLiteralParameter(singleToken)
                     else -> null
@@ -77,12 +84,12 @@ class StringLiteralOrConcatValidListOfTokensBuilder :
 class DeclarationValidListOfTokensBuilder : ValidListOfTokensBuilder<DeclarationValidListOfTokens> {
     override fun validate(tokens: List<Token>): DeclarationValidListOfTokens? {
         if (tokens.size == 5 &&
-            tokens.component1().tokenName() == TokenName.LET &&
-            tokens.component2().tokenName() == TokenName.VARIABLE &&
-            tokens.component3().tokenName() == TokenName.DECLARATION &&
-            (tokens.component4().tokenName() == TokenName.STRING_TYPE || tokens.component4().tokenName() == TokenName.NUMBER_TYPE)
+            tokens.component1() is LetToken &&
+            tokens.component2() is VariableNameToken &&
+            tokens.component3() is DeclarationToken &&
+            (tokens.component4() is TypeToken)
         ) {
-            return DeclarationValidListOfTokens(tokens.component4(), tokens.component2() as VariableNameToken)
+            return DeclarationValidListOfTokens(tokens.component4() as TypeToken, tokens.component2() as VariableNameToken)
         }
         return null
     }
@@ -91,9 +98,14 @@ class DeclarationValidListOfTokensBuilder : ValidListOfTokensBuilder<Declaration
 class AssignationValidListOfTokensBuilder : ValidListOfTokensBuilder<AssignationValidListOfTokens> {
     override fun validate(tokens: List<Token>): AssignationValidListOfTokens? {
         if (tokens.size >= 3 &&
-            tokens.component1().tokenName() == TokenName.VARIABLE &&
-            tokens.component2().tokenName() == TokenName.ASSIGNATION &&
-            (tokens.component3().tokenName() == TokenName.VARIABLE || StringLiteralOrConcatValidListOfTokensBuilder().validateChain(tokens.subList(2, (tokens.size - 1))) || OperationValidListOfTokensBuilder().validateChain(tokens.subList(2, (tokens.size - 1))))
+            tokens.component1() is VariableNameToken &&
+            tokens.component2() is AssignationToken &&
+            (
+                tokens.component3() is VariableNameToken ||
+                    tokens.component3() is BooleanLiteralToken ||
+                    StringLiteralOrConcatValidListOfTokensBuilder().validateChain(tokens.subList(2, (tokens.size - 1))) ||
+                    OperationValidListOfTokensBuilder().validateChain(tokens.subList(2, (tokens.size - 1)))
+                )
         ) {
             return AssignationValidListOfTokens(
                 tokens.component1() as VariableNameToken,
@@ -107,23 +119,52 @@ class DeclarationAssignationValidListOfTokensBuilder :
     ValidListOfTokensBuilder<DeclarationAssignationValidListOfTokens> {
     override fun validate(tokens: List<Token>): DeclarationAssignationValidListOfTokens? {
         if (tokens.size >= 7 &&
-            tokens.component1().tokenName() == TokenName.LET &&
-            tokens.component2().tokenName() == TokenName.VARIABLE &&
-            tokens.component3().tokenName() == TokenName.DECLARATION &&
-            (tokens.component4().tokenName() == TokenName.STRING_TYPE || tokens.component4().tokenName() == TokenName.NUMBER_TYPE) &&
-            tokens.component5().tokenName() == TokenName.ASSIGNATION &&
-            (StringLiteralOrConcatValidListOfTokensBuilder().validateChain(tokens.subList(5, (tokens.size - 1))) || OperationValidListOfTokensBuilder().validateChain(tokens.subList(5, (tokens.size - 1))))
+            tokens.component1() is LetToken &&
+            tokens.component2() is VariableNameToken &&
+            tokens.component3() is DeclarationToken &&
+            (tokens.component4() is TypeToken) &&
+            tokens.component5() is AssignationToken &&
+            (
+                tokens.component3() is VariableNameToken ||
+                    tokens.component3() is BooleanLiteralToken ||
+                    StringLiteralOrConcatValidListOfTokensBuilder().validateChain(tokens.subList(5, (tokens.size - 1))) ||
+                    OperationValidListOfTokensBuilder().validateChain(tokens.subList(5, (tokens.size - 1)))
+                )
         ) {
             return DeclarationAssignationValidListOfTokens(
                 tokens.component2() as VariableNameToken,
                 tokens.subList(5, (tokens.size - 1)),
-                tokens.component4()
+                tokens.component4() as TypeToken
             )
         }
         return null
     }
 }
-
+class ConstDeclarationAssignationValidListOfTokensBuilder :
+    ValidListOfTokensBuilder<ConstDeclarationAssignationValidListOfTokens> {
+    override fun validate(tokens: List<Token>): ConstDeclarationAssignationValidListOfTokens? {
+        if (tokens.size >= 7 &&
+            tokens.component1() is ConstToken &&
+            tokens.component2() is VariableNameToken &&
+            tokens.component3() is DeclarationToken &&
+            (tokens.component4() is TypeToken) &&
+            tokens.component5() is AssignationToken &&
+            (
+                tokens.component3() is VariableNameToken ||
+                    tokens.component3() is BooleanLiteralToken ||
+                    StringLiteralOrConcatValidListOfTokensBuilder().validateChain(tokens.subList(5, (tokens.size - 1))) ||
+                    OperationValidListOfTokensBuilder().validateChain(tokens.subList(5, (tokens.size - 1)))
+                )
+        ) {
+            return ConstDeclarationAssignationValidListOfTokens(
+                tokens.component2() as VariableNameToken,
+                tokens.subList(5, (tokens.size - 1)),
+                tokens.component4() as TypeToken
+            )
+        }
+        return null
+    }
+}
 class OperationValidListOfTokensBuilder : ValidListOfTokensBuilder<OperationValidListOfTokens> {
     override fun validate(tokens: List<Token>): OperationValidListOfTokens? {
         var previousToken = tokens[0]

@@ -32,3 +32,11 @@ data class AssignationDeclarationAst(private val assignation: AssignationAst, pr
     fun rightValue(): DeclarationAst =
         declaration
 }
+
+data class ConstAssignationDeclarationAst(private val assignation: AssignationAst, private val declaration: DeclarationAst) : AbstractSyntaxTree {
+    fun leftValue(): AssignationAst =
+        assignation
+
+    fun rightValue(): DeclarationAst =
+        declaration
+}
