@@ -1,9 +1,12 @@
 import token.BooleanLiteralToken
+import token.DeclarationToken
+import token.LetToken
 import token.NumberLiteralToken
 import token.ReadInputToken
 import token.StringLiteralToken
 import token.Token
 import token.TokenName
+import token.TypeToken
 import token.VariableNameToken
 
 interface ValidListOfTokensBuilder<T : ValidListOfTokens> {
@@ -17,7 +20,6 @@ class PrintlnValidListOfTokensBuilder : ValidListOfTokensBuilder<PrintlnValidLis
             tokens.component2().tokenName() != TokenName.LEFT_PARENTHESIS ||
             tokens[tokens.size - 2].tokenName() != TokenName.RIGHT_PARENTHESIS
         ) {
-            println("not println")
             null
         } else {
             PrintlnParameterValidListOfTokensBuilder().validate(tokens.subList(2, tokens.size - 2))?.let {
@@ -80,12 +82,12 @@ class StringLiteralOrConcatValidListOfTokensBuilder :
 class DeclarationValidListOfTokensBuilder : ValidListOfTokensBuilder<DeclarationValidListOfTokens> {
     override fun validate(tokens: List<Token>): DeclarationValidListOfTokens? {
         if (tokens.size == 5 &&
-            tokens.component1().tokenName() == TokenName.LET &&
-            tokens.component2().tokenName() == TokenName.VARIABLE &&
-            tokens.component3().tokenName() == TokenName.DECLARATION &&
-            (tokens.component4().tokenName() == TokenName.STRING_TYPE || tokens.component4().tokenName() == TokenName.NUMBER_TYPE)
+            tokens.component1() is LetToken &&
+            tokens.component2() is VariableNameToken &&
+            tokens.component3() is DeclarationToken &&
+            (tokens.component4() is TypeToken)
         ) {
-            return DeclarationValidListOfTokens(tokens.component4(), tokens.component2() as VariableNameToken)
+            return DeclarationValidListOfTokens(tokens.component4() as TypeToken, tokens.component2() as VariableNameToken)
         }
         return null
     }

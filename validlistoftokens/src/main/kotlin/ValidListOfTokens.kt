@@ -2,12 +2,12 @@ import token.BooleanLiteralToken
 import token.NumberLiteralToken
 import token.ReadInputToken
 import token.Token
+import token.TypeToken
 import token.VariableNameToken
-
 interface ValidListOfTokens
 class PrintlnValidListOfTokens(val printLnParameterValidListOfTokens: PrintlnParameterValidListOfTokens) :
     ValidListOfTokens
-class DeclarationValidListOfTokens(val type: Token, val variable: VariableNameToken) : ValidListOfTokens
+class DeclarationValidListOfTokens(val type: TypeToken, val variable: VariableNameToken) : ValidListOfTokens
 class AssignationValidListOfTokens(val variable: VariableNameToken, val content: List<Token>) : ValidListOfTokens
 class DeclarationAssignationValidListOfTokens(val variable: VariableNameToken, val content: List<Token>, val type: Token) :
     ValidListOfTokens

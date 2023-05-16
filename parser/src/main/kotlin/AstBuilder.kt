@@ -12,6 +12,7 @@ interface AstBuilder<T : ValidListOfTokens> {
         return when (token.tokenName()) {
             TokenName.STRING_TYPE -> StringType
             TokenName.NUMBER_TYPE -> NumberType()
+            TokenName.BOOLEAN_TYPE -> BooleanType
             else -> ErrorType
         }
     }
