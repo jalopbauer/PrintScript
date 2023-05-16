@@ -25,18 +25,23 @@ data class AssignationAst(private val variableNameNode: VariableNameNode, privat
 interface AssignationParameterNode : AbstractSyntaxTree
 
 // Assignation Declaration
-data class AssignationDeclarationAst(private val assignation: AssignationAst, private val declaration: DeclarationAst) : AbstractSyntaxTree {
-    fun leftValue(): AssignationAst =
+interface AssignationDeclarationAst : AbstractSyntaxTree {
+    fun leftValue(): AssignationAst
+    fun rightValue(): DeclarationAst
+}
+
+data class LetAssignationDeclarationAst(private val assignation: AssignationAst, private val declaration: DeclarationAst) : AssignationDeclarationAst {
+    override fun leftValue(): AssignationAst =
         assignation
 
-    fun rightValue(): DeclarationAst =
+    override fun rightValue(): DeclarationAst =
         declaration
 }
 
-data class ConstAssignationDeclarationAst(private val assignation: AssignationAst, private val declaration: DeclarationAst) : AbstractSyntaxTree {
-    fun leftValue(): AssignationAst =
+data class ConstAssignationDeclarationAst(private val assignation: AssignationAst, private val declaration: DeclarationAst) : AssignationDeclarationAst {
+    override fun leftValue(): AssignationAst =
         assignation
 
-    fun rightValue(): DeclarationAst =
+    override fun rightValue(): DeclarationAst =
         declaration
 }
