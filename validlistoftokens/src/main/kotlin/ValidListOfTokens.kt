@@ -11,7 +11,8 @@ class DeclarationValidListOfTokens(val type: TypeToken, val variable: VariableNa
 class AssignationValidListOfTokens(val variable: VariableNameToken, val content: List<Token>) : ValidListOfTokens
 class DeclarationAssignationValidListOfTokens(val variable: VariableNameToken, val content: List<Token>, val type: TypeToken) :
     ValidListOfTokens
-
+class ConstDeclarationAssignationValidListOfTokens(val variable: VariableNameToken, val content: List<Token>, val type: TypeToken) :
+    ValidListOfTokens
 sealed interface PrintlnParameterValidListOfTokens : ValidListOfTokens
 class VariableParameter(val variableToken: VariableNameToken) : ValidListOfTokens, PrintlnParameterValidListOfTokens
 class NumberLiteralParameter(val numberLiteralToken: NumberLiteralToken) :

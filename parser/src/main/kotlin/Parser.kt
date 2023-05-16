@@ -8,7 +8,8 @@ class PrintScriptParser : Parser<AbstractSyntaxTree> {
         PrintlnParser(),
         DeclarationParser(),
         AssignationParser(),
-        DeclarationAssignationParser()
+        DeclarationAssignationParser(),
+        ConstDeclarationAssignationParser()
     )
     override fun parse(tokensInCodeBlock: List<Token>): AbstractSyntaxTree? =
         ListParser(parsers).parse(tokensInCodeBlock)
@@ -60,4 +61,12 @@ class DeclarationAssignationParser : AstParser<DeclarationAssignationValidListOf
 
     override fun validListOfTokensBuilder(): ValidListOfTokensBuilder<DeclarationAssignationValidListOfTokens> =
         DeclarationAssignationValidListOfTokensBuilder()
+}
+
+class ConstDeclarationAssignationParser : AstParser<ConstDeclarationAssignationValidListOfTokens> {
+    override fun parserAstBuilder(): AstBuilder<ConstDeclarationAssignationValidListOfTokens> =
+        ConstDeclarationAssignationBuilder()
+
+    override fun validListOfTokensBuilder(): ValidListOfTokensBuilder<ConstDeclarationAssignationValidListOfTokens> =
+        ConstDeclarationAssignationValidListOfTokensBuilder()
 }
