@@ -43,10 +43,9 @@ class AssignationParameterInterpreter : Interpreter<AssignationAst, VariableInte
         when (val assignationParameterNode = abstractSyntaxTree.rightValue()) {
             is IntNumberLiteral,
             is StringLiteral,
-            is DoubleNumberLiteral -> interpreterState.setLiteralToVariable(abstractSyntaxTree.leftValue(), assignationParameterNode as Literal)
-            is VariableNameNode -> {
-                interpreterState.setVariableValueToVariable(abstractSyntaxTree.leftValue(), assignationParameterNode)
-            }
+            is DoubleNumberLiteral,
+            is BooleanLiteral -> interpreterState.setLiteralToVariable(abstractSyntaxTree.leftValue(), assignationParameterNode as Literal)
+            is VariableNameNode -> interpreterState.setVariableValueToVariable(abstractSyntaxTree.leftValue(), assignationParameterNode)
             is Operation ->
                 when (val literalOrError = FullSolver().solve(assignationParameterNode, interpreterState)) {
                     is InterpreterErrorResponse -> literalOrError.interpreterError
