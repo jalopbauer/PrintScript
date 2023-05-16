@@ -118,12 +118,17 @@ class DeclarationAssignationValidListOfTokensBuilder :
     ValidListOfTokensBuilder<DeclarationAssignationValidListOfTokens> {
     override fun validate(tokens: List<Token>): DeclarationAssignationValidListOfTokens? {
         if (tokens.size >= 7 &&
-            tokens.component1().tokenName() == TokenName.LET &&
-            tokens.component2().tokenName() == TokenName.VARIABLE &&
-            tokens.component3().tokenName() == TokenName.DECLARATION &&
+            tokens.component1() is LetToken &&
+            tokens.component2() is VariableNameToken &&
+            tokens.component3() is DeclarationToken &&
             (tokens.component4() is TypeToken) &&
-            tokens.component5().tokenName() == TokenName.ASSIGNATION &&
-            (StringLiteralOrConcatValidListOfTokensBuilder().validateChain(tokens.subList(5, (tokens.size - 1))) || OperationValidListOfTokensBuilder().validateChain(tokens.subList(5, (tokens.size - 1))))
+            tokens.component5() is AssignationToken &&
+            (
+                tokens.component3() is VariableNameToken ||
+                    tokens.component3() is BooleanLiteralToken ||
+                    StringLiteralOrConcatValidListOfTokensBuilder().validateChain(tokens.subList(5, (tokens.size - 1))) ||
+                    OperationValidListOfTokensBuilder().validateChain(tokens.subList(5, (tokens.size - 1)))
+                )
         ) {
             return DeclarationAssignationValidListOfTokens(
                 tokens.component2() as VariableNameToken,

@@ -81,12 +81,17 @@ class AssignationBuilder : AstBuilder<AssignationValidListOfTokens> {
     }
 }
 class DeclarationAssignationBuilder : AstBuilder<DeclarationAssignationValidListOfTokens> {
-    override fun build(validListOfTokens: DeclarationAssignationValidListOfTokens): AbstractSyntaxTree {
-        val type = findType(validListOfTokens.type)
-        when (type) {
-            is NumberType -> return AssignationDeclarationAst(AssignationAst(VariableNameNode(validListOfTokens.variable.value), ShuntingYardImpl().orderNumber(validListOfTokens.content)), DeclarationAst(VariableNameNode(validListOfTokens.variable.value), type))
-            is StringType -> return AssignationDeclarationAst(AssignationAst(VariableNameNode(validListOfTokens.variable.value), ShuntingYardImpl().orderString(validListOfTokens.content)), DeclarationAst(VariableNameNode(validListOfTokens.variable.value), type))
+    override fun build(validListOfTokens: DeclarationAssignationValidListOfTokens): AbstractSyntaxTree =
+        when (val type = findType(validListOfTokens.type)) {
+            is NumberType -> AssignationDeclarationAst(AssignationAst(VariableNameNode(validListOfTokens.variable.value), ShuntingYardImpl().orderNumber(validListOfTokens.content)), DeclarationAst(VariableNameNode(validListOfTokens.variable.value), type))
+            is StringType -> AssignationDeclarationAst(AssignationAst(VariableNameNode(validListOfTokens.variable.value), ShuntingYardImpl().orderString(validListOfTokens.content)), DeclarationAst(VariableNameNode(validListOfTokens.variable.value), type))
+            is BooleanType -> {
+                val parameter = when (validListOfTokens.content.component1() as BooleanLiteralToken) {
+                    is FalseLiteralToken -> FalseLiteral
+                    is TrueLiteralToken -> TrueLiteral
+                }
+                AssignationDeclarationAst(AssignationAst(VariableNameNode(validListOfTokens.variable.value), parameter), DeclarationAst(VariableNameNode(validListOfTokens.variable.value), type))
+            }
+            else -> AssignationDeclarationAst(AssignationAst(VariableNameNode(validListOfTokens.variable.value), ShuntingYardImpl().orderNumber(validListOfTokens.content)), DeclarationAst(VariableNameNode(validListOfTokens.variable.value), findType(validListOfTokens.type)))
         }
-        return AssignationDeclarationAst(AssignationAst(VariableNameNode(validListOfTokens.variable.value), ShuntingYardImpl().orderNumber(validListOfTokens.content)), DeclarationAst(VariableNameNode(validListOfTokens.variable.value), findType(validListOfTokens.type)))
-    }
 }
