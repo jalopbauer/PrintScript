@@ -1,3 +1,4 @@
+import token.AssignationToken
 import token.BooleanLiteralToken
 import token.DeclarationToken
 import token.LetToken
@@ -96,9 +97,14 @@ class DeclarationValidListOfTokensBuilder : ValidListOfTokensBuilder<Declaration
 class AssignationValidListOfTokensBuilder : ValidListOfTokensBuilder<AssignationValidListOfTokens> {
     override fun validate(tokens: List<Token>): AssignationValidListOfTokens? {
         if (tokens.size >= 3 &&
-            tokens.component1().tokenName() == TokenName.VARIABLE &&
-            tokens.component2().tokenName() == TokenName.ASSIGNATION &&
-            (tokens.component3().tokenName() == TokenName.VARIABLE || StringLiteralOrConcatValidListOfTokensBuilder().validateChain(tokens.subList(2, (tokens.size - 1))) || OperationValidListOfTokensBuilder().validateChain(tokens.subList(2, (tokens.size - 1))))
+            tokens.component1() is VariableNameToken &&
+            tokens.component2() is AssignationToken &&
+            (
+                tokens.component3() is VariableNameToken ||
+                    tokens.component3() is BooleanLiteralToken ||
+                    StringLiteralOrConcatValidListOfTokensBuilder().validateChain(tokens.subList(2, (tokens.size - 1))) ||
+                    OperationValidListOfTokensBuilder().validateChain(tokens.subList(2, (tokens.size - 1)))
+                )
         ) {
             return AssignationValidListOfTokens(
                 tokens.component1() as VariableNameToken,

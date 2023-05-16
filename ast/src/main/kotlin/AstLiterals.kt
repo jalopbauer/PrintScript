@@ -22,7 +22,7 @@ data class DoubleNumberLiteral(val number: Double) : AssignationParameterNode, N
     override fun type(): DoubleType = DoubleType
 }
 
-sealed interface BooleanLiteral : AbstractSyntaxTree, PrintlnAstParameter
+sealed interface BooleanLiteral : AbstractSyntaxTree, PrintlnAstParameter, AssignationParameterNode
 
 object FalseLiteral : BooleanLiteral
 object TrueLiteral : BooleanLiteral
