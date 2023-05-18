@@ -7,9 +7,9 @@ class PrintScriptAppTest {
 
     @Test
     fun appWorks() {
-        val app =  MyPrintScriptApp()
+        val app = MyPrintScriptApp()
         val file = File("src/test/resources/main.ps")
-        val stream =  FileInputStream(file)
+        val stream = FileInputStream(file)
         app.interpret(stream)
     }
 }
