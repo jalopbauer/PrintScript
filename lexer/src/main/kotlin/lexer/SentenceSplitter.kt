@@ -5,5 +5,5 @@ interface SentenceSplitterInterface {
 
 class SentenceSplitter : SentenceSplitterInterface {
     override fun split(input: Sentence): List<String> =
-        input.getString().split(Regex(" |(?<=[:()])|(?=[:()])")).dropLast(1)
+        input.getString().split(Regex(" |(?<=[:()])|(?=[:();])"))
 }
