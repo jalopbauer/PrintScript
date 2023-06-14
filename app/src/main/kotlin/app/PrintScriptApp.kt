@@ -68,11 +68,14 @@ class MyPrintScriptApp : PrintScriptApp {
         var line = 0
         while (read != -1) {
             val char = read.toChar()
-            list += char
-            if (char == ';') {
-                lexer.buildTokenList(Sentence(list, line))
-                    .let { lambda.invoke(it) }
-                line += 1
+            if (!(char == '\n' || char == '\r')) {
+                list += char
+                if (char == ';') {
+                    lexer.buildTokenList(Sentence(list, line))
+                        .let { lambda.invoke(it) }
+                    line += 1
+                    list = ""
+                }
             }
             read = inputStream.read()
         }
