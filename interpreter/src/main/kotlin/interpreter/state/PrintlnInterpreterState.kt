@@ -23,6 +23,13 @@ data class PrintlnInterpreterStateI(val printList: List<String> = listOf(), val 
             }
         }
 
+    override fun initializeConst(variableInstance: VariableInstance): InterpreterResponse =
+        variableInterpreterState.initializeConst(variableInstance).let {
+            when (it) {
+                is VariableInterpreterState -> this.copy(variableInterpreterState = it)
+                else -> it
+            }
+        }
     override fun setLiteralToVariable(key: VariableNameNode, value: Literal): InterpreterResponse =
         variableInterpreterState.setLiteralToVariable(key, value).let {
             when (it) {

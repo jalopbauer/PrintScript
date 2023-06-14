@@ -10,6 +10,7 @@ import interpreter.InterpreterResponse
 interface VariableInterpreterState : InterpreterState {
 
     fun initializeVariable(variableInstance: VariableInstance): InterpreterResponse
+    fun initializeConst(variableInstance: VariableInstance): InterpreterResponse
 
     fun setLiteralToVariable(key: VariableNameNode, value: Literal): InterpreterResponse
 
@@ -22,7 +23,8 @@ interface VariableInterpreterState : InterpreterState {
 data class VariableInterpreterStateI(
     val errors: List<InterpreterError> = listOf(),
     val variableTypeMap: Map<String, Type> = mapOf(),
-    val variableLiteralMap: Map<String, Literal> = mapOf()
+    val variableLiteralMap: Map<String, Literal> = mapOf(),
+    val consts: Set<String> = setOf()
 ) : VariableInterpreterState {
 
     override fun initializeVariable(variableInstance: VariableInstance): InterpreterResponse =
@@ -32,10 +34,27 @@ data class VariableInterpreterStateI(
             this.copy(variableTypeMap = variableTypeMap + (variableInstance.variableNameNode.value() to variableInstance.type))
         }
 
+    override fun initializeConst(variableInstance: VariableInstance): InterpreterResponse =
+        if (isVariableDefined(variableInstance.variableNameNode)) {
+            InterpreterError()
+        } else {
+            this.copy(
+                variableTypeMap = variableTypeMap + (variableInstance.variableNameNode.value() to variableInstance.type),
+                consts = consts + variableInstance.variableNameNode.value()
+            )
+        }
+
     override fun setLiteralToVariable(key: VariableNameNode, value: Literal): InterpreterResponse =
         getVariableType(key)
             ?.let {
-                if (it == value.type()) { add(key, value) } else {
+                if (it == value.type()) {
+                    if (consts.contains(key.value())) {
+                        get(key)?.let { add(key, value) }
+                            ?: InterpreterError()
+                    } else {
+                        add(key, value)
+                    }
+                } else {
                     InterpreterError()
                 }
             }

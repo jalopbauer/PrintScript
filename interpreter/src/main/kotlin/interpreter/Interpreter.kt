@@ -4,9 +4,11 @@ import ast.AbstractSyntaxTree
 import ast.AssignationAst
 import ast.AssignationDeclarationAst
 import ast.BooleanLiteral
+import ast.ConstAssignationDeclarationAst
 import ast.DeclarationAst
 import ast.DoubleNumberLiteral
 import ast.IntNumberLiteral
+import ast.LetAssignationDeclarationAst
 import ast.Literal
 import ast.NumberLiteral
 import ast.Operation
@@ -83,12 +85,20 @@ class DeclarationInterpreter : Interpreter<DeclarationAst, VariableInterpreterSt
         interpreterState.initializeVariable(VariableInstance(abstractSyntaxTree.leftValue(), abstractSyntaxTree.rightValue()))
 }
 
+class DeclarationConstInterpreter : Interpreter<DeclarationAst, VariableInterpreterState> {
+    override fun interpret(abstractSyntaxTree: DeclarationAst, interpreterState: VariableInterpreterState): InterpreterResponse =
+        interpreterState.initializeConst(VariableInstance(abstractSyntaxTree.leftValue(), abstractSyntaxTree.rightValue()))
+}
+
 class AssignationDeclarationInterpreter : Interpreter<AssignationDeclarationAst, VariableInterpreterState> {
     override fun interpret(
         abstractSyntaxTree: AssignationDeclarationAst,
         interpreterState: VariableInterpreterState
     ): InterpreterResponse {
-        val stateOrError = DeclarationInterpreter().interpret(abstractSyntaxTree.rightValue(), interpreterState)
+        val stateOrError = when (abstractSyntaxTree) {
+            is ConstAssignationDeclarationAst -> DeclarationConstInterpreter().interpret(abstractSyntaxTree.rightValue(), interpreterState)
+            is LetAssignationDeclarationAst -> DeclarationInterpreter().interpret(abstractSyntaxTree.rightValue(), interpreterState)
+        }
         return if (stateOrError !is InterpreterError) {
             AssignationParameterInterpreter().interpret(abstractSyntaxTree.leftValue(), stateOrError as VariableInterpreterState)
         } else {

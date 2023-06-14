@@ -28,7 +28,7 @@ data class AssignationAst(private val variableNameNode: VariableNameNode, privat
 interface AssignationParameterNode : AbstractSyntaxTree
 
 // Assignation Declaration
-interface AssignationDeclarationAst : AbstractSyntaxTree {
+sealed interface AssignationDeclarationAst : AbstractSyntaxTree {
     fun leftValue(): AssignationAst
     fun rightValue(): DeclarationAst
 }
