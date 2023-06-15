@@ -1,5 +1,7 @@
 package lexer.tokenLexer
 
+import lexer.TokenLexer
+import lexer.TokenLexerInput
 import token.AssignationToken
 import token.BooleanTypeToken
 import token.ConstToken
@@ -24,7 +26,8 @@ import token.SumToken
 import token.Token
 import token.TrueLiteralToken
 
-class ReservedKeysLexer(private val stringTokenMap: Map<String, (lineNumber: Int, position: Int) -> Token>) : TokenLexer {
+class ReservedKeysLexer(private val stringTokenMap: Map<String, (lineNumber: Int, position: Int) -> Token>) :
+    TokenLexer {
     override fun tokenize(input: TokenLexerInput): Token? =
         stringTokenMap[input.string]?.invoke(input.position, input.lineNumber)
 }

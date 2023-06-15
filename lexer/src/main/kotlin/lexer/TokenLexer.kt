@@ -1,6 +1,5 @@
-package lexer.tokenLexer
+package lexer
 
-import lexer.Lexer
 import token.Token
 
 interface TokenLexer : Lexer<TokenLexerInput, Token?>
