@@ -71,7 +71,7 @@ class MyPrintScriptApp : PrintScriptApp {
             if (!(char == '\n' || char == '\r')) {
                 list += char
                 if (char == ';') {
-                    lexer.buildTokenList(Sentence(list, line))
+                    lexer.tokenize(Sentence(list, line))
                         .let { lambda.invoke(it) }
                     line += 1
                     list = ""
