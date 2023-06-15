@@ -1,4 +1,5 @@
-package lexer
+package lexer.previousImplementation
+
 interface SentenceSplitterInterface {
     fun split(input: Sentence): List<String>
 }

@@ -1,5 +1,6 @@
-package lexer
+package lexer.previousImplementation
 
+import lexer.TokenLexerInput
 import lexer.printScriptLexer.FirstVersionPrintScriptLexer
 import token.Token
 

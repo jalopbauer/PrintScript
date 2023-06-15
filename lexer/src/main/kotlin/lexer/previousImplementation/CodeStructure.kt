@@ -1,4 +1,4 @@
-package lexer
+package lexer.previousImplementation
 interface CodeStructure {
     fun getString(): String
 }

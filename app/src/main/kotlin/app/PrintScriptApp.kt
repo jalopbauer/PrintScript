@@ -4,8 +4,8 @@ import formatter.PrintScriptFormatterFactory
 import interpreter.PrintScriptInterpreter
 import interpreter.state.PrintScriptInterpreterState
 import interpreter.state.PrintScriptInterpreterStateI
-import lexer.LexerSentence
-import lexer.Sentence
+import lexer.previousImplementation.LexerSentence
+import lexer.previousImplementation.Sentence
 import parser.PrintScriptParser
 import staticcodeanalyser.PrintScriptStaticCodeAnalyserFactory
 import token.Token

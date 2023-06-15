@@ -1,5 +1,5 @@
-import lexer.LexerSentence
-import lexer.Sentence
+import lexer.previousImplementation.LexerSentence
+import lexer.previousImplementation.Sentence
 import org.junit.jupiter.api.Test
 import token.Token
 class LexerTester {

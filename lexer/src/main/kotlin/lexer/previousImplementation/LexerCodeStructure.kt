@@ -1,9 +1,5 @@
-package lexer
+package lexer.previousImplementation
 
+import lexer.Lexer
 import token.Token
-
-interface Lexer<T, U> {
-
-    fun tokenize(input: T): U
-}
 interface LexerCodeStructure<T : CodeStructure> : Lexer<T, List<Token>>
