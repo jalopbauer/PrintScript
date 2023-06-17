@@ -7,7 +7,7 @@ import token.Token
 
 class StringLiteralSingleQuoteTokenLexer : TokenLexer {
     override fun tokenize(input: TokenLexerInput): Token? =
-        if (input.string.first() == '\'' && input.string.last() == '\'') {
+        if (input.string.first() == '\'' && input.string.last() == '\'' && input.string.length >= 2) {
             StringLiteralToken(input.string, input.lineNumber, input.position)
         } else {
             null
@@ -16,8 +16,8 @@ class StringLiteralSingleQuoteTokenLexer : TokenLexer {
 
 class StringLiteralDoubleQuoteTokenLexer : TokenLexer {
     override fun tokenize(input: TokenLexerInput): Token? =
-        if (input.string.first() == '\"' && input.string.last() == '\"') {
-            StringLiteralToken(input.string, input.lineNumber, input.position)
+        if (input.string.first() == '\"' && input.string.last() == '\"' && input.string.length >= 2) {
+            StringLiteralToken(input.string.substring(1, input.string.length - 1), input.lineNumber, input.position)
         } else {
             null
         }
