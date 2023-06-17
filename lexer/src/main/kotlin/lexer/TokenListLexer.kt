@@ -5,18 +5,19 @@ import token.ErrorToken
 import token.Token
 
 class TokenListLexer : Lexer<LexerInput, LexerState> {
-    override fun tokenize(input: LexerInput): LexerState = input.lexerState.tokenLexerInput(input.nextChar)
-        .let { tokenLexerInput ->
-            FirstVersionPrintScriptLexer().tokenize(tokenLexerInput)
-                .let {
-                    input.lexerState.handleNextToken(input.nextChar, it)
+    override fun tokenize(input: LexerInput): LexerState =
+        input.lexerState.tokenLexerInput(input.nextChar)
+            .let { tokenLexerInput ->
+                FirstVersionPrintScriptLexer().tokenize(tokenLexerInput)
+                    .let {
+                        input.lexerState.handleNextToken(input.nextChar, it)
+                    }
+            }.let {
+                when (it) {
+                    is RerunLexerState -> this.tokenize(input.copy(lexerState = it))
+                    else -> it
                 }
-        }.let {
-            when (it) {
-                is RerunLexerState -> this.tokenize(input.copy(lexerState = it))
-                else -> it
             }
-        }
 }
 
 data class LexerInput(val nextChar: Char, val lexerState: LexerState)
@@ -33,7 +34,7 @@ sealed interface LexerState {
         )
     fun addChar(nextChar: Char, string: String) =
         when (nextChar) {
-            ' ' -> string
+            ' ', '\n' -> string
             else -> string + nextChar
         }
     fun initialPosition(): Int
@@ -119,9 +120,19 @@ data class RerunLexerState(
     override fun handleNextToken(nextChar: Char, nextToken: Token): LexerState =
         when (nextToken) {
             is ErrorToken -> NoPreviousTokenDefinedLexerState(
-                if (nextChar == ' ') initialPosition + 1 else initialPosition,
-                nextPosition + 1,
-                lineNumber,
+                when (nextChar) {
+                    ' ' -> initialPosition + 1
+                    '\n' -> 0
+                    else -> initialPosition
+                },
+                when (nextChar) {
+                    '\n' -> 0
+                    else -> nextPosition + 1
+                },
+                when (nextChar) {
+                    '\n' -> lineNumber + 1
+                    else -> lineNumber
+                },
                 addChar(nextChar, ""),
                 tokens
             )
