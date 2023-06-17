@@ -28,23 +28,23 @@ sealed interface LexerState {
     fun tokenLexerInput(nextChar: Char): TokenLexerInput =
         TokenLexerInput(
             this.previousPossibleTokenString() + nextChar,
-            position(),
+            initialPosition(),
             lineNumber()
         )
-    fun nextPosition(nextChar: Char): Int = if (nextChar == '\n') position() + 1 else position()
     fun addChar(nextChar: Char, string: String) =
         when (nextChar) {
             ' ' -> string
             else -> string + nextChar
         }
-    fun position(): Int
+    fun initialPosition(): Int
     fun lineNumber(): Int
     fun previousPossibleTokenString(): String
 
     fun tokens(): List<Token>
 }
 data class PreviousTokenDefinedLexerState(
-    val position: Int,
+    val initialPosition: Int,
+    val nextPosition: Int,
     val lineNumber: Int,
     val previousPossibleTokenString: String,
     val previousToken: Token,
@@ -53,15 +53,20 @@ data class PreviousTokenDefinedLexerState(
     override fun handleNextToken(nextChar: Char, nextToken: Token): LexerState =
         when (nextToken) {
             is ErrorToken -> {
-                RerunLexerState(position, lineNumber, tokens + previousToken)
+                RerunLexerState(
+                    nextPosition,
+                    nextPosition,
+                    lineNumber,
+                    tokens + previousToken
+                )
             }
             else -> this.copy(
-                position = nextPosition(nextChar),
                 previousPossibleTokenString = addChar(nextChar, previousPossibleTokenString),
+                nextPosition = nextPosition + 1,
                 previousToken = nextToken
             )
         }
-    override fun position(): Int = position
+    override fun initialPosition(): Int = initialPosition
 
     override fun lineNumber(): Int = lineNumber
 
@@ -70,7 +75,8 @@ data class PreviousTokenDefinedLexerState(
 }
 
 data class NoPreviousTokenDefinedLexerState(
-    val position: Int = 0,
+    val initialPosition: Int = 0,
+    val nextPosition: Int = 0,
     val lineNumber: Int = 0,
     val previousPossibleTokenString: String = "",
     val tokens: List<Token> = listOf()
@@ -78,10 +84,15 @@ data class NoPreviousTokenDefinedLexerState(
 
     override fun handleNextToken(nextChar: Char, nextToken: Token): LexerState =
         when (nextToken) {
-            is ErrorToken -> this.copy(previousPossibleTokenString = addChar(nextChar, previousPossibleTokenString), position = nextPosition(nextChar))
+            is ErrorToken -> this.copy(
+                nextPosition = nextPosition + 1,
+                previousPossibleTokenString = addChar(nextChar, previousPossibleTokenString),
+                initialPosition = initialPosition
+            )
             else -> {
                 PreviousTokenDefinedLexerState(
-                    nextPosition(nextChar),
+                    initialPosition,
+                    nextPosition + 1,
                     lineNumber,
                     addChar(nextChar, previousPossibleTokenString),
                     nextToken,
@@ -90,7 +101,7 @@ data class NoPreviousTokenDefinedLexerState(
             }
         }
 
-    override fun position(): Int = position
+    override fun initialPosition(): Int = initialPosition
 
     override fun lineNumber(): Int = lineNumber
 
@@ -98,15 +109,33 @@ data class NoPreviousTokenDefinedLexerState(
     override fun tokens(): List<Token> = tokens
 }
 
-data class RerunLexerState(private val position: Int, private val lineNumber: Int, private val tokens: List<Token>) :
+data class RerunLexerState(
+    private val initialPosition: Int,
+    val nextPosition: Int,
+    private val lineNumber: Int,
+    private val tokens: List<Token>
+) :
     LexerState {
     override fun handleNextToken(nextChar: Char, nextToken: Token): LexerState =
         when (nextToken) {
-            is ErrorToken -> NoPreviousTokenDefinedLexerState(nextPosition(nextChar), lineNumber, addChar(nextChar, ""), tokens)
-            else -> PreviousTokenDefinedLexerState(nextPosition(nextChar), lineNumber, addChar(nextChar, ""), nextToken, tokens)
+            is ErrorToken -> NoPreviousTokenDefinedLexerState(
+                initialPosition + 1,
+                nextPosition + 1,
+                lineNumber,
+                addChar(nextChar, ""),
+                tokens
+            )
+            else -> PreviousTokenDefinedLexerState(
+                initialPosition,
+                nextPosition + 1,
+                lineNumber,
+                addChar(nextChar, ""),
+                nextToken,
+                tokens
+            )
         }
 
-    override fun position(): Int = position
+    override fun initialPosition(): Int = initialPosition
 
     override fun lineNumber(): Int = lineNumber
 

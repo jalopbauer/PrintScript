@@ -24,10 +24,14 @@ class Tester<T, U : TestValue<T>, V : Transformer<U>> (private val csvReader: Cs
         val inputStream = FileInputStream(path)
         val readCsv = csvReader.read(inputStream)
         inputStream.close()
+        println(path)
         readCsv.zip(expectedValues).forEach {
                 (actual, expected) ->
+            println(actual)
+            println(expected)
             assertNull(actual.hasError(expected))
         }
+        println("          ")
     }
 }
 
