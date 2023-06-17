@@ -76,7 +76,7 @@ class LexerExpectedValuesBuilder : ExpectedValuesBuilder<Token> {
     }
 }
 class LexerTestFolderPathBuilder : TestFolderPathBuilder {
-    override fun build(): List<String> = ((1..5) + 7).map { it.toString() }
+    override fun build(): List<String> = (1..7).map { it.toString() }
 }
 class LexerTesterBuilder : TesterBuilder<Token, Tester<Token, LexerTokenResult, LexerTokenResultTransformer>> {
     override fun build(expectedValues: List<Token>): Tester<Token, LexerTokenResult, LexerTokenResultTransformer> =

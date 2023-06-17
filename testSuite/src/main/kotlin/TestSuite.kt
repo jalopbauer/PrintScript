@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
 import java.io.File
 import java.io.FileInputStream
@@ -25,6 +26,7 @@ class Tester<T, U : TestValue<T>, V : Transformer<U>> (private val csvReader: Cs
         val readCsv = csvReader.read(inputStream)
         inputStream.close()
         println(path)
+        assertEquals(readCsv.size, expectedValues.size)
         readCsv.zip(expectedValues).forEach {
                 (actual, expected) ->
             println(actual)
