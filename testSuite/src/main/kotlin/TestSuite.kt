@@ -56,12 +56,12 @@ class ListTester<T, U : Tester<T, *, *>> (
 ) {
     fun test() {
         testFolderPathBuilder.build().forEach { number ->
-            val line = File("$resourcesPath$number/$inputPath").useLines { it.firstOrNull() }
-            line?.let {
-                testerBuilder
-                    .build(expectedValuesBuilder.build(it))
-                    .test("$resourcesPath$number/$resultFile")
-            }
+            File("$resourcesPath$number/$inputPath").readText(Charsets.UTF_8)
+                .let {
+                    testerBuilder
+                        .build(expectedValuesBuilder.build(it))
+                        .test("$resourcesPath$number/$resultFile")
+                }
         }
     }
 }
