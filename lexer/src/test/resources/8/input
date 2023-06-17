@@ -1,0 +1,2 @@
+( x: string = 'hola' );
+let variable: number = 2 + 3
