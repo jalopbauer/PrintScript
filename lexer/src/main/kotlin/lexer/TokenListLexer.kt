@@ -119,7 +119,7 @@ data class RerunLexerState(
     override fun handleNextToken(nextChar: Char, nextToken: Token): LexerState =
         when (nextToken) {
             is ErrorToken -> NoPreviousTokenDefinedLexerState(
-                initialPosition + 1,
+                if (nextChar == ' ') initialPosition + 1 else initialPosition,
                 nextPosition + 1,
                 lineNumber,
                 addChar(nextChar, ""),
