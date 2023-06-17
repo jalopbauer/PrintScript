@@ -1,5 +1,9 @@
-import lexer.previousImplementation.LexerSentence
-import lexer.previousImplementation.Sentence
+import lexer.LexerInput
+import lexer.LexerState
+import lexer.NoPreviousTokenDefinedLexerState
+import lexer.PreviousTokenDefinedLexerState
+import lexer.RerunLexerState
+import lexer.TokenListLexer
 import org.junit.jupiter.api.Test
 import token.Token
 class LexerTester {
@@ -23,7 +27,7 @@ class LexerTokenResultTransformer : Transformer<LexerTokenResult> {
         }
 }
 
-class LexerTokenResult(private val tokenName: String, private val lineNumber: Int, private val position: Int) :
+data class LexerTokenResult(private val tokenName: String, private val lineNumber: Int, private val position: Int) :
     TestValue<Token> {
     override fun hasError(comparedTo: Token): String? {
         val errorMessages = listOfNotNull(
@@ -60,7 +64,16 @@ class LexerTokenResult(private val tokenName: String, private val lineNumber: In
 }
 
 class LexerExpectedValuesBuilder : ExpectedValuesBuilder<Token> {
-    override fun build(s: String): List<Token> = LexerSentence().tokenize(Sentence(s, 0))
+    override fun build(s: String): List<Token> {
+        val initial: LexerState = NoPreviousTokenDefinedLexerState()
+        return s.fold(initial) { acc, nextChar -> TokenListLexer().tokenize(LexerInput(nextChar, acc)) }
+            .let {
+                when (it) {
+                    is NoPreviousTokenDefinedLexerState, is RerunLexerState -> it.tokens()
+                    is PreviousTokenDefinedLexerState -> it.tokens() + it.previousToken
+                }
+            }
+    }
 }
 class LexerTestFolderPathBuilder : TestFolderPathBuilder {
     override fun build(): List<String> = ((1..5) + 7).map { it.toString() }

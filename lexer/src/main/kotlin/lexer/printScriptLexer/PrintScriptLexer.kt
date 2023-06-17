@@ -5,7 +5,9 @@ import lexer.TokenLexerInput
 import lexer.tokenLexer.DoubleNumberLiteralLexer
 import lexer.tokenLexer.FirstVersionReservedKeysLexer
 import lexer.tokenLexer.IntNumberLiteralLexer
-import lexer.tokenLexer.StringLiteralTokenLexer
+import lexer.tokenLexer.SecondVersionReservedKeysLexer
+import lexer.tokenLexer.StringLiteralDoubleQuoteTokenLexer
+import lexer.tokenLexer.StringLiteralSingleQuoteTokenLexer
 import lexer.tokenLexer.VariableTokenLexer
 import token.ErrorToken
 import token.Token
@@ -14,10 +16,11 @@ class FirstVersionPrintScriptLexer : TokenLexer {
     override fun tokenize(input: TokenLexerInput): Token =
         ListTokenLexer(
             listOf(
-                DoubleNumberLiteralLexer(),
-                IntNumberLiteralLexer(),
                 FirstVersionReservedKeysLexer(),
-                StringLiteralTokenLexer(),
+                IntNumberLiteralLexer(),
+                DoubleNumberLiteralLexer(),
+                StringLiteralSingleQuoteTokenLexer(),
+                StringLiteralDoubleQuoteTokenLexer(),
                 VariableTokenLexer()
             )
         ).tokenize(input)
@@ -27,15 +30,16 @@ class SecondVersionPrintScriptLexer : TokenLexer {
     override fun tokenize(input: TokenLexerInput): Token =
         ListTokenLexer(
             listOf(
-                DoubleNumberLiteralLexer(),
+                SecondVersionReservedKeysLexer(),
                 IntNumberLiteralLexer(),
-                FirstVersionReservedKeysLexer(),
-                StringLiteralTokenLexer(),
+                DoubleNumberLiteralLexer(),
+                StringLiteralSingleQuoteTokenLexer(),
+                StringLiteralDoubleQuoteTokenLexer(),
                 VariableTokenLexer()
             )
         ).tokenize(input)
 }
 class ListTokenLexer(private val tokenLexers: List<TokenLexer>) : TokenLexer {
     override fun tokenize(input: TokenLexerInput): Token =
-        tokenLexers.first { it.tokenize(input) != null }.tokenize(input) ?: ErrorToken(input.lineNumber, input.position)
+        tokenLexers.firstOrNull { it.tokenize(input) != null }?.tokenize(input) ?: ErrorToken(input.lineNumber, input.position)
 }
