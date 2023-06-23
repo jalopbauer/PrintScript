@@ -7,6 +7,10 @@ import token.Token
 import token.TypeToken
 import token.VariableNameToken
 interface ValidListOfTokens
+
+interface SentenceValidListOfTokens : ValidListOfTokens
+
+class SentencesValidListOfTokens(val sentences: List<SentenceValidListOfTokens>) : ValidListOfTokens
 class PrintlnValidListOfTokens(val printLnParameterValidListOfTokens: PrintlnParameterValidListOfTokens) :
     ValidListOfTokens
 class DeclarationValidListOfTokens(val type: TypeToken, val variable: VariableNameToken) : ValidListOfTokens
