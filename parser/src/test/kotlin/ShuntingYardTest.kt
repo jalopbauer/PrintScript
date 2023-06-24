@@ -1,6 +1,6 @@
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import parser.ShuntingYardImpl
+import parser.shuntingYard.ShuntingYardImpl
 import token.DivToken
 import token.IntNumberLiteralToken
 import token.LeftParenthesisToken
@@ -98,7 +98,7 @@ class ShuntingYardTest {
 
     // @Test
     // fun sHWWorksWithComplexBracketsEquation() {
-    //    val shuntingYard = parser.ShuntingYardImpl()
+    //    val shuntingYard = parser.shuntingYard.ShuntingYardImpl()
     //    val simpleTree = shuntingYard.check(complexBracketsOperation)
     //    assertEquals(TokenName.NUMBER_LITERAL, simpleTree[0].tokenName())
     //    assertEquals(TokenName.NUMBER_LITERAL, simpleTree[1].tokenName())

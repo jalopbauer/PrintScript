@@ -1,4 +1,4 @@
-package parser
+package parser.shuntingYard
 
 import ast.ConcatenationParameter
 import ast.Div
