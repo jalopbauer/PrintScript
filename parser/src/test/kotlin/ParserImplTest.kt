@@ -8,7 +8,6 @@ import ast.StringLiteral
 import ast.StringType
 import org.junit.jupiter.api.Test
 import parser.PrintScriptParser
-import parser.PrintlnParser
 import token.AssignationToken
 import token.DeclarationToken
 import token.DivToken
@@ -232,7 +231,7 @@ class ParserImplTest {
             RightParenthesisToken(0, 0),
             SemicolonToken(0, 0)
         )
-        val printParser = PrintlnParser()
+        val printParser = PrintScriptParser()
         val printAst = printParser.parse(print)
 
         when (printAst) {
