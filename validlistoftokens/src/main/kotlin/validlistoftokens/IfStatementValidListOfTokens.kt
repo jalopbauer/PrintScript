@@ -13,7 +13,7 @@ data class IfStatementValidListOfTokens(
     val sentencesValidListOfTokens: SentencesValidListOfTokens
 ) : ValidListOfTokens
 
-class IfStatementValidListOfTokensBuilder : ValidListOfTokensBuilder<IfStatementValidListOfTokens> {
+class IfStatementValidListOfTokensBuilder(private val sentencesValidListOfTokensBuilder: SentencesValidListOfTokensBuilder) : ValidListOfTokensBuilder<IfStatementValidListOfTokens> {
     override fun validate(tokens: List<Token>): IfStatementValidListOfTokens? {
         return if (
             tokens.size >= 6 &&
@@ -24,7 +24,7 @@ class IfStatementValidListOfTokensBuilder : ValidListOfTokensBuilder<IfStatement
             tokens.component5() is LeftCurlyBracketsToken &&
             tokens.last() is RightCurlyBracketsToken
         ) {
-            SentencesValidListOfTokensBuilder().validate(tokens.subList(6, tokens.size - 1))
+            sentencesValidListOfTokensBuilder.validate(tokens.subList(6, tokens.size - 1))
                 ?.let { IfStatementValidListOfTokens(tokens.component3() as BooleanLiteralToken, it) }
         } else {
             null
