@@ -7,7 +7,7 @@ import ast.StringConcatenation
 import ast.StringLiteral
 import ast.StringType
 import org.junit.jupiter.api.Test
-import parser.PrintScriptTokenListParser
+import parser.PrintScriptAstParser
 import token.AssignationToken
 import token.DeclarationToken
 import token.DivToken
@@ -34,7 +34,7 @@ class TokenListParserImplTest {
             NumberTypeToken(0, 0),
             SemicolonToken(0, 0)
         )
-        val declarationParser = PrintScriptTokenListParser()
+        val declarationParser = PrintScriptAstParser()
         val declarationAst = declarationParser.parse(declaration)
 
         when (declarationAst) {
@@ -54,7 +54,7 @@ class TokenListParserImplTest {
             NumberTypeToken(0, 0),
             SemicolonToken(0, 0)
         )
-        val declarationParser = PrintScriptTokenListParser()
+        val declarationParser = PrintScriptAstParser()
         val declarationAst = declarationParser.parse(declaration)
 
         assert(declarationAst !is DeclarationAst)
@@ -69,7 +69,7 @@ class TokenListParserImplTest {
             StringTypeToken(0, 0),
             SemicolonToken(0, 0)
         )
-        val declarationParser = PrintScriptTokenListParser()
+        val declarationParser = PrintScriptAstParser()
         val declarationAst = declarationParser.parse(declaration)
 
         when (declarationAst) {
@@ -89,7 +89,7 @@ class TokenListParserImplTest {
             StringLiteralToken("Hello World", 0, 0),
             SemicolonToken(0, 0)
         )
-        val assignationParser = PrintScriptTokenListParser()
+        val assignationParser = PrintScriptAstParser()
         val assignationAst = assignationParser.parse(assignation)
 
         when (assignationAst) {
@@ -111,7 +111,7 @@ class TokenListParserImplTest {
             StringLiteralToken("World", 0, 0),
             SemicolonToken(0, 0)
         )
-        val assignationParser = PrintScriptTokenListParser()
+        val assignationParser = PrintScriptAstParser()
         val assignationAst = assignationParser.parse(assignation)
 
         when (assignationAst) {
@@ -130,7 +130,7 @@ class TokenListParserImplTest {
             IntNumberLiteralToken(2, 0, 0),
             SemicolonToken(0, 0)
         )
-        val assignationParser = PrintScriptTokenListParser()
+        val assignationParser = PrintScriptAstParser()
         val assignationAst = assignationParser.parse(assignation)
 
         assert(assignationAst is AssignationAst)
@@ -148,7 +148,7 @@ class TokenListParserImplTest {
             IntNumberLiteralToken(3, 0, 0),
             SemicolonToken(0, 0)
         )
-        val assignationParser = PrintScriptTokenListParser()
+        val assignationParser = PrintScriptAstParser()
         val assignationAst = assignationParser.parse(assignation)
 
         assert(assignationAst is AssignationAst)
@@ -165,7 +165,7 @@ class TokenListParserImplTest {
             StringLiteralToken("Hello World", 0, 0),
             SemicolonToken(0, 0)
         )
-        val declAssiParser = PrintScriptTokenListParser()
+        val declAssiParser = PrintScriptAstParser()
         val declAssiAst = declAssiParser.parse(declAssi)
 
         when (declAssiAst) {
@@ -189,7 +189,7 @@ class TokenListParserImplTest {
             IntNumberLiteralToken(3, 0, 0),
             SemicolonToken(0, 0)
         )
-        val declAssiParser = PrintScriptTokenListParser()
+        val declAssiParser = PrintScriptAstParser()
         val declAssiAst = declAssiParser.parse(declAssi)
 
         when (declAssiAst) {
@@ -213,7 +213,7 @@ class TokenListParserImplTest {
             IntNumberLiteralToken(3, 0, 0),
             SemicolonToken(0, 0)
         )
-        val declAssiParser = PrintScriptTokenListParser()
+        val declAssiParser = PrintScriptAstParser()
         val declAssiAst = declAssiParser.parse(declAssi)
 
         when (declAssiAst) {
@@ -231,7 +231,7 @@ class TokenListParserImplTest {
             RightParenthesisToken(0, 0),
             SemicolonToken(0, 0)
         )
-        val printParser = PrintScriptTokenListParser()
+        val printParser = PrintScriptAstParser()
         val printAst = printParser.parse(print)
 
         when (printAst) {
@@ -251,7 +251,7 @@ class TokenListParserImplTest {
             RightParenthesisToken(0, 0),
             SemicolonToken(0, 0)
         )
-        val printParser = PrintScriptTokenListParser()
+        val printParser = PrintScriptAstParser()
         val printAst = printParser.parse(print)
 
         when (printAst) {
