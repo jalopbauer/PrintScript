@@ -1,12 +1,12 @@
 package parser.astParsers.senteceParsers.declarationAssignation
 
 import parser.astParsers.AstBuilder
-import parser.astParsers.AstParser
+import parser.astParsers.AstTokenListParser
 import validlistoftokens.DeclarationAssignationValidListOfTokens
 import validlistoftokens.DeclarationAssignationValidListOfTokensBuilder
 import validlistoftokens.ValidListOfTokensBuilder
 
-class DeclarationAssignationParser : AstParser<DeclarationAssignationValidListOfTokens> {
+class DeclarationAssignationTokenListParser : AstTokenListParser<DeclarationAssignationValidListOfTokens> {
     override fun parserAstBuilder(): AstBuilder<DeclarationAssignationValidListOfTokens> =
         DeclarationAssignationBuilder()
 

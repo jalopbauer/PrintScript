@@ -6,7 +6,7 @@ import interpreter.state.PrintScriptInterpreterState
 import interpreter.state.PrintScriptInterpreterStateI
 import lexer.previousImplementation.LexerSentence
 import lexer.previousImplementation.Sentence
-import parser.PrintScriptParser
+import parser.PrintScriptTokenListParser
 import staticcodeanalyser.PrintScriptStaticCodeAnalyserFactory
 import token.Token
 import java.io.InputStream
@@ -19,7 +19,7 @@ interface PrintScriptApp {
 
 class MyPrintScriptApp : PrintScriptApp {
     private val lexer = LexerSentence()
-    private val parser = PrintScriptParser()
+    private val parser = PrintScriptTokenListParser()
     private val interpreter = PrintScriptInterpreter()
     private var interpreterState: PrintScriptInterpreterState = PrintScriptInterpreterStateI()
     private val formatter = PrintScriptFormatterFactory()

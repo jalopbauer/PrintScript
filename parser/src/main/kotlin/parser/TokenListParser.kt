@@ -3,10 +3,12 @@ package parser
 import ast.AbstractSyntaxTree
 import parser.astParsers.senteceParsers.SentenceParsers
 import token.Token
-interface Parser<T> {
-    fun parse(tokensInCodeBlock: List<Token>): T?
+
+interface Parser<T, V> {
+    fun parse(tokensInCodeBlock: V): T?
 }
-class PrintScriptParser : Parser<AbstractSyntaxTree> {
+interface TokenListParser<T> : Parser<T, List<Token>>
+class PrintScriptTokenListParser : TokenListParser<AbstractSyntaxTree> {
     override fun parse(tokensInCodeBlock: List<Token>): AbstractSyntaxTree? =
         SentenceParsers().parse(tokensInCodeBlock)
 }

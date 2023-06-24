@@ -1,12 +1,12 @@
 package parser.astParsers.senteceParsers.println
 
 import parser.astParsers.AstBuilder
-import parser.astParsers.AstParser
+import parser.astParsers.AstTokenListParser
 import validlistoftokens.PrintlnValidListOfTokens
 import validlistoftokens.PrintlnValidListOfTokensBuilder
 import validlistoftokens.ValidListOfTokensBuilder
 
-class PrintlnParser : AstParser<PrintlnValidListOfTokens> {
+class PrintLnTokenListParser : AstTokenListParser<PrintlnValidListOfTokens> {
     override fun parserAstBuilder(): AstBuilder<PrintlnValidListOfTokens> =
         PrintlnBuilder()
 
