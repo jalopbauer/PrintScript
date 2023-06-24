@@ -9,7 +9,7 @@ import token.RightParenthesisToken
 import token.Token
 
 data class IfStatementValidListOfTokens(
-    val sentencesValidListOfTokens1: BooleanLiteralToken,
+    val booleanLiteralToken: BooleanLiteralToken,
     val sentencesValidListOfTokens: SentencesValidListOfTokens
 ) : ValidListOfTokens
 

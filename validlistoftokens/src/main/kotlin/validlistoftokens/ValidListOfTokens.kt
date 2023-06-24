@@ -8,17 +8,17 @@ import token.TypeToken
 import token.VariableNameToken
 interface ValidListOfTokens
 
-interface SentenceValidListOfTokens : ValidListOfTokens
+sealed interface SentenceValidListOfTokens : ValidListOfTokens
 
 class SentencesValidListOfTokens(val sentences: List<SentenceValidListOfTokens>) : ValidListOfTokens
 class PrintlnValidListOfTokens(val printLnParameterValidListOfTokens: PrintlnParameterValidListOfTokens) :
-    ValidListOfTokens
-class DeclarationValidListOfTokens(val type: TypeToken, val variable: VariableNameToken) : ValidListOfTokens
-class AssignationValidListOfTokens(val variable: VariableNameToken, val content: List<Token>) : ValidListOfTokens
+    ValidListOfTokens, SentenceValidListOfTokens
+class DeclarationValidListOfTokens(val type: TypeToken, val variable: VariableNameToken) : ValidListOfTokens, SentenceValidListOfTokens
+class AssignationValidListOfTokens(val variable: VariableNameToken, val content: List<Token>) : ValidListOfTokens, SentenceValidListOfTokens
 class DeclarationAssignationValidListOfTokens(val variable: VariableNameToken, val content: List<Token>, val type: TypeToken) :
-    ValidListOfTokens
+    ValidListOfTokens, SentenceValidListOfTokens
 class ConstDeclarationAssignationValidListOfTokens(val variable: VariableNameToken, val content: List<Token>, val type: TypeToken) :
-    ValidListOfTokens
+    ValidListOfTokens, SentenceValidListOfTokens
 sealed interface PrintlnParameterValidListOfTokens : ValidListOfTokens
 class VariableParameter(val variableToken: VariableNameToken) : ValidListOfTokens, PrintlnParameterValidListOfTokens
 class NumberLiteralParameter(val numberLiteralToken: NumberLiteralToken) :
