@@ -1,14 +1,16 @@
 package ast
 
+interface SentenceAbstractSyntaxTree : AbstractSyntaxTree
+
 // Println
-data class PrintlnAst(private val value: PrintlnAstParameter) : AbstractSyntaxTree {
+data class PrintlnAst(private val value: PrintlnAstParameter) : SentenceAbstractSyntaxTree {
     fun value(): PrintlnAstParameter =
         value
 }
 interface PrintlnAstParameter : AbstractSyntaxTree
 
 // ast.DeclarationAst
-data class DeclarationAst(private val variableNameNode: VariableNameNode, private val type: Type) : AbstractSyntaxTree {
+data class DeclarationAst(private val variableNameNode: VariableNameNode, private val type: Type) : SentenceAbstractSyntaxTree {
     fun leftValue(): VariableNameNode =
         variableNameNode
 
@@ -18,7 +20,7 @@ data class DeclarationAst(private val variableNameNode: VariableNameNode, privat
 
 // Assignation
 data class AssignationAst(private val variableNameNode: VariableNameNode, private val assignationParameter: AssignationParameterNode) :
-    AbstractSyntaxTree {
+    SentenceAbstractSyntaxTree {
     fun leftValue(): VariableNameNode =
         variableNameNode
 
@@ -28,7 +30,7 @@ data class AssignationAst(private val variableNameNode: VariableNameNode, privat
 interface AssignationParameterNode : AbstractSyntaxTree
 
 // Assignation Declaration
-sealed interface AssignationDeclarationAst : AbstractSyntaxTree {
+sealed interface AssignationDeclarationAst : SentenceAbstractSyntaxTree {
     fun leftValue(): AssignationAst
     fun rightValue(): DeclarationAst
 }
