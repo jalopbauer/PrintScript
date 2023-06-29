@@ -10,7 +10,7 @@ data class TokenFoundLexerState(
     val token: Token
 ) :
     LexerState {
-    override fun handleNextToken(nextChar: Char, nextToken: Token): LexerState =
+    override fun handleNextToken(nextChar: Char, nextToken: Token): IntermediateLexerState =
         when (nextToken) {
             is ErrorToken -> NoPreviousTokenDefinedLexerState(
                 when (nextChar) {
