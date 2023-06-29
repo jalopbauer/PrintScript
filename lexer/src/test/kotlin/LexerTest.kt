@@ -4,6 +4,7 @@ import lexer.lexerState.LexerState
 import lexer.lexerState.NoPreviousTokenDefinedLexerState
 import lexer.lexerState.PreviousTokenDefinedLexerState
 import lexer.lexerState.TokenFoundLexerState
+import lexer.tokenLexer.FirstVersionPrintScriptLexer
 import org.junit.jupiter.api.Test
 import token.Token
 class LexerTester {
@@ -68,10 +69,10 @@ class LexerExpectedValuesBuilder : ExpectedValuesBuilder<Token> {
         val initial: Pair<LexerState, List<Token>> = Pair(NoPreviousTokenDefinedLexerState(), listOf())
         return s.fold(initial) { (state, tokens), nextChar ->
             val input = LexerInput(nextChar, state)
-            TokenListLexer().tokenize(input)
+            TokenListLexer(FirstVersionPrintScriptLexer()).tokenize(input)
                 .let {
                     when (it) {
-                        is TokenFoundLexerState -> Pair(TokenListLexer().tokenize(input.copy(lexerState = it)), tokens + it.token)
+                        is TokenFoundLexerState -> Pair(TokenListLexer(FirstVersionPrintScriptLexer()).tokenize(input.copy(lexerState = it)), tokens + it.token)
                         else -> Pair(it, tokens)
                     }
                 }
