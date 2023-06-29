@@ -1,14 +1,5 @@
-package lexer.printScriptLexer
+package lexer.tokenLexer
 
-import lexer.TokenLexer
-import lexer.TokenLexerInput
-import lexer.tokenLexer.DoubleNumberLiteralLexer
-import lexer.tokenLexer.FirstVersionReservedKeysLexer
-import lexer.tokenLexer.IntNumberLiteralLexer
-import lexer.tokenLexer.SecondVersionReservedKeysLexer
-import lexer.tokenLexer.StringLiteralDoubleQuoteTokenLexer
-import lexer.tokenLexer.StringLiteralSingleQuoteTokenLexer
-import lexer.tokenLexer.VariableTokenLexer
 import token.ErrorToken
 import token.Token
 

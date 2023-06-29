@@ -1,9 +1,9 @@
 import lexer.LexerInput
-import lexer.LexerState
-import lexer.NoPreviousTokenDefinedLexerState
-import lexer.PreviousTokenDefinedLexerState
-import lexer.TokenFoundLexerState
 import lexer.TokenListLexer
+import lexer.lexerState.LexerState
+import lexer.lexerState.NoPreviousTokenDefinedLexerState
+import lexer.lexerState.PreviousTokenDefinedLexerState
+import lexer.lexerState.TokenFoundLexerState
 import org.junit.jupiter.api.Test
 import token.Token
 class LexerTester {

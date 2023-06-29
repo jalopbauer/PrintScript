@@ -1,7 +1,5 @@
 package lexer.tokenLexer
 
-import lexer.TokenLexer
-import lexer.TokenLexerInput
 import token.AssignationToken
 import token.BooleanTypeToken
 import token.ConstToken
