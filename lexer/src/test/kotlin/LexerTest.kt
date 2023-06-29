@@ -1,9 +1,10 @@
+import lexer.IntermediateLexerStateResponse
 import lexer.LexerInput
-import lexer.TokenListLexer
-import lexer.lexerState.LexerState
+import lexer.NewTokenListLexer
+import lexer.TokenFoundLexerStateResponse
+import lexer.lexerState.IntermediateLexerState
 import lexer.lexerState.NoPreviousTokenDefinedLexerState
 import lexer.lexerState.PreviousTokenDefinedLexerState
-import lexer.lexerState.TokenFoundLexerState
 import lexer.tokenLexer.FirstVersionPrintScriptLexer
 import org.junit.jupiter.api.Test
 import token.Token
@@ -66,19 +67,18 @@ data class LexerTokenResult(private val tokenName: String, private val lineNumbe
 
 class LexerExpectedValuesBuilder : ExpectedValuesBuilder<Token> {
     override fun build(s: String): List<Token> {
-        val initial: Pair<LexerState, List<Token>> = Pair(NoPreviousTokenDefinedLexerState(), listOf())
+        val initial: Pair<IntermediateLexerState, List<Token>> = Pair(NoPreviousTokenDefinedLexerState(), listOf())
         return s.fold(initial) { (state, tokens), nextChar ->
             val input = LexerInput(nextChar, state)
-            TokenListLexer(FirstVersionPrintScriptLexer()).tokenize(input)
+            NewTokenListLexer(FirstVersionPrintScriptLexer()).tokenize(input)
                 .let {
                     when (it) {
-                        is TokenFoundLexerState -> Pair(TokenListLexer(FirstVersionPrintScriptLexer()).tokenize(input.copy(lexerState = it)), tokens + it.token)
-                        else -> Pair(it, tokens)
+                        is IntermediateLexerStateResponse -> Pair(it.intermediateLexerState, tokens)
+                        is TokenFoundLexerStateResponse -> Pair(it.intermediateLexerState, tokens + it.token)
                     }
                 }
         }.let { (state, tokens) ->
             when (state) {
-                is TokenFoundLexerState -> tokens + state.token
                 is PreviousTokenDefinedLexerState -> tokens + state.previousToken
                 else -> tokens
             }
