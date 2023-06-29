@@ -12,11 +12,6 @@ class TokenListLexer : Lexer<LexerInput, LexerState> {
                     .let {
                         input.lexerState.handleNextToken(input.nextChar, it)
                     }
-            }.let {
-                when (it) {
-                    is RerunLexerState -> this.tokenize(input.copy(lexerState = it))
-                    else -> it
-                }
             }
 }
 
@@ -40,25 +35,22 @@ sealed interface LexerState {
     fun initialPosition(): Int
     fun lineNumber(): Int
     fun previousPossibleTokenString(): String
-
-    fun tokens(): List<Token>
 }
 data class PreviousTokenDefinedLexerState(
     val initialPosition: Int,
     val nextPosition: Int,
     val lineNumber: Int,
     val previousPossibleTokenString: String,
-    val previousToken: Token,
-    val tokens: List<Token>
+    val previousToken: Token
 ) : LexerState {
     override fun handleNextToken(nextChar: Char, nextToken: Token): LexerState =
         when (nextToken) {
             is ErrorToken -> {
-                RerunLexerState(
+                TokenFoundLexerState(
                     nextPosition,
                     nextPosition,
                     lineNumber,
-                    tokens + previousToken
+                    previousToken
                 )
             }
             else -> this.copy(
@@ -72,15 +64,13 @@ data class PreviousTokenDefinedLexerState(
     override fun lineNumber(): Int = lineNumber
 
     override fun previousPossibleTokenString(): String = previousPossibleTokenString
-    override fun tokens(): List<Token> = tokens
 }
 
 data class NoPreviousTokenDefinedLexerState(
     val initialPosition: Int = 0,
     val nextPosition: Int = 0,
     val lineNumber: Int = 0,
-    val previousPossibleTokenString: String = "",
-    val tokens: List<Token> = listOf()
+    val previousPossibleTokenString: String = ""
 ) : LexerState {
 
     override fun handleNextToken(nextChar: Char, nextToken: Token): LexerState =
@@ -96,8 +86,7 @@ data class NoPreviousTokenDefinedLexerState(
                     nextPosition + 1,
                     lineNumber,
                     addChar(nextChar, previousPossibleTokenString),
-                    nextToken,
-                    tokens
+                    nextToken
                 )
             }
         }
@@ -107,14 +96,13 @@ data class NoPreviousTokenDefinedLexerState(
     override fun lineNumber(): Int = lineNumber
 
     override fun previousPossibleTokenString(): String = previousPossibleTokenString
-    override fun tokens(): List<Token> = tokens
 }
 
-data class RerunLexerState(
+data class TokenFoundLexerState(
     private val initialPosition: Int,
     val nextPosition: Int,
     private val lineNumber: Int,
-    private val tokens: List<Token>
+    val token: Token
 ) :
     LexerState {
     override fun handleNextToken(nextChar: Char, nextToken: Token): LexerState =
@@ -133,16 +121,14 @@ data class RerunLexerState(
                     '\n' -> lineNumber + 1
                     else -> lineNumber
                 },
-                addChar(nextChar, ""),
-                tokens
+                addChar(nextChar, "")
             )
             else -> PreviousTokenDefinedLexerState(
                 initialPosition,
                 nextPosition + 1,
                 lineNumber,
                 addChar(nextChar, ""),
-                nextToken,
-                tokens
+                nextToken
             )
         }
 
@@ -151,6 +137,4 @@ data class RerunLexerState(
     override fun lineNumber(): Int = lineNumber
 
     override fun previousPossibleTokenString(): String = ""
-
-    override fun tokens(): List<Token> = tokens
 }

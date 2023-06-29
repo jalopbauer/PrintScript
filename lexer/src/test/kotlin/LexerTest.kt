@@ -2,7 +2,7 @@ import lexer.LexerInput
 import lexer.LexerState
 import lexer.NoPreviousTokenDefinedLexerState
 import lexer.PreviousTokenDefinedLexerState
-import lexer.RerunLexerState
+import lexer.TokenFoundLexerState
 import lexer.TokenListLexer
 import org.junit.jupiter.api.Test
 import token.Token
@@ -65,14 +65,23 @@ data class LexerTokenResult(private val tokenName: String, private val lineNumbe
 
 class LexerExpectedValuesBuilder : ExpectedValuesBuilder<Token> {
     override fun build(s: String): List<Token> {
-        val initial: LexerState = NoPreviousTokenDefinedLexerState()
-        return s.fold(initial) { acc, nextChar -> TokenListLexer().tokenize(LexerInput(nextChar, acc)) }
-            .let {
-                when (it) {
-                    is NoPreviousTokenDefinedLexerState, is RerunLexerState -> it.tokens()
-                    is PreviousTokenDefinedLexerState -> it.tokens() + it.previousToken
+        val initial: Pair<LexerState, List<Token>> = Pair(NoPreviousTokenDefinedLexerState(), listOf())
+        return s.fold(initial) { (state, tokens), nextChar ->
+            val input = LexerInput(nextChar, state)
+            TokenListLexer().tokenize(input)
+                .let {
+                    when (it) {
+                        is TokenFoundLexerState -> Pair(TokenListLexer().tokenize(input.copy(lexerState = it)), tokens + it.token)
+                        else -> Pair(it, tokens)
+                    }
                 }
+        }.let { (state, tokens) ->
+            when (state) {
+                is TokenFoundLexerState -> tokens + state.token
+                is PreviousTokenDefinedLexerState -> tokens + state.previousToken
+                else -> tokens
             }
+        }
     }
 }
 class LexerTestFolderPathBuilder : TestFolderPathBuilder {
