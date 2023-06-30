@@ -4,6 +4,7 @@ import parser.astParsers.AstBuilder
 import parser.astParsers.AstTokenListParser
 import validlistoftokens.ConstDeclarationAssignationValidListOfTokens
 import validlistoftokens.ConstDeclarationAssignationValidListOfTokensBuilder
+import validlistoftokens.SentenceValidListOfTokenBuilder
 import validlistoftokens.ValidListOfTokensBuilder
 
 class ConstDeclarationAssignationTokenListParser : AstTokenListParser<ConstDeclarationAssignationValidListOfTokens> {
@@ -11,5 +12,5 @@ class ConstDeclarationAssignationTokenListParser : AstTokenListParser<ConstDecla
         ConstDeclarationAssignationBuilder()
 
     override fun validListOfTokensBuilder(): ValidListOfTokensBuilder<ConstDeclarationAssignationValidListOfTokens> =
-        ConstDeclarationAssignationValidListOfTokensBuilder()
+        SentenceValidListOfTokenBuilder(ConstDeclarationAssignationValidListOfTokensBuilder())
 }

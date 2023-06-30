@@ -4,9 +4,12 @@ import token.AssignationToken
 import token.BooleanLiteralToken
 import token.ConstToken
 import token.DeclarationToken
+import token.ElseToken
+import token.IfToken
 import token.LetToken
 import token.NumberLiteralToken
 import token.ReadInputToken
+import token.SemicolonToken
 import token.StringLiteralToken
 import token.Token
 import token.TokenName
@@ -15,6 +18,25 @@ import token.VariableNameToken
 
 interface ValidListOfTokensBuilder<T : ValidListOfTokens> {
     fun validate(tokens: List<Token>): T?
+}
+
+class SentenceValidListOfTokenBuilder<T : ValidListOfTokens>(private val validListOfTokensBuilder: ValidListOfTokensBuilder<T>) :
+    ValidListOfTokensBuilder<T> {
+    override fun validate(tokens: List<Token>): T? =
+        getListIfFirstValueIsDifferentThanIfOrElse(tokens)
+            ?.let { getListIfLastValueIsASemicolon(it) }
+            ?.let { validListOfTokensBuilder.validate(it) }
+
+    private fun getListIfFirstValueIsDifferentThanIfOrElse(tokensInCodeBlock: List<Token>) =
+        tokensInCodeBlock.firstOrNull()
+            ?.takeIf { it !is IfToken }
+            ?.takeIf { it !is ElseToken }
+            ?.let { tokensInCodeBlock }
+
+    private fun getListIfLastValueIsASemicolon(tokensInCodeBlock: List<Token>) =
+        tokensInCodeBlock.lastOrNull()
+            ?.takeIf { it is SemicolonToken }
+            ?.let { tokensInCodeBlock }
 }
 
 class PrintlnValidListOfTokensBuilder : ValidListOfTokensBuilder<PrintlnValidListOfTokens> {

@@ -4,6 +4,7 @@ import parser.astParsers.AstBuilder
 import parser.astParsers.AstTokenListParser
 import validlistoftokens.PrintlnValidListOfTokens
 import validlistoftokens.PrintlnValidListOfTokensBuilder
+import validlistoftokens.SentenceValidListOfTokenBuilder
 import validlistoftokens.ValidListOfTokensBuilder
 
 class PrintLnTokenListParser : AstTokenListParser<PrintlnValidListOfTokens> {
@@ -11,5 +12,5 @@ class PrintLnTokenListParser : AstTokenListParser<PrintlnValidListOfTokens> {
         PrintlnBuilder()
 
     override fun validListOfTokensBuilder(): ValidListOfTokensBuilder<PrintlnValidListOfTokens> =
-        PrintlnValidListOfTokensBuilder()
+        SentenceValidListOfTokenBuilder(PrintlnValidListOfTokensBuilder())
 }
