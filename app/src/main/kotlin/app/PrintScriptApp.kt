@@ -1,14 +1,9 @@
 package app
-//
-// import formatter.PrintScriptFormatterFactory
-// import interpreter.PrintScriptInterpreter
-// import interpreter.state.PrintScriptInterpreterState
-// import interpreter.state.PrintScriptInterpreterStateI
-// import lexer.previousImplementation.LexerSentence
-// import lexer.previousImplementation.Sentence
-// import parser.PrintScriptAstParser
-// import staticcodeanalyser.PrintScriptStaticCodeAnalyserFactory
-// import token.Token
+import app.interpreter.PrintScriptInterpetI
+import app.interpreter.PrintScriptInterpretStates
+import interpreter.state.PrintScriptInterpreterStateI
+import lexer.lexerState.NoPreviousTokenDefinedLexerState
+import parser.parserState.ParserState
 import java.io.InputStream
 
 interface PrintScriptApp {
@@ -16,68 +11,33 @@ interface PrintScriptApp {
     fun format(inputStream: InputStream)
     fun lint(inputStream: InputStream)
 }
-//
-// class MyPrintScriptApp : PrintScriptApp {
-//    private val lexer = LexerSentence()
-//    private val parser = PrintScriptAstParser()
-//    private val interpreter = PrintScriptInterpreter()
-//    private var interpreterState: PrintScriptInterpreterState = PrintScriptInterpreterStateI()
-//    private val formatter = PrintScriptFormatterFactory()
-//        .build(
-//            """
-//
-//            """.trimIndent()
-//        )
-//    private val sca = PrintScriptStaticCodeAnalyserFactory()
-//        .build(
-//            """
-//
-//            """.trimIndent()
-//        )
-//    override fun interpret(inputStream: InputStream) =
-//        loop(
-//            inputStream
-//        ) { tokens ->
-//            parser.parse(tokens)
-//                ?.let { interpreter.interpret(it, interpreterState) }
-//                .let {
-//                    when (it) {
-//                        is PrintScriptInterpreterState -> {
-//                            interpreterState = it
-//                        }
-//
-//                        is Error -> {
-//                            println(it)
-//                        }
-//                    }
-//                }
-//        }
-//
-//    override fun format(inputStream: InputStream) =
-//        loop(inputStream) { formatter.format(it) }
-//
-//    override fun lint(inputStream: InputStream) =
-//        loop(inputStream) { sca.format(it) }
-//
-//    private fun loop(
-//        inputStream: InputStream,
-//        lambda: (tokens: List<Token>) -> Unit
-//    ) {
-//        var read = inputStream.read()
-//        var list = ""
-//        var line = 0
-//        while (read != -1) {
-//            val char = read.toChar()
-//            if (!(char == '\n' || char == '\r')) {
-//                list += char
-//                if (char == ';') {
-//                    lexer.tokenize(Sentence(list, line))
-//                        .let { lambda.invoke(it) }
-//                    line += 1
-//                    list = ""
-//                }
-//            }
-//            read = inputStream.read()
-//        }
-//    }
-// }
+
+class MyPrintScriptApp : PrintScriptApp {
+    override fun interpret(inputStream: InputStream) {
+        var state = PrintScriptInterpretStates(
+            NoPreviousTokenDefinedLexerState(),
+            ParserState(),
+            PrintScriptInterpreterStateI()
+        )
+        while (true) {
+            getNextChar(inputStream)
+                ?.let { nextChar ->
+                    PrintScriptInterpetI().interpret(nextChar, state)
+                        ?.let {
+                            state = it
+                        }
+                } ?: break
+        }
+    }
+
+    private fun getNextChar(inputStream: InputStream): Char? =
+        inputStream.read().takeIf { it != -1 }?.toChar()
+
+    override fun format(inputStream: InputStream) {
+        TODO("Not yet implemented")
+    }
+
+    override fun lint(inputStream: InputStream) {
+        TODO("Not yet implemented")
+    }
+}

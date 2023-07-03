@@ -5,7 +5,7 @@ import lexer.lexerState.TokenFoundLexerState
 import lexer.tokenLexer.FirstVersionPrintScriptLexer
 import token.Token
 
-data class NewTokenListLexer(val firstVersionPrintScriptLexer: FirstVersionPrintScriptLexer) : Lexer<LexerInput<*>, LexerStateLexerResponse> {
+data class NewTokenListLexer(val firstVersionPrintScriptLexer: FirstVersionPrintScriptLexer = FirstVersionPrintScriptLexer()) : Lexer<LexerInput<*>, LexerStateLexerResponse> {
     override fun tokenize(input: LexerInput<*>): LexerStateLexerResponse =
         LexerStateLexer(firstVersionPrintScriptLexer).tokenize(input).let {
             when (it) {
