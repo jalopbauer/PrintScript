@@ -1,5 +1,6 @@
 package app.interpreter
 
+import ast.AbstractSyntaxTree
 import interpreter.PrintScriptInterpreter
 import interpreter.state.PrintScriptInterpreterState
 import lexer.IntermediateLexerStateResponse
@@ -25,15 +26,25 @@ class PrintScriptInterpetI : PrintScriptInterpret {
                 when (val parse = PrintScriptParser().parse(addedTokenParserState)) {
                     is SendToken -> states.copy(lexerState = stateLexerResponse.intermediateLexerState, parserState = addedTokenParserState)
                     is AstFound -> {
-                        val interpret =
-                            PrintScriptInterpreter().interpret(parse.abstractSyntaxTree, printScriptInterpreterState)
-                        when (interpret) {
-                            is PrintScriptInterpreterState -> states.copy(lexerState = stateLexerResponse.intermediateLexerState, parserState = addedTokenParserState, printScriptInterpreterState = interpret)
-                            else -> null
-                        }
+                        interpretStates(
+                            parse.abstractSyntaxTree,
+                            states
+                                .copy(lexerState = stateLexerResponse.intermediateLexerState)
+                                .copy(parserState = addedTokenParserState)
+                        )
                     }
                 }
             }
+        }
+    }
+
+    private fun interpretStates(
+        abstractSyntaxTree: AbstractSyntaxTree,
+        states: PrintScriptInterpretStates
+    ): PrintScriptInterpretStates? {
+        return when (val interpret = PrintScriptInterpreter().interpret(abstractSyntaxTree, states.printScriptInterpreterState)) {
+            is PrintScriptInterpreterState -> states.copy(printScriptInterpreterState = interpret)
+            else -> null
         }
     }
 }
