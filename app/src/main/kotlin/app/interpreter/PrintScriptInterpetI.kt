@@ -14,7 +14,10 @@ import parser.parserState.ParserState
 import token.Token
 
 class PrintScriptInterpetI : PrintScriptInterpret {
-    override fun interpret(nextChar: Char, states: PrintScriptInterpretStates): PrintScriptInterpretStates? =
+    override fun interpret(
+        nextChar: Char,
+        states: PrintScriptInterpretStates
+    ): PrintScriptInterpretStates? =
         LexerInput(nextChar, states.lexerState)
             .let { input ->
                 when (val stateLexerResponse = NewTokenListLexer().tokenize(input)) {
