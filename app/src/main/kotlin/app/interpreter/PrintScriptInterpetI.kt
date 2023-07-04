@@ -14,16 +14,14 @@ import parser.parserState.ParserState
 import token.Token
 
 class PrintScriptInterpetI : PrintScriptInterpret {
-    override fun interpret(nextChar: Char, states: PrintScriptInterpretStates): PrintScriptInterpretStates? {
-        val (
-            lexerState
-        ) = states
-        val input = LexerInput(nextChar, lexerState)
-        return when (val stateLexerResponse = NewTokenListLexer().tokenize(input)) {
-            is IntermediateLexerStateResponse -> states.copy(lexerState = stateLexerResponse.intermediateLexerState)
-            is TokenFoundLexerStateResponse -> parseStates(stateLexerResponse.token, states.copy(lexerState = stateLexerResponse.intermediateLexerState))
-        }
-    }
+    override fun interpret(nextChar: Char, states: PrintScriptInterpretStates): PrintScriptInterpretStates? =
+        LexerInput(nextChar, states.lexerState)
+            .let { input ->
+                when (val stateLexerResponse = NewTokenListLexer().tokenize(input)) {
+                    is IntermediateLexerStateResponse -> states.copy(lexerState = stateLexerResponse.intermediateLexerState)
+                    is TokenFoundLexerStateResponse -> parseStates(stateLexerResponse.token, states.copy(lexerState = stateLexerResponse.intermediateLexerState))
+                }
+            }
 
     private fun parseStates(
         nextToken: Token,
