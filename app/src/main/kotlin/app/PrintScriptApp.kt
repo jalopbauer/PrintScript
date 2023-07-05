@@ -1,6 +1,7 @@
 package app
 import app.interpreter.PrintScriptInterpetI
 import app.interpreter.PrintScriptInterpretStates
+import app.printer.PrintScriptInterpretStatesPrinter
 import interpreter.state.PrintScriptInterpreterStateI
 import lexer.lexerState.NoPreviousTokenDefinedLexerState
 import parser.parserState.ParserState
@@ -24,21 +25,12 @@ class MyPrintScriptApp : PrintScriptApp {
             getNextChar(inputStream)
                 ?.let { nextChar ->
                     printScriptInterpetI.interpret(nextChar, state)
-                        ?.let { handlePrint(it) }
+                        ?.let { PrintScriptInterpretStatesPrinter().print(it) }
                         ?.let { state = it }
                 } ?: break
         }
         printScriptInterpetI.handleLastState(state)
-            ?.let { handlePrint(it) }
-    }
-
-    private fun handlePrint(it: PrintScriptInterpretStates): PrintScriptInterpretStates {
-        val printedState = it.printScriptInterpreterState.print()
-            .let { (string, postPrintState) ->
-                string?.let { println(string) }
-                postPrintState
-            }
-        return it.copy(printScriptInterpreterState = printedState)
+            ?.let { PrintScriptInterpretStatesPrinter().print(it) }
     }
 
     private fun getNextChar(inputStream: InputStream): Char? =
