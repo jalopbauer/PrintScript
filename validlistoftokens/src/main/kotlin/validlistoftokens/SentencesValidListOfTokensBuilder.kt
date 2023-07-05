@@ -27,5 +27,3 @@ class SentencesValidListOfTokensBuilder(private val validListOfTokensBuilders: V
             null
         }
 }
-
-data class TokensAndSentenceValidListOfTokens(val tokens: List<Token> = listOf(), val sentenceValidListOfTokens: List<SentenceValidListOfTokens?> = listOf())
