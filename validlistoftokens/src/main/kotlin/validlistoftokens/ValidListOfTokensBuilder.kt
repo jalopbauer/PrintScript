@@ -20,7 +20,7 @@ interface ValidListOfTokensBuilder<T : ValidListOfTokens> {
     fun validate(tokens: List<Token>): T?
 }
 
-class SentenceValidListOfTokenBuilder<T : ValidListOfTokens>(private val validListOfTokensBuilder: ValidListOfTokensBuilder<T>) :
+class SentenceValidListOfTokenBuilder<T : SentenceValidListOfTokens>(private val validListOfTokensBuilder: ValidListOfTokensBuilder<T>) :
     ValidListOfTokensBuilder<T> {
     override fun validate(tokens: List<Token>): T? =
         getListIfFirstValueIsDifferentThanIfOrElse(tokens)
