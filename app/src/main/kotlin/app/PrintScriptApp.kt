@@ -29,9 +29,7 @@ class MyPrintScriptApp : PrintScriptApp {
                 } ?: break
         }
         printScriptInterpetI.handleLastState(state)
-            ?.let {
-                handlePrint(it)
-            }
+            ?.let { handlePrint(it) }
     }
 
     private fun handlePrint(it: PrintScriptInterpretStates): PrintScriptInterpretStates {
