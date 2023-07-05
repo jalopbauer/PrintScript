@@ -24,12 +24,23 @@ class MyPrintScriptApp : PrintScriptApp {
             getNextChar(inputStream)
                 ?.let { nextChar ->
                     printScriptInterpetI.interpret(nextChar, state)
-                        ?.let {
-                            state = it
-                        }
+                        ?.let { handlePrint(it) }
+                        ?.let { state = it }
                 } ?: break
         }
-        val handleLastState = printScriptInterpetI.handleLastState(state)
+        printScriptInterpetI.handleLastState(state)
+            ?.let {
+                handlePrint(it)
+            }
+    }
+
+    private fun handlePrint(it: PrintScriptInterpretStates): PrintScriptInterpretStates {
+        val printedState = it.printScriptInterpreterState.print()
+            .let { (string, postPrintState) ->
+                string?.let { println(string) }
+                postPrintState
+            }
+        return it.copy(printScriptInterpreterState = printedState)
     }
 
     private fun getNextChar(inputStream: InputStream): Char? =

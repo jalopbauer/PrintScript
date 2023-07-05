@@ -5,7 +5,9 @@ import ast.VariableInstance
 import ast.VariableNameNode
 import interpreter.InterpreterResponse
 
-interface PrintScriptInterpreterState : InterpreterState, PrintlnInterpreterState, VariableInterpreterState
+interface PrintScriptInterpreterState : InterpreterState, PrintlnInterpreterState, VariableInterpreterState {
+    override fun print(): Pair<String?, PrintScriptInterpreterState>
+}
 
 data class PrintScriptInterpreterStateI(private val printlnInterpreterState: PrintlnInterpreterState = PrintlnInterpreterStateI()) :
     PrintScriptInterpreterState {
@@ -17,8 +19,10 @@ data class PrintScriptInterpreterStateI(private val printlnInterpreterState: Pri
             }
         }
 
-    override fun print(): Pair<String?, PrintlnInterpreterState> =
-        printlnInterpreterState.print()
+    override fun print(): Pair<String?, PrintScriptInterpreterStateI> =
+        printlnInterpreterState.print().let { (string, state) ->
+            Pair(string, this.copy(printlnInterpreterState = state))
+        }
 
     override fun initializeVariable(variableInstance: VariableInstance): InterpreterResponse =
         printlnInterpreterState.initializeVariable(variableInstance).let {
