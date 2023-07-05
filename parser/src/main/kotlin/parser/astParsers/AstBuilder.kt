@@ -16,7 +16,7 @@ interface AstBuilder<T : ValidListOfTokens> {
     fun findType(token: TypeToken): Type =
         when (token) {
             is BooleanTypeToken -> BooleanType
-            is NumberTypeToken -> NumberType()
+            is NumberTypeToken -> NumberType
             is StringTypeToken -> StringType
         }
 }

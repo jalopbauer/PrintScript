@@ -19,15 +19,17 @@ class MyPrintScriptApp : PrintScriptApp {
             ParserState(),
             PrintScriptInterpreterStateI()
         )
+        val printScriptInterpetI = PrintScriptInterpetI()
         while (true) {
             getNextChar(inputStream)
                 ?.let { nextChar ->
-                    PrintScriptInterpetI().interpret(nextChar, state)
+                    printScriptInterpetI.interpret(nextChar, state)
                         ?.let {
                             state = it
                         }
                 } ?: break
         }
+        val handleLastState = printScriptInterpetI.handleLastState(state)
     }
 
     private fun getNextChar(inputStream: InputStream): Char? =

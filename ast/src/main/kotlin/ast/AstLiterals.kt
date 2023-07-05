@@ -18,7 +18,7 @@ data class IntNumberLiteral(val number: Int) : AssignationParameterNode, NumberL
     override fun value(): Int =
         number
 
-    override fun type(): IntType = IntType
+    override fun type(): NumberType = NumberType
 }
 
 data class DoubleNumberLiteral(val number: Double) :
@@ -29,7 +29,7 @@ data class DoubleNumberLiteral(val number: Double) :
     override fun value(): Double =
         number
 
-    override fun type(): DoubleType = DoubleType
+    override fun type(): NumberType = NumberType
 }
 
 sealed interface BooleanLiteral : AbstractSyntaxTree, PrintlnAstParameter, AssignationParameterNode

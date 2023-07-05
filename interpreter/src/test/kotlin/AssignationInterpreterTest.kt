@@ -2,9 +2,9 @@ import ast.AssignationAst
 import ast.Div
 import ast.DoubleNumberLiteral
 import ast.IntNumberLiteral
-import ast.IntType
 import ast.Literal
 import ast.Mult
+import ast.NumberType
 import ast.Operation
 import ast.StringConcatenation
 import ast.StringLiteral
@@ -154,7 +154,7 @@ class AssignationInterpreterTest {
         val assignationInterpreterState = getState(
             VariableInterpreterStateI(
                 variableTypeMap = mapOf(
-                    variableToBeSetName to IntType
+                    variableToBeSetName to NumberType
                 )
             )
         )
@@ -195,7 +195,7 @@ class AssignationInterpreterTest {
         val assignationInterpreterState = getState(
             VariableInterpreterStateI(
                 variableTypeMap = mapOf(
-                    variableToBeSetName to IntType
+                    variableToBeSetName to NumberType
                 )
             )
         )
@@ -236,7 +236,7 @@ class AssignationInterpreterTest {
         val assignationInterpreterState = getState(
             VariableInterpreterStateI(
                 variableTypeMap = mapOf(
-                    variableToBeSetName to IntType
+                    variableToBeSetName to NumberType
                 )
             )
         )
@@ -277,7 +277,7 @@ class AssignationInterpreterTest {
         val assignationInterpreterState = getState(
             VariableInterpreterStateI(
                 variableTypeMap = mapOf(
-                    variableToBeSetName to IntType
+                    variableToBeSetName to NumberType
                 )
             )
         )
@@ -320,8 +320,8 @@ class AssignationInterpreterTest {
         val assignationInterpreterState = getState(
             VariableInterpreterStateI(
                 variableTypeMap = mapOf(
-                    variableToBeSetName to IntType,
-                    variableWithPreviousValue to IntType
+                    variableToBeSetName to NumberType,
+                    variableWithPreviousValue to NumberType
                 ),
                 variableLiteralMap = mapOf(
                     variableWithPreviousValue to IntNumberLiteral(rightNumberValue)
@@ -366,7 +366,7 @@ class AssignationInterpreterTest {
         val assignationInterpreterState = getState(
             VariableInterpreterStateI(
                 variableTypeMap = mapOf(
-                    variableToBeSetName to IntType,
+                    variableToBeSetName to NumberType,
                     variableWithPreviousValue to StringType
                 ),
                 variableLiteralMap = mapOf(
@@ -532,7 +532,7 @@ class AssignationInterpreterTest {
                 ),
                 variableTypeMap = mapOf(
                     variableToBeSetName to StringType,
-                    variableWithPreviousValue to IntType
+                    variableWithPreviousValue to NumberType
                 )
             )
         )
