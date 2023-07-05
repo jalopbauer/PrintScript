@@ -17,6 +17,9 @@ data class PrintScriptInterpreterStateI(private val printlnInterpreterState: Pri
             }
         }
 
+    override fun print(): Pair<String?, PrintlnInterpreterState> =
+        printlnInterpreterState.print()
+
     override fun initializeVariable(variableInstance: VariableInstance): InterpreterResponse =
         printlnInterpreterState.initializeVariable(variableInstance).let {
             when (it) {
@@ -52,6 +55,4 @@ data class PrintScriptInterpreterStateI(private val printlnInterpreterState: Pri
 
     override fun isVariableDefined(key: VariableNameNode): Boolean =
         printlnInterpreterState.isVariableDefined(key)
-
-    override fun printList(): String = printlnInterpreterState.printList()
 }

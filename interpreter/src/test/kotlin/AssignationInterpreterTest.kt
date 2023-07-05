@@ -26,7 +26,7 @@ class AssignationInterpreterTest {
     private fun getState(variableInterpreterStateI: VariableInterpreterStateI) =
         PrintScriptInterpreterStateI(
             PrintlnInterpreterStateI(
-                listOf(),
+                null,
                 variableInterpreterStateI
             )
         )

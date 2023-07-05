@@ -23,14 +23,14 @@ class PrintlnInterpreterTest {
     private fun getState(variableInterpreterStateI: VariableInterpreterStateI) =
         PrintScriptInterpreterStateI(
             PrintlnInterpreterStateI(
-                listOf(),
+                null,
                 variableInterpreterStateI
             )
         )
 
     private fun testExpectedValue(interpreterResponse: InterpreterResponse, valueToTest: String) =
         if (interpreterResponse is PrintScriptInterpreterState) {
-            assertEquals(valueToTest, interpreterResponse.printList())
+            assertEquals(valueToTest, interpreterResponse.print().first)
         } else {
             assert(false)
         }
