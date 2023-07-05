@@ -3,7 +3,7 @@ package validlistoftokens
 import token.SemicolonToken
 import token.Token
 
-class SentencesValidListOfTokensBuilder(private val validListOfTokensBuilders: ValidListOfTokensBuilder<SentenceValidListOfTokens>) : ValidListOfTokensBuilder<SentencesValidListOfTokens> {
+class SentencesValidListOfTokensBuilder(private val validListOfTokensBuilders: ValidListOfTokensBuilder<out SentenceValidListOfTokens> = ListSentencesValidListOfTokensBuilder()) : ValidListOfTokensBuilder<SentencesValidListOfTokens> {
     override fun validate(tokens: List<Token>): SentencesValidListOfTokens? =
         if (tokens.last() is SemicolonToken) { // If semicolon not last is always invalid
             val sentenceValidListOfTokens =

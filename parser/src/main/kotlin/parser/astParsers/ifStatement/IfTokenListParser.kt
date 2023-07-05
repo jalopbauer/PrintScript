@@ -8,7 +8,10 @@ import validlistoftokens.IfStatementValidListOfTokensBuilder
 import validlistoftokens.SentencesValidListOfTokensBuilder
 import validlistoftokens.ValidListOfTokensBuilder
 
-class IfTokenListParser(private val sentenceBuilder: SentenceBuilder, private val sentencesValidListOfTokensBuilder: SentencesValidListOfTokensBuilder) : AstTokenListParser<IfStatementValidListOfTokens> {
+class IfTokenListParser(
+    private val sentenceBuilder: SentenceBuilder = SentenceBuilder(),
+    private val sentencesValidListOfTokensBuilder: SentencesValidListOfTokensBuilder = SentencesValidListOfTokensBuilder()
+) : AstTokenListParser<IfStatementValidListOfTokens> {
     override fun parserAstBuilder(): AstBuilder<IfStatementValidListOfTokens> =
         IfStatementBuilder(sentenceBuilder)
 
