@@ -1,5 +1,8 @@
 package formatter
 
+import token.ElseToken
+import token.IfToken
+import token.SemicolonToken
 import token.Token
 import validlistoftokens.ValidListOfTokens
 import validlistoftokens.ValidListOfTokensBuilder
@@ -17,7 +20,17 @@ class ValidListOfTokensFormatter<T : ValidListOfTokens>(
             ?.let { rule.apply(it) }
 }
 
-class PrintScriptFormatter(
+class PrintScriptFormatter(private val sentenceFormatter: SentenceFormatter) : Formatter {
+    override fun format(listOfTokens: List<Token>): String? =
+        when {
+            listOfTokens.firstOrNull() !is IfToken &&
+                listOfTokens.firstOrNull() !is ElseToken &&
+                listOfTokens.lastOrNull() is SemicolonToken -> sentenceFormatter.format(listOfTokens)
+            else -> null
+        }
+}
+
+class SentenceFormatter(
     private val validListOfTokensFormatterList: List<ValidListOfTokensFormatter<*>>,
     private val tokenListRule: TokenListSpacingRule
 ) : Formatter {

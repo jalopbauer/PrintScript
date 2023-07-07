@@ -9,7 +9,7 @@ interface FormatterFactory {
 }
 
 class PrintScriptFormatterFactory : FormatterFactory {
-    override fun build(configString: String): Formatter {
+    override fun build(configString: String): PrintScriptFormatter {
         val tokenListSpacingRule = TokenListSpacingRuleFactory().build(configString)
         val list: List<ValidListOfTokensFormatter<*>> = listOf()
         val newList = AssignationFormatterFactory(tokenListSpacingRule).build(configString)
@@ -18,7 +18,7 @@ class PrintScriptFormatterFactory : FormatterFactory {
             ?.let { newList + it } ?: newList
         val newNewNewList = EnterBeforePrintlnFormatterFactory(tokenListSpacingRule).build(configString)
             ?.let { newNewList + it } ?: newNewList
-        return PrintScriptFormatter(newNewNewList, tokenListSpacingRule)
+        return PrintScriptFormatter(SentenceFormatter(newNewNewList, tokenListSpacingRule))
     }
 }
 
