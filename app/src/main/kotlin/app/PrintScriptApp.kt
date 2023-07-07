@@ -1,8 +1,11 @@
 package app
+import app.formatter.PrintScriptFormatterI
+import app.formatter.PrintScriptFormatterStates
 import app.interpreter.PrintScriptInterpetI
 import app.interpreter.PrintScriptInterpretStates
 import app.printer.PrintScriptInterpretStatesPrinter
 import app.printer.Printer
+import formatter.PrintScriptFormatterFactory
 import interpreter.state.PrintScriptInterpreterStateI
 import lexer.lexerState.NoPreviousTokenDefinedLexerState
 import parser.parserState.ParserState
@@ -38,7 +41,20 @@ class MyPrintScriptApp(private val printScriptInterpretStatesPrinter: Printer<Pr
         inputStream.read().takeIf { it != -1 }?.toChar()
 
     override fun format(inputStream: InputStream) {
-        TODO("Not yet implemented")
+        val printScriptFormatter = PrintScriptFormatterFactory().build("declaration-spacing-both assignation-spacing-both")
+        val printScriptFormatterI = PrintScriptFormatterI(printScriptFormatter)
+
+        var state = PrintScriptFormatterStates(
+            NoPreviousTokenDefinedLexerState(),
+            listOf(),
+            ""
+        )
+        while (true) {
+            getNextChar(inputStream)
+                ?.let { nextChar -> state = printScriptFormatterI.format(nextChar, state) }
+                ?: break
+        }
+        printScriptFormatterI.handleLastState(state)
     }
 
     override fun lint(inputStream: InputStream) {
