@@ -1,8 +1,15 @@
 package formatter
 
+import token.AssignationToken
+import token.DeclarationToken
 import token.DoubleNumberLiteralToken
 import token.IntNumberLiteralToken
+import token.LetToken
+import token.MultToken
+import token.NumberTypeToken
 import token.StringLiteralToken
+import token.SubToken
+import token.SumToken
 import token.Token
 import token.TokenName
 import token.VariableNameToken
@@ -96,6 +103,13 @@ class TokenToString : Rule<Token> {
             is IntNumberLiteralToken -> listOfTokens.value.toString()
             is DoubleNumberLiteralToken -> listOfTokens.value.toString()
             is VariableNameToken -> listOfTokens.value
+            is LetToken -> "let"
+            is AssignationToken -> "="
+            is DeclarationToken -> ":"
+            is MultToken -> "*"
+            is SumToken -> "+"
+            is SubToken -> "-"
+            is NumberTypeToken -> "number"
             else -> {
                 when (listOfTokens.tokenName()) {
                     TokenName.ASSIGNATION -> "="
