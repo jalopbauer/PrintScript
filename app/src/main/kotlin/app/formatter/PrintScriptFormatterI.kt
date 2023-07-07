@@ -27,7 +27,7 @@ class PrintScriptFormatterI(private val formatter: Formatter) : PrintScriptForma
     ): PrintScriptFormatterStates =
         (states.tokens + nextToken)
             .let { tokens ->
-                formatter.format(states.tokens)
+                formatter.format(tokens)
                     ?.let {
                         states.copy(
                             tokens = listOf(),
