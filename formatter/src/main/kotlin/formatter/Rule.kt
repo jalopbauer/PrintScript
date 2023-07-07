@@ -4,9 +4,12 @@ import token.AssignationToken
 import token.DeclarationToken
 import token.DoubleNumberLiteralToken
 import token.IntNumberLiteralToken
+import token.LeftParenthesisToken
 import token.LetToken
 import token.MultToken
 import token.NumberTypeToken
+import token.PrintlnToken
+import token.RightParenthesisToken
 import token.StringLiteralToken
 import token.SubToken
 import token.SumToken
@@ -110,6 +113,9 @@ class TokenToString : Rule<Token> {
             is SumToken -> "+"
             is SubToken -> "-"
             is NumberTypeToken -> "number"
+            is RightParenthesisToken -> ")"
+            is LeftParenthesisToken -> "("
+            is PrintlnToken -> "println"
             else -> {
                 when (listOfTokens.tokenName()) {
                     TokenName.ASSIGNATION -> "="

@@ -54,7 +54,7 @@ class MyPrintScriptApp(private val printScriptInterpretStatesPrinter: Printer<Pr
                 ?.let { nextChar -> state = printScriptFormatterI.format(nextChar, state) }
                 ?: break
         }
-        printScriptFormatterI.handleLastState(state)
+        printScriptFormatterI.handleLastState(state)?.let { println(it.string) }
     }
 
     override fun lint(inputStream: InputStream) {
