@@ -9,7 +9,7 @@ import lexer.lexerState.PreviousTokenDefinedLexerState
 import token.Token
 
 class PrintScriptFormatterI(private val formatter: Formatter) : PrintScriptFormatter {
-    override fun interpret(
+    override fun format(
         nextChar: Char,
         states: PrintScriptFormatterStates
     ): PrintScriptFormatterStates =
