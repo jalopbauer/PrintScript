@@ -1,7 +1,7 @@
 package app.formatter
 
 interface PrintScriptFormatter {
-    fun interpret(
+    fun format(
         nextChar: Char,
         states: PrintScriptFormatterStates
 
