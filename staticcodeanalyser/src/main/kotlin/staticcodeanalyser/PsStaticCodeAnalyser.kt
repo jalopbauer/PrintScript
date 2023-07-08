@@ -12,7 +12,7 @@ class PsStaticCodeAnalyser(private val printScriptStaticCodeAnalyser: PrintScrip
                 listOfTokens.firstOrNull() !is ElseToken &&
                 listOfTokens.lastOrNull() is SemicolonToken -> {
                 printScriptStaticCodeAnalyser.format(listOfTokens)
-                    ?.let { Error(it) }
+                    ?.let { ErrorResponse(it) }
                     ?: Valid
             }
             else -> Continue(listOfTokens)
@@ -27,7 +27,7 @@ object Valid : StaticCodeAnalyserResponse {
     override fun tokens(): List<Token> = listOf()
 }
 
-data class Error(val message: String) : StaticCodeAnalyserResponse {
+data class ErrorResponse(val message: String) : StaticCodeAnalyserResponse {
     override fun tokens(): List<Token> = listOf()
 }
 

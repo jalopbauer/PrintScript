@@ -5,6 +5,7 @@ import lexer.LexerInput
 import lexer.NewTokenListLexer
 import lexer.TokenFoundLexerStateResponse
 import lexer.lexerState.PreviousTokenDefinedLexerState
+import staticcodeanalyser.ErrorResponse
 import staticcodeanalyser.PsStaticCodeAnalyser
 import token.Token
 
@@ -29,7 +30,7 @@ class PrintScriptStaticCodeAnalyserI(private val linter: PsStaticCodeAnalyser) :
             .let { tokens ->
                 val response = linter.format(tokens)
                 when (response) {
-                    is Error -> states.copy(string = states.string + response)
+                    is ErrorResponse -> states.copy(string = states.string + response.message)
                     else -> states
                 }.copy(tokens = response.tokens())
             }

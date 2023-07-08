@@ -1,6 +1,6 @@
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import staticcodeanalyser.Error
+import staticcodeanalyser.ErrorResponse
 import staticcodeanalyser.PrintScriptStaticCodeAnalyserFactory
 import staticcodeanalyser.Valid
 import token.IntNumberLiteralToken
@@ -20,7 +20,7 @@ class ScaTest {
             SemicolonToken(0, variableName.length)
         )
         val scaCamel = PrintScriptStaticCodeAnalyserFactory().build("")
-        assertEquals(Error("Variable $variableName is not camelCase"), scaCamel.format(tokensCamel))
+        assertEquals(ErrorResponse("Variable $variableName is not camelCase"), scaCamel.format(tokensCamel))
     }
 
     @Test
@@ -43,7 +43,7 @@ class ScaTest {
             SemicolonToken(0, variableName.length)
         )
         val scaCamel = PrintScriptStaticCodeAnalyserFactory().build("snake-case-variable")
-        assertEquals(Error("Variable $variableName is not snake_case"), scaCamel.format(tokensCamel))
+        assertEquals(ErrorResponse("Variable $variableName is not snake_case"), scaCamel.format(tokensCamel))
     }
 
     @Test
@@ -105,7 +105,7 @@ class ScaTest {
             SemicolonToken(0, 0)
         )
         val scaCamel = PrintScriptStaticCodeAnalyserFactory().build("allow-literals-or-variable-only")
-        assertEquals(Error("StringConcat not valid"), scaCamel.format(tokens))
+        assertEquals(ErrorResponse("StringConcat not valid"), scaCamel.format(tokens))
     }
 
     @Test

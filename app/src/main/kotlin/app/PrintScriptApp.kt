@@ -5,10 +5,13 @@ import app.interpreter.PrintScriptInterpetI
 import app.interpreter.PrintScriptInterpretStates
 import app.printer.PrintScriptInterpretStatesPrinter
 import app.printer.Printer
+import app.sca.PrintScriptStaticCodeAnalyserI
+import app.sca.PrintScriptStaticCodeAnalyserStates
 import formatter.PrintScriptFormatterFactory
 import interpreter.state.PrintScriptInterpreterStateI
 import lexer.lexerState.NoPreviousTokenDefinedLexerState
 import parser.parserState.ParserState
+import staticcodeanalyser.PrintScriptStaticCodeAnalyserFactory
 import java.io.InputStream
 
 interface PrintScriptApp {
@@ -58,6 +61,19 @@ class MyPrintScriptApp(private val printScriptInterpretStatesPrinter: Printer<Pr
     }
 
     override fun lint(inputStream: InputStream) {
-        TODO("Not yet implemented")
+        val printScriptFormatter = PrintScriptStaticCodeAnalyserFactory().build("allow-literals-or-variable-only")
+        val printScriptFormatterI = PrintScriptStaticCodeAnalyserI(printScriptFormatter)
+
+        var state = PrintScriptStaticCodeAnalyserStates(
+            NoPreviousTokenDefinedLexerState(),
+            listOf(),
+            ""
+        )
+        while (true) {
+            getNextChar(inputStream)
+                ?.let { nextChar -> state = printScriptFormatterI.format(nextChar, state) }
+                ?: break
+        }
+        printScriptFormatterI.handleLastState(state)?.let { println(it.string) } ?: println("failed")
     }
 }
