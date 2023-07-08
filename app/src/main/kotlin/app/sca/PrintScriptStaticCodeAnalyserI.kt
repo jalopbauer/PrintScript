@@ -1,14 +1,14 @@
-package app.linter
+package app.sca
 
 import lexer.IntermediateLexerStateResponse
 import lexer.LexerInput
 import lexer.NewTokenListLexer
 import lexer.TokenFoundLexerStateResponse
 import lexer.lexerState.PreviousTokenDefinedLexerState
-import staticcodeanalyser.StaticCodeAnalyserString
+import staticcodeanalyser.PsStaticCodeAnalyser
 import token.Token
 
-class PrintScriptStaticCodeAnalyserI(private val linter: StaticCodeAnalyserString) : PrintScriptStaticCodeAnalyser {
+class PrintScriptStaticCodeAnalyserI(private val linter: PsStaticCodeAnalyser) : PrintScriptStaticCodeAnalyser {
     override fun format(
         nextChar: Char,
         states: PrintScriptStaticCodeAnalyserStates
@@ -27,14 +27,11 @@ class PrintScriptStaticCodeAnalyserI(private val linter: StaticCodeAnalyserStrin
     ): PrintScriptStaticCodeAnalyserStates =
         (states.tokens + nextToken)
             .let { tokens ->
-                linter.format(tokens)
-                    ?.let {
-                        states.copy(
-                            tokens = listOf(),
-                            string = states.string + it
-                        )
-                    }
-                    ?: states.copy(tokens = tokens)
+                val response = linter.format(tokens)
+                when (response) {
+                    is Error -> states.copy(string = states.string + response)
+                    else -> states
+                }.copy(tokens = response.tokens())
             }
 
     fun handleLastState(states: PrintScriptStaticCodeAnalyserStates): PrintScriptStaticCodeAnalyserStates? =

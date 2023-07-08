@@ -1,4 +1,4 @@
-package app.linter
+package app.sca
 
 import lexer.lexerState.LexerState
 import token.Token

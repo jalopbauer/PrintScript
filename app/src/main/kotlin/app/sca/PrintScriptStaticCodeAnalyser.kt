@@ -1,4 +1,4 @@
-package app.linter
+package app.sca
 
 interface PrintScriptStaticCodeAnalyser {
     fun format(
