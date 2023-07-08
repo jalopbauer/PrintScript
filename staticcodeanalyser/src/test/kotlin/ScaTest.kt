@@ -1,6 +1,8 @@
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import staticcodeanalyser.Error
 import staticcodeanalyser.PrintScriptStaticCodeAnalyserFactory
+import staticcodeanalyser.Valid
 import token.IntNumberLiteralToken
 import token.LeftParenthesisToken
 import token.PrintlnToken
@@ -14,20 +16,22 @@ class ScaTest {
     fun onlyCamelCaseSendSnakeCaseShowsError() {
         val variableName = "test_case"
         val tokensCamel = listOf(
-            VariableNameToken(variableName, 0, 4)
+            VariableNameToken(variableName, 0, 0),
+            SemicolonToken(0, variableName.length)
         )
         val scaCamel = PrintScriptStaticCodeAnalyserFactory().build("")
-        assertEquals("Variable $variableName is not camelCase", scaCamel.format(tokensCamel))
+        assertEquals(Error("Variable $variableName is not camelCase"), scaCamel.format(tokensCamel))
     }
 
     @Test
     fun onlyCamelCaseSendCamelCaseShowsNothing() {
         val variableName = "testCase"
         val tokensCamel = listOf(
-            VariableNameToken(variableName, 0, 4)
+            VariableNameToken(variableName, 0, 0),
+            SemicolonToken(0, variableName.length)
         )
         val scaCamel = PrintScriptStaticCodeAnalyserFactory().build("")
-        assertEquals(null, scaCamel.format(tokensCamel))
+        assertEquals(Valid, scaCamel.format(tokensCamel))
     }
 
     @Test
@@ -35,29 +39,32 @@ class ScaTest {
         val variableName = "testCase"
 
         val tokensCamel = listOf(
-            VariableNameToken(variableName, 0, 4)
+            VariableNameToken(variableName, 0, 0),
+            SemicolonToken(0, variableName.length)
         )
         val scaCamel = PrintScriptStaticCodeAnalyserFactory().build("snake-case-variable")
-        assertEquals("Variable $variableName is not snake_case", scaCamel.format(tokensCamel))
+        assertEquals(Error("Variable $variableName is not snake_case"), scaCamel.format(tokensCamel))
     }
 
     @Test
     fun onlySnakeCaseSendSnakeCaseShowsNothing() {
         val variableName = "test_case"
         val tokensCamel = listOf(
-            VariableNameToken(variableName, 0, 4)
+            VariableNameToken(variableName, 0, 0),
+            SemicolonToken(0, variableName.length)
         )
         val scaCamel = PrintScriptStaticCodeAnalyserFactory().build("snake-case-variable")
-        assertEquals(null, scaCamel.format(tokensCamel))
+        assertEquals(Valid, scaCamel.format(tokensCamel))
     }
 
     @Test
     fun onlyNumberLiteralShowsNothing() {
         val tokensCamel = listOf(
-            IntNumberLiteralToken(1, 0, 4)
+            IntNumberLiteralToken(1, 0, 0),
+            SemicolonToken(0, 1)
         )
         val scaCamel = PrintScriptStaticCodeAnalyserFactory().build("snake-case-variable")
-        assertEquals(null, scaCamel.format(tokensCamel))
+        assertEquals(Valid, scaCamel.format(tokensCamel))
     }
 
     @Test
@@ -70,7 +77,7 @@ class ScaTest {
             SemicolonToken(0, 0)
         )
         val scaCamel = PrintScriptStaticCodeAnalyserFactory().build("allow-literals-or-variable-only")
-        assertEquals(null, scaCamel.format(tokens))
+        assertEquals(Valid, scaCamel.format(tokens))
     }
 
     @Test
@@ -83,7 +90,7 @@ class ScaTest {
             SemicolonToken(0, 0)
         )
         val scaCamel = PrintScriptStaticCodeAnalyserFactory().build("allow-literals-or-variable-only")
-        assertEquals(null, scaCamel.format(tokens))
+        assertEquals(Valid, scaCamel.format(tokens))
     }
 
     @Test
@@ -98,7 +105,7 @@ class ScaTest {
             SemicolonToken(0, 0)
         )
         val scaCamel = PrintScriptStaticCodeAnalyserFactory().build("allow-literals-or-variable-only")
-        assertEquals("StringConcat not valid", scaCamel.format(tokens))
+        assertEquals(Error("StringConcat not valid"), scaCamel.format(tokens))
     }
 
     @Test
@@ -113,6 +120,6 @@ class ScaTest {
             SemicolonToken(0, 0)
         )
         val scaCamel = PrintScriptStaticCodeAnalyserFactory().build("")
-        assertEquals(null, scaCamel.format(tokens))
+        assertEquals(Valid, scaCamel.format(tokens))
     }
 }
