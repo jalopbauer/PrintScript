@@ -1,6 +1,6 @@
 package parser.parserRespose
 
 import ast.AbstractSyntaxTree
-import token.Token
+import parser.parserState.ParserState
 
-data class AstFound(val tokens: List<Token>, val abstractSyntaxTree: AbstractSyntaxTree) : ParserResponse
+data class AstFound(val parserState: ParserState, val abstractSyntaxTree: AbstractSyntaxTree) : ParserResponse

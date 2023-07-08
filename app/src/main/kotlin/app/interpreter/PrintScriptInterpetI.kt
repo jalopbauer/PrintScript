@@ -11,7 +11,6 @@ import lexer.lexerState.PreviousTokenDefinedLexerState
 import parser.PrintScriptParser
 import parser.parserRespose.AstFound
 import parser.parserRespose.SendToken
-import parser.parserState.ParserState
 import token.Token
 
 class PrintScriptInterpetI : PrintScriptInterpret {
@@ -35,7 +34,7 @@ class PrintScriptInterpetI : PrintScriptInterpret {
             .let { addedTokenParserState ->
                 when (val parse = PrintScriptParser().parse(addedTokenParserState)) {
                     is SendToken -> states.copy(parserState = addedTokenParserState)
-                    is AstFound -> interpretStates(parse.abstractSyntaxTree, states.copy(parserState = ParserState(parse.tokens)))
+                    is AstFound -> interpretStates(parse.abstractSyntaxTree, states.copy(parserState = parse.parserState))
                 }
             }
 

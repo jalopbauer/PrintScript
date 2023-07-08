@@ -11,7 +11,7 @@ class PrintScriptParser : Parser<ParserResponse, ParserState> {
             .let { tokens ->
                 PrintScriptAstParser().parse(tokens)
                     ?.let { ast ->
-                        AstFound(listOf(), ast)
+                        AstFound(ParserState(), ast)
                     }
                     ?: SendToken(tokensInCodeBlock)
             }
