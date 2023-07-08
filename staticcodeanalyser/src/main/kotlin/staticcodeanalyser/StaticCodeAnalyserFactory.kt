@@ -3,10 +3,10 @@ package staticcodeanalyser
 import validlistoftokens.PrintlnValidListOfTokensBuilder
 
 interface StaticCodeAnalyserFactory {
-    fun build(configString: String): StaticCodeAnalyser?
+    fun build(configString: String): StaticCodeAnalyser<*>?
 }
 class PrintScriptStaticCodeAnalyserFactory : StaticCodeAnalyserFactory {
-    override fun build(configString: String): StaticCodeAnalyser {
+    override fun build(configString: String): StaticCodeAnalyserString {
         val list = listOf(
             RuleStaticCodeAnalyser(CheckVariableFactory().build(configString))
         )

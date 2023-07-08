@@ -5,10 +5,10 @@ import lexer.LexerInput
 import lexer.NewTokenListLexer
 import lexer.TokenFoundLexerStateResponse
 import lexer.lexerState.PreviousTokenDefinedLexerState
-import staticcodeanalyser.StaticCodeAnalyser
+import staticcodeanalyser.StaticCodeAnalyserString
 import token.Token
 
-class PrintScriptStaticCodeAnalyserI(private val linter: StaticCodeAnalyser) : PrintScriptStaticCodeAnalyser {
+class PrintScriptStaticCodeAnalyserI(private val linter: StaticCodeAnalyserString) : PrintScriptStaticCodeAnalyser {
     override fun format(
         nextChar: Char,
         states: PrintScriptStaticCodeAnalyserStates
