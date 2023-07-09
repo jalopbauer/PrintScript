@@ -24,7 +24,7 @@ import validlistoftokens.ReadInputParameter
 import validlistoftokens.StringLiteralOrStringConcatValidListOfTokens
 import validlistoftokens.VariableParameter
 
-class PrintlnBuilder : AstBuilder<PrintlnValidListOfTokens> {
+class PrintlnBuilder : AstBuilder<PrintlnValidListOfTokens, PrintlnAst> {
     override fun build(validListOfTokens: PrintlnValidListOfTokens): PrintlnAst {
         return when (val parameter = validListOfTokens.printLnParameterValidListOfTokens) {
             is VariableParameter -> PrintlnAst(VariableNameNode(parameter.variableToken.value))

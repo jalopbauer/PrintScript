@@ -1,6 +1,5 @@
 package parser.astParsers.ifStatement
 
-import ast.AbstractSyntaxTree
 import ast.FalseLiteral
 import ast.IfStatement
 import ast.TrueLiteral
@@ -10,9 +9,9 @@ import token.FalseLiteralToken
 import token.TrueLiteralToken
 import validlistoftokens.IfStatementValidListOfTokens
 
-class IfStatementBuilder(private val sentenceBuilder: SentenceBuilder) : AstBuilder<IfStatementValidListOfTokens> {
+class IfStatementBuilder(private val sentenceBuilder: SentenceBuilder) : AstBuilder<IfStatementValidListOfTokens, IfStatement> {
 
-    override fun build(validListOfTokens: IfStatementValidListOfTokens): AbstractSyntaxTree =
+    override fun build(validListOfTokens: IfStatementValidListOfTokens): IfStatement =
         IfStatement(
             when (validListOfTokens.booleanLiteralToken) {
                 is FalseLiteralToken -> FalseLiteral

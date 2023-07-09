@@ -10,8 +10,8 @@ import token.NumberTypeToken
 import token.StringTypeToken
 import token.TypeToken
 import validlistoftokens.ValidListOfTokens
-interface AstBuilder<T : ValidListOfTokens> {
-    fun build(validListOfTokens: T): AbstractSyntaxTree
+interface AstBuilder<T : ValidListOfTokens, U : AbstractSyntaxTree> {
+    fun build(validListOfTokens: T): U
 
     fun findType(token: TypeToken): Type =
         when (token) {

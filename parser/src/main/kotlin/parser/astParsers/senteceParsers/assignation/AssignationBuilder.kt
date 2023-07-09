@@ -1,6 +1,5 @@
 package parser.astParsers.senteceParsers.assignation
 
-import ast.AbstractSyntaxTree
 import ast.AssignationAst
 import ast.FalseLiteral
 import ast.TrueLiteral
@@ -13,8 +12,8 @@ import token.TrueLiteralToken
 import validlistoftokens.AssignationValidListOfTokens
 import validlistoftokens.OperationValidListOfTokensBuilder
 
-class AssignationBuilder : AstBuilder<AssignationValidListOfTokens> {
-    override fun build(validListOfTokens: AssignationValidListOfTokens): AbstractSyntaxTree {
+class AssignationBuilder : AstBuilder<AssignationValidListOfTokens, AssignationAst> {
+    override fun build(validListOfTokens: AssignationValidListOfTokens): AssignationAst {
         val content = validListOfTokens.content
         return if (content.size == 1 && content.component1() is BooleanLiteralToken) {
             val parameter = when (content.component1() as BooleanLiteralToken) {

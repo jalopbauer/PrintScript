@@ -1,6 +1,6 @@
 package parser.astParsers.senteceParsers
 
-import ast.AbstractSyntaxTree
+import ast.SentenceAbstractSyntaxTree
 import parser.astParsers.AstBuilder
 import parser.astParsers.senteceParsers.assignation.AssignationBuilder
 import parser.astParsers.senteceParsers.declaration.DeclarationBuilder
@@ -14,8 +14,8 @@ import validlistoftokens.DeclarationValidListOfTokens
 import validlistoftokens.PrintlnValidListOfTokens
 import validlistoftokens.SentenceValidListOfTokens
 
-class SentenceBuilder : AstBuilder<SentenceValidListOfTokens> {
-    override fun build(validListOfTokens: SentenceValidListOfTokens): AbstractSyntaxTree =
+class SentenceBuilder : AstBuilder<SentenceValidListOfTokens, SentenceAbstractSyntaxTree> {
+    override fun build(validListOfTokens: SentenceValidListOfTokens): SentenceAbstractSyntaxTree =
         when (validListOfTokens) {
             is AssignationValidListOfTokens -> AssignationBuilder().build(validListOfTokens)
             is ConstDeclarationAssignationValidListOfTokens -> ConstDeclarationAssignationBuilder().build(validListOfTokens)

@@ -1,7 +1,7 @@
 package parser.astParsers.senteceParsers.declarationAssignation
 
-import ast.AbstractSyntaxTree
 import ast.AssignationAst
+import ast.AssignationDeclarationAst
 import ast.BooleanType
 import ast.ConstAssignationDeclarationAst
 import ast.DeclarationAst
@@ -17,8 +17,8 @@ import token.FalseLiteralToken
 import token.TrueLiteralToken
 import validlistoftokens.ConstDeclarationAssignationValidListOfTokens
 
-class ConstDeclarationAssignationBuilder : AstBuilder<ConstDeclarationAssignationValidListOfTokens> {
-    override fun build(validListOfTokens: ConstDeclarationAssignationValidListOfTokens): AbstractSyntaxTree =
+class ConstDeclarationAssignationBuilder : AstBuilder<ConstDeclarationAssignationValidListOfTokens, AssignationDeclarationAst> {
+    override fun build(validListOfTokens: ConstDeclarationAssignationValidListOfTokens): AssignationDeclarationAst =
         when (val type = findType(validListOfTokens.type)) {
             is NumberType -> ConstAssignationDeclarationAst(
                 AssignationAst(VariableNameNode(validListOfTokens.variable.value), ShuntingYardImpl().orderNumber(validListOfTokens.content)),
