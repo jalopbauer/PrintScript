@@ -1,5 +1,5 @@
 package parser.parserRespose
 
-import parser.parserState.ParserState
+import parser.parserState.IfParserState
 
-data class SendTokenInIf(val parserState: ParserState) : SendToken
+data class SendTokenInIf(val parserState: IfParserState) : SendToken
