@@ -1,3 +1,5 @@
 package parser.parserRespose
 
-interface SendToken : ParserResponse
+import parser.parserState.ParserState
+
+data class SendToken(val parserState: ParserState) : ParserResponse

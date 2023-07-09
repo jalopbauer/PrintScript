@@ -3,8 +3,7 @@ package parser
 import ast.IfStatement
 import parser.parserRespose.AstFound
 import parser.parserRespose.ParserResponse
-import parser.parserRespose.RegularSendToken
-import parser.parserRespose.SendTokenInIf
+import parser.parserRespose.SendToken
 import parser.parserState.IfParserState
 import parser.parserState.RegularParserState
 
@@ -15,10 +14,10 @@ class PrintScriptIfParser : Parser<ParserResponse, RegularParserState> {
                 PrintScriptAstParser().parse(tokens)
                     ?.let { ast ->
                         when (ast) {
-                            is IfStatement -> SendTokenInIf(IfParserState(ast))
+                            is IfStatement -> SendToken(IfParserState(ast))
                             else -> AstFound(RegularParserState(), ast)
                         }
                     }
-                    ?: RegularSendToken(tokensInCodeBlock)
+                    ?: SendToken(tokensInCodeBlock)
             }
 }
