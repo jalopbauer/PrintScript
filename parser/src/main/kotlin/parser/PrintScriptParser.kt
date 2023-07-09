@@ -4,6 +4,7 @@ import parser.parserRespose.AstFound
 import parser.parserRespose.ParserResponse
 import parser.parserRespose.SendToken
 import parser.parserState.ParserState
+import parser.parserState.RegularParserState
 
 class PrintScriptParser : Parser<ParserResponse, ParserState> {
     override fun parse(tokensInCodeBlock: ParserState): ParserResponse =
@@ -11,7 +12,7 @@ class PrintScriptParser : Parser<ParserResponse, ParserState> {
             .let { tokens ->
                 PrintScriptAstParser().parse(tokens)
                     ?.let { ast ->
-                        AstFound(ParserState(), ast)
+                        AstFound(RegularParserState(), ast)
                     }
                     ?: SendToken(tokensInCodeBlock)
             }

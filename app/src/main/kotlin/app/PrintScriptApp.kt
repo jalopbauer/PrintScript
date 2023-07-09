@@ -10,7 +10,7 @@ import app.sca.PrintScriptStaticCodeAnalyserStates
 import formatter.PrintScriptFormatterFactory
 import interpreter.state.PrintScriptInterpreterStateI
 import lexer.lexerState.NoPreviousTokenDefinedLexerState
-import parser.parserState.ParserState
+import parser.parserState.RegularParserState
 import staticcodeanalyser.PrintScriptStaticCodeAnalyserFactory
 import java.io.InputStream
 
@@ -24,7 +24,7 @@ class MyPrintScriptApp(private val printScriptInterpretStatesPrinter: Printer<Pr
     override fun interpret(inputStream: InputStream) {
         var state = PrintScriptInterpretStates(
             NoPreviousTokenDefinedLexerState(),
-            ParserState(),
+            RegularParserState(),
             PrintScriptInterpreterStateI()
         )
         val printScriptInterpetI = PrintScriptInterpetI()
