@@ -17,4 +17,4 @@ object NumberType : Type
 object ErrorType : Type
 
 object BooleanType : Type
-class ReadInputAst : AbstractSyntaxTree, PrintlnAstParameter
+class ReadInputAst(val message: StringLiteral) : AbstractSyntaxTree, PrintlnAstParameter, AssignationParameterNode

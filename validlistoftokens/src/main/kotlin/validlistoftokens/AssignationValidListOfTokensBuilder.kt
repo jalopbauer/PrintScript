@@ -14,7 +14,8 @@ class AssignationValidListOfTokensBuilder : ValidListOfTokensBuilder<Assignation
                 tokens.component3() is VariableNameToken ||
                     tokens.component3() is BooleanLiteralToken ||
                     StringLiteralOrConcatValidListOfTokensBuilder().validateChain(tokens.subList(2, (tokens.size - 1))) ||
-                    OperationValidListOfTokensBuilder().validateChain(tokens.subList(2, (tokens.size - 1)))
+                    OperationValidListOfTokensBuilder().validateChain(tokens.subList(2, (tokens.size - 1))) ||
+                    ReadInputValidListOfTokensBuilder().validate(tokens.subList(2, (tokens.size - 1))) != null
                 )
         ) {
             return AssignationValidListOfTokens(

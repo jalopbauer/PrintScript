@@ -2,6 +2,8 @@ package parser.astParsers.senteceParsers.assignation
 
 import ast.AssignationAst
 import ast.FalseLiteral
+import ast.ReadInputAst
+import ast.StringLiteral
 import ast.TrueLiteral
 import ast.VariableNameNode
 import parser.astParsers.AstBuilder
@@ -11,6 +13,7 @@ import token.FalseLiteralToken
 import token.TrueLiteralToken
 import validlistoftokens.AssignationValidListOfTokens
 import validlistoftokens.OperationValidListOfTokensBuilder
+import validlistoftokens.ReadInputValidListOfTokensBuilder
 
 class AssignationBuilder : AstBuilder<AssignationValidListOfTokens, AssignationAst> {
     override fun build(validListOfTokens: AssignationValidListOfTokens): AssignationAst {
@@ -29,12 +32,19 @@ class AssignationBuilder : AstBuilder<AssignationValidListOfTokens, AssignationA
                 )
             )
         } else {
-            AssignationAst(
-                VariableNameNode(validListOfTokens.variable.value),
-                ShuntingYardImpl().orderString(
-                    content
+            ReadInputValidListOfTokensBuilder().validate(content)
+                ?.let {
+                    AssignationAst(
+                        VariableNameNode(validListOfTokens.variable.value),
+                        ReadInputAst(StringLiteral(it.stringLiteralToken.value))
+                    )
+                }
+                ?: AssignationAst(
+                    VariableNameNode(validListOfTokens.variable.value),
+                    ShuntingYardImpl().orderString(
+                        content
+                    )
                 )
-            )
         }
     }
 }

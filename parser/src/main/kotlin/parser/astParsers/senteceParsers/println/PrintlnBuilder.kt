@@ -7,6 +7,7 @@ import ast.NumberLiteral
 import ast.PrintlnAst
 import ast.PrintlnAstParameter
 import ast.ReadInputAst
+import ast.StringLiteral
 import ast.TrueLiteral
 import ast.VariableNameNode
 import parser.astParsers.AstBuilder
@@ -37,7 +38,7 @@ class PrintlnBuilder : AstBuilder<PrintlnValidListOfTokens, PrintlnAst> {
                         is TrueLiteralToken -> TrueLiteral
                     }
                 )
-            is ReadInputValidListOfTokens -> PrintlnAst(ReadInputAst())
+            is ReadInputValidListOfTokens -> PrintlnAst(ReadInputAst(StringLiteral(parameter.stringLiteralToken.value)))
         }
     }
 
