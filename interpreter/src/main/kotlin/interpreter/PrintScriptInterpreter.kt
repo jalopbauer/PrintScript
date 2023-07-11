@@ -10,7 +10,7 @@ class PrintScriptInterpreter : Interpreter<AbstractSyntaxTree, PrintScriptInterp
         interpreterState: PrintScriptInterpreterState
     ): InterpreterResponse =
         when (abstractSyntaxTree) {
-            is ConditionBlock -> TODO()
+            is ConditionBlock -> ConditionBlockInterpreter().interpret(abstractSyntaxTree, interpreterState)
             else -> SentencesInterpreter().interpret(abstractSyntaxTree, interpreterState)
         }
 }

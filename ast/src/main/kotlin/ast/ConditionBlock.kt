@@ -1,3 +1,5 @@
 package ast
 
-interface ConditionBlock : AbstractSyntaxTree
+sealed interface ConditionBlock : AbstractSyntaxTree {
+    fun getSentences(): List<AbstractSyntaxTree>?
+}
