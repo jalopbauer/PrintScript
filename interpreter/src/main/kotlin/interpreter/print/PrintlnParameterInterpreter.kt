@@ -12,8 +12,8 @@ import interpreter.ConcatenationSolver
 import interpreter.Interpreter
 import interpreter.InterpreterError
 import interpreter.InterpreterResponse
-import interpreter.SendLiteral
 import interpreter.StringLiteralResponse
+import interpreter.readInput.ReadInputInterpreter
 import interpreter.state.PrintScriptInterpreterState
 
 class PrintlnParameterInterpreter : Interpreter<PrintlnAstParameter, PrintScriptInterpreterState> {
@@ -31,12 +31,7 @@ class PrintlnParameterInterpreter : Interpreter<PrintlnAstParameter, PrintScript
                     is ConcatErrorResponse -> solve.concatError
                     is StringLiteralResponse -> interpreterState.println(solve.literal.value)
                 }
-            is ReadInputAst -> interpreterState.readInput()
-                .let { (literal, state) ->
-                    literal
-                        ?.let { this.interpret(literal, state) }
-                        ?: SendLiteral(state)
-                }
+            is ReadInputAst -> ReadInputInterpreter(this).interpret(abstractSyntaxTree, interpreterState)
             else -> InterpreterError()
         }
 }
