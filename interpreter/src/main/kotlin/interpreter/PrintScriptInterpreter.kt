@@ -1,14 +1,7 @@
 package interpreter
 
 import ast.AbstractSyntaxTree
-import ast.AssignationAst
-import ast.AssignationDeclarationAst
-import ast.DeclarationAst
-import ast.PrintlnAst
-import interpreter.assignation.AssignationParameterInterpreter
-import interpreter.assignationDeclaration.AssignationDeclarationInterpreter
-import interpreter.declaration.DeclarationInterpreter
-import interpreter.print.PrintlnParameterInterpreter
+import ast.ConditionBlock
 import interpreter.state.PrintScriptInterpreterState
 
 class PrintScriptInterpreter : Interpreter<AbstractSyntaxTree, PrintScriptInterpreterState> {
@@ -17,10 +10,7 @@ class PrintScriptInterpreter : Interpreter<AbstractSyntaxTree, PrintScriptInterp
         interpreterState: PrintScriptInterpreterState
     ): InterpreterResponse =
         when (abstractSyntaxTree) {
-            is PrintlnAst -> PrintlnParameterInterpreter().interpret(abstractSyntaxTree.value(), interpreterState)
-            is DeclarationAst -> DeclarationInterpreter().interpret(abstractSyntaxTree, interpreterState)
-            is AssignationAst -> AssignationParameterInterpreter().interpret(abstractSyntaxTree, interpreterState)
-            is AssignationDeclarationAst -> AssignationDeclarationInterpreter().interpret(abstractSyntaxTree, interpreterState)
-            else -> InterpreterError()
+            is ConditionBlock -> TODO()
+            else -> SentencesInterpreter().interpret(abstractSyntaxTree, interpreterState)
         }
 }
