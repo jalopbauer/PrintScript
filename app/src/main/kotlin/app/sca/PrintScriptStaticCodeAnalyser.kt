@@ -5,5 +5,7 @@ interface PrintScriptStaticCodeAnalyser {
         nextChar: Char,
         states: PrintScriptStaticCodeAnalyserStates
 
-    ): PrintScriptStaticCodeAnalyserStates?
+    ): PrintScriptStaticCodeAnalyserStates
+
+    fun handleLastState(states: PrintScriptStaticCodeAnalyserStates): PrintScriptStaticCodeAnalyserStates?
 }

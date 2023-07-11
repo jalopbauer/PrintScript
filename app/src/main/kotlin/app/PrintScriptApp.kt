@@ -5,12 +5,11 @@ import app.interpreter.PrintScriptInterpret
 import app.interpreter.PrintScriptInterpretStates
 import app.printer.PrintScriptInterpretStatesPrinter
 import app.printer.Printer
-import app.sca.PrintScriptStaticCodeAnalyserI
+import app.sca.PrintScriptStaticCodeAnalyser
 import app.sca.PrintScriptStaticCodeAnalyserStates
 import interpreter.state.PrintScriptInterpreterStateI
 import lexer.lexerState.NoPreviousTokenDefinedLexerState
 import parser.parserState.RegularParserState
-import staticcodeanalyser.PrintScriptStaticCodeAnalyserFactory
 import java.io.InputStream
 
 interface PrintScriptApp {
@@ -22,7 +21,8 @@ interface PrintScriptApp {
 class MyPrintScriptApp(
     private val printScriptInterpretStatesPrinter: Printer<PrintScriptInterpretStates> = PrintScriptInterpretStatesPrinter(),
     private val printScriptInterpret: PrintScriptInterpret,
-    private val printScriptFormatter: PrintScriptFormatter
+    private val printScriptFormatter: PrintScriptFormatter,
+    private val printScriptStaticCodeAnalyser: PrintScriptStaticCodeAnalyser
 ) : PrintScriptApp {
     override fun interpret(inputStream: InputStream) {
         var state = PrintScriptInterpretStates(
@@ -60,9 +60,6 @@ class MyPrintScriptApp(
     }
 
     override fun lint(inputStream: InputStream) {
-        val printScriptFormatter = PrintScriptStaticCodeAnalyserFactory().build("allow-literals-or-variable-only")
-        val printScriptFormatterI = PrintScriptStaticCodeAnalyserI(printScriptFormatter)
-
         var state = PrintScriptStaticCodeAnalyserStates(
             NoPreviousTokenDefinedLexerState(),
             listOf(),
@@ -70,9 +67,9 @@ class MyPrintScriptApp(
         )
         while (true) {
             getNextChar(inputStream)
-                ?.let { nextChar -> state = printScriptFormatterI.format(nextChar, state) }
+                ?.let { nextChar -> state = printScriptStaticCodeAnalyser.format(nextChar, state) }
                 ?: break
         }
-        printScriptFormatterI.handleLastState(state)?.let { println(it.string) } ?: println("failed")
+        printScriptStaticCodeAnalyser.handleLastState(state)?.let { println(it.string) } ?: println("failed")
     }
 }

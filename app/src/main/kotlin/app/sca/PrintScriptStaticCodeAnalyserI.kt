@@ -35,7 +35,7 @@ class PrintScriptStaticCodeAnalyserI(private val linter: PsStaticCodeAnalyser) :
                 }.copy(tokens = response.tokens())
             }
 
-    fun handleLastState(states: PrintScriptStaticCodeAnalyserStates): PrintScriptStaticCodeAnalyserStates? =
+    override fun handleLastState(states: PrintScriptStaticCodeAnalyserStates): PrintScriptStaticCodeAnalyserStates? =
         when (val lexerState = states.lexerState) {
             is PreviousTokenDefinedLexerState -> formatStates(lexerState.previousToken, states)
             else -> null
