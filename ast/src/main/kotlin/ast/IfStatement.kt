@@ -1,3 +1,3 @@
 package ast
 
-data class IfStatement(val map1: BooleanLiteral, val map: List<AbstractSyntaxTree>) : AbstractSyntaxTree
+data class IfStatement(val map1: BooleanLiteral, val map: List<AbstractSyntaxTree>) : ConditionBlock
