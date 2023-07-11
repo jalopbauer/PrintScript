@@ -4,7 +4,6 @@ import ast.AssignationDeclarationAst
 import ast.ConstAssignationDeclarationAst
 import ast.LetAssignationDeclarationAst
 import interpreter.Interpreter
-import interpreter.InterpreterError
 import interpreter.InterpreterResponse
 import interpreter.assignation.AssignationParameterInterpreter
 import interpreter.declaration.DeclarationConstInterpreter
@@ -20,8 +19,8 @@ class AssignationDeclarationInterpreter : Interpreter<AssignationDeclarationAst,
             is ConstAssignationDeclarationAst -> DeclarationConstInterpreter().interpret(abstractSyntaxTree.rightValue(), interpreterState)
             is LetAssignationDeclarationAst -> DeclarationInterpreter().interpret(abstractSyntaxTree.rightValue(), interpreterState)
         }
-        return if (stateOrError !is InterpreterError) {
-            AssignationParameterInterpreter().interpret(abstractSyntaxTree.leftValue(), stateOrError as PrintScriptInterpreterState)
+        return if (stateOrError is PrintScriptInterpreterState) {
+            AssignationParameterInterpreter().interpret(abstractSyntaxTree.leftValue(), stateOrError)
         } else {
             stateOrError
         }
