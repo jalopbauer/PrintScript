@@ -2,7 +2,6 @@ package validlistoftokens
 
 import token.BooleanLiteralToken
 import token.NumberLiteralToken
-import token.ReadInputToken
 import token.StringLiteralToken
 import token.Token
 import token.VariableNameToken
@@ -12,7 +11,6 @@ class PrintlnParameterValidListOfTokensBuilder : ValidListOfTokensBuilder<Printl
         when (tokens.size) {
             1 -> {
                 when (val singleToken = tokens.component1()) {
-                    is ReadInputToken -> ReadInputParameter(singleToken)
                     is VariableNameToken -> VariableParameter(singleToken)
                     is StringLiteralToken -> StringLiteralOrStringConcatValidListOfTokens(listOf(singleToken))
                     is NumberLiteralToken -> NumberLiteralParameter(singleToken)
@@ -20,6 +18,7 @@ class PrintlnParameterValidListOfTokensBuilder : ValidListOfTokensBuilder<Printl
                     else -> null
                 }
             }
-            else -> StringLiteralOrConcatValidListOfTokensBuilder().validate(tokens)
+            else -> ReadInputValidListOfTokensBuilder().validate(tokens)
+                ?: StringLiteralOrConcatValidListOfTokensBuilder().validate(tokens)
         }
 }

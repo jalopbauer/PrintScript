@@ -5,7 +5,7 @@ import token.VariableNameToken
 import validlistoftokens.BooleanLiteralParameter
 import validlistoftokens.NumberLiteralParameter
 import validlistoftokens.PrintlnValidListOfTokens
-import validlistoftokens.ReadInputParameter
+import validlistoftokens.ReadInputValidListOfTokens
 import validlistoftokens.StringLiteralOrStringConcatValidListOfTokens
 import validlistoftokens.ValidListOfTokens
 import validlistoftokens.VariableParameter
@@ -28,7 +28,7 @@ class PrintlnParameterRule :
                 }
 
             is BooleanLiteralParameter -> TODO()
-            is ReadInputParameter -> TODO()
+            is ReadInputValidListOfTokens -> TODO()
         }
 }
 interface VariableRule : Rule<Token>

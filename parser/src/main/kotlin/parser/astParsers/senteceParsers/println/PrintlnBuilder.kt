@@ -20,7 +20,7 @@ import token.TrueLiteralToken
 import validlistoftokens.BooleanLiteralParameter
 import validlistoftokens.NumberLiteralParameter
 import validlistoftokens.PrintlnValidListOfTokens
-import validlistoftokens.ReadInputParameter
+import validlistoftokens.ReadInputValidListOfTokens
 import validlistoftokens.StringLiteralOrStringConcatValidListOfTokens
 import validlistoftokens.VariableParameter
 
@@ -37,7 +37,7 @@ class PrintlnBuilder : AstBuilder<PrintlnValidListOfTokens, PrintlnAst> {
                         is TrueLiteralToken -> TrueLiteral
                     }
                 )
-            is ReadInputParameter -> PrintlnAst(ReadInputAst())
+            is ReadInputValidListOfTokens -> PrintlnAst(ReadInputAst())
         }
     }
 
