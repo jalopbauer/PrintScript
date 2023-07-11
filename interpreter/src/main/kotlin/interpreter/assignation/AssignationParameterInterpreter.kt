@@ -14,8 +14,8 @@ import interpreter.InterpreterError
 import interpreter.InterpreterErrorResponse
 import interpreter.InterpreterResponse
 import interpreter.NumberLiteralResponse
-import interpreter.SendLiteral
 import interpreter.StringLiteralResponse
+import interpreter.readInput.ReadInputInterpreter
 import interpreter.state.PrintScriptInterpreterState
 
 class AssignationParameterInterpreter : Interpreter<AssignationAst, PrintScriptInterpreterState> {
@@ -33,13 +33,8 @@ class AssignationParameterInterpreter : Interpreter<AssignationAst, PrintScriptI
                     is ConcatErrorResponse -> solve.concatError
                     is StringLiteralResponse -> this.interpret(AssignationAst(abstractSyntaxTree.leftValue(), solve.literal), interpreterState)
                 }
-            is ReadInputAst ->
-                interpreterState.readInput()
-                    .let { (literal, state) ->
-                        literal
-                            ?.let { this.interpret(abstractSyntaxTree.copy(assignationParameter = literal), state) }
-                            ?: SendLiteral(state)
-                    }
+            is ReadInputAst -> ReadInputInterpreter(this) { literal -> abstractSyntaxTree.copy(assignationParameter = literal) }
+                .interpret(assignationParameterNode, interpreterState)
             else -> InterpreterError()
         }
 }

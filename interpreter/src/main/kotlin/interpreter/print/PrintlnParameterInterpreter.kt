@@ -31,7 +31,7 @@ class PrintlnParameterInterpreter : Interpreter<PrintlnAstParameter, PrintScript
                     is ConcatErrorResponse -> solve.concatError
                     is StringLiteralResponse -> interpreterState.println(solve.literal.value)
                 }
-            is ReadInputAst -> ReadInputInterpreter(this).interpret(abstractSyntaxTree, interpreterState)
+            is ReadInputAst -> ReadInputInterpreter(this) { literal -> literal }.interpret(abstractSyntaxTree, interpreterState)
             else -> InterpreterError()
         }
 }
