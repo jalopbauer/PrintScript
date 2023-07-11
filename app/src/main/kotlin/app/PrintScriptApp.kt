@@ -12,19 +12,13 @@ import lexer.lexerState.NoPreviousTokenDefinedLexerState
 import parser.parserState.RegularParserState
 import java.io.InputStream
 
-interface PrintScriptApp {
-    fun interpret(inputStream: InputStream)
-    fun format(inputStream: InputStream)
-    fun lint(inputStream: InputStream)
-}
-
-class MyPrintScriptApp(
+class PrintScriptApp(
     private val printScriptInterpretStatesPrinter: Printer<PrintScriptInterpretStates> = PrintScriptInterpretStatesPrinter(),
     private val printScriptInterpret: PrintScriptInterpret,
     private val printScriptFormatter: PrintScriptFormatter,
     private val printScriptStaticCodeAnalyser: PrintScriptStaticCodeAnalyser
-) : PrintScriptApp {
-    override fun interpret(inputStream: InputStream) {
+) {
+    fun interpret(inputStream: InputStream) {
         var state = PrintScriptInterpretStates(
             NoPreviousTokenDefinedLexerState(),
             RegularParserState(),
@@ -42,10 +36,7 @@ class MyPrintScriptApp(
             ?.let { printScriptInterpretStatesPrinter.print(it) }
     }
 
-    private fun getNextChar(inputStream: InputStream): Char? =
-        inputStream.read().takeIf { it != -1 }?.toChar()
-
-    override fun format(inputStream: InputStream) {
+    fun format(inputStream: InputStream) {
         var state = PrintScriptFormatterStates(
             NoPreviousTokenDefinedLexerState(),
             listOf(),
@@ -59,7 +50,7 @@ class MyPrintScriptApp(
         printScriptFormatter.handleLastState(state)?.let { println(it.string) }
     }
 
-    override fun lint(inputStream: InputStream) {
+    fun lint(inputStream: InputStream) {
         var state = PrintScriptStaticCodeAnalyserStates(
             NoPreviousTokenDefinedLexerState(),
             listOf(),
@@ -72,4 +63,7 @@ class MyPrintScriptApp(
         }
         printScriptStaticCodeAnalyser.handleLastState(state)?.let { println(it.string) } ?: println("failed")
     }
+
+    private fun getNextChar(inputStream: InputStream): Char? =
+        inputStream.read().takeIf { it != -1 }?.toChar()
 }
