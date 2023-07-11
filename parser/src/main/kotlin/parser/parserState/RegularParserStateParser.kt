@@ -1,13 +1,13 @@
-package parser
+package parser.parserState
 
 import ast.IfStatement
+import parser.Parser
+import parser.PrintScriptAstParser
 import parser.parserRespose.AstFound
 import parser.parserRespose.ParserResponse
 import parser.parserRespose.SendToken
-import parser.parserState.IfParserState
-import parser.parserState.RegularParserState
 
-class PrintScriptIfParser : Parser<ParserResponse, RegularParserState> {
+class RegularParserStateParser : Parser<ParserResponse, RegularParserState> {
     override fun parse(tokensInCodeBlock: RegularParserState): ParserResponse =
         tokensInCodeBlock.tokens()
             .let { tokens ->
