@@ -16,10 +16,10 @@ import ast.StringConcatenation
 import ast.StringLiteral
 import ast.VariableInstance
 import ast.VariableNameNode
+import interpreter.print.PrintlnParameterInterpreter
 import interpreter.state.InterpreterState
 import interpreter.state.PrintScriptInterpreterState
 import interpreter.state.VariableInterpreterState
-import interpreter.state.print.PrintlnParameterInterpreter
 
 interface Interpreter<T : AbstractSyntaxTree, U : InterpreterState> {
     fun interpret(abstractSyntaxTree: T, interpreterState: U): InterpreterResponse

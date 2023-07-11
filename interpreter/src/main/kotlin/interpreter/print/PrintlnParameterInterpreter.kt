@@ -1,4 +1,4 @@
-package interpreter.state.print
+package interpreter.print
 
 import ast.BooleanLiteral
 import ast.NumberLiteral
