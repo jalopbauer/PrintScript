@@ -10,18 +10,16 @@ import ast.DoubleNumberLiteral
 import ast.IntNumberLiteral
 import ast.LetAssignationDeclarationAst
 import ast.Literal
-import ast.NumberLiteral
 import ast.Operation
 import ast.PrintlnAst
-import ast.PrintlnAstParameter
 import ast.StringConcatenation
 import ast.StringLiteral
 import ast.VariableInstance
 import ast.VariableNameNode
 import interpreter.state.InterpreterState
 import interpreter.state.PrintScriptInterpreterState
-import interpreter.state.PrintlnInterpreterState
 import interpreter.state.VariableInterpreterState
+import interpreter.state.print.PrintlnParameterInterpreter
 
 interface Interpreter<T : AbstractSyntaxTree, U : InterpreterState> {
     fun interpret(abstractSyntaxTree: T, interpreterState: U): InterpreterResponse
@@ -37,24 +35,6 @@ class PrintScriptInterpreter : Interpreter<AbstractSyntaxTree, PrintScriptInterp
             is DeclarationAst -> DeclarationInterpreter().interpret(abstractSyntaxTree, interpreterState)
             is AssignationAst -> AssignationParameterInterpreter().interpret(abstractSyntaxTree, interpreterState)
             is AssignationDeclarationAst -> AssignationDeclarationInterpreter().interpret(abstractSyntaxTree, interpreterState)
-            else -> InterpreterError()
-        }
-}
-class PrintlnParameterInterpreter : Interpreter<PrintlnAstParameter, PrintlnInterpreterState> {
-    override fun interpret(abstractSyntaxTree: PrintlnAstParameter, interpreterState: PrintlnInterpreterState): InterpreterResponse =
-        when (abstractSyntaxTree) {
-            is VariableNameNode ->
-                interpreterState.get(abstractSyntaxTree)
-                    ?.let { this.interpret(it as PrintlnAstParameter, interpreterState) }
-                    ?: InterpreterError()
-            is NumberLiteral -> interpreterState.println(abstractSyntaxTree.value().toString())
-            is BooleanLiteral -> interpreterState.println(abstractSyntaxTree.toString())
-            is StringLiteral -> interpreterState.println(abstractSyntaxTree.value)
-            is StringConcatenation ->
-                when (val solve = ConcatenationSolver().solve(abstractSyntaxTree, interpreterState)) {
-                    is ConcatErrorResponse -> solve.concatError
-                    is StringLiteralResponse -> interpreterState.println(solve.literal.value)
-                }
             else -> InterpreterError()
         }
 }
