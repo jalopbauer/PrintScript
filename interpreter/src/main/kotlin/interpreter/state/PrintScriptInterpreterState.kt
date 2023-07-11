@@ -5,11 +5,15 @@ import ast.VariableInstance
 import ast.VariableNameNode
 import interpreter.InterpreterResponse
 
-interface PrintScriptInterpreterState : InterpreterState, PrintlnInterpreterState, VariableInterpreterState {
+interface PrintScriptInterpreterState : InterpreterState, PrintlnInterpreterState, VariableInterpreterState, ReadInputInterpreterState {
     override fun print(): Pair<String?, PrintScriptInterpreterState>
+    override fun readInput(): Pair<Literal?, PrintScriptInterpreterState>
 }
 
-data class PrintScriptInterpreterStateI(private val printlnInterpreterState: PrintlnInterpreterState = PrintlnInterpreterStateI()) :
+data class PrintScriptInterpreterStateI(
+    private val printlnInterpreterState: PrintlnInterpreterState = PrintlnInterpreterStateI(),
+    private val inputtedValue: Literal? = null
+) :
     PrintScriptInterpreterState {
     override fun println(value: String): InterpreterResponse =
         printlnInterpreterState.println(value).let {
@@ -59,4 +63,7 @@ data class PrintScriptInterpreterStateI(private val printlnInterpreterState: Pri
 
     override fun isVariableDefined(key: VariableNameNode): Boolean =
         printlnInterpreterState.isVariableDefined(key)
+
+    override fun readInput(): Pair<Literal?, PrintScriptInterpreterState> =
+        Pair(inputtedValue, this.copy(inputtedValue = null))
 }
