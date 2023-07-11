@@ -47,7 +47,7 @@ class PrintScriptInterpetI : PrintScriptInterpret {
             else -> null
         }
     }
-    fun handleLastState(states: PrintScriptInterpretStates): PrintScriptInterpretStates? =
+    override fun handleLastState(states: PrintScriptInterpretStates): PrintScriptInterpretStates? =
         when (val lexerState = states.lexerState) {
             is PreviousTokenDefinedLexerState -> parseStates(lexerState.previousToken, states)
             else -> null

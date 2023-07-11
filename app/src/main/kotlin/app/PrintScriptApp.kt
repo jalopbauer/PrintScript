@@ -1,7 +1,7 @@
 package app
 import app.formatter.PrintScriptFormatter
 import app.formatter.PrintScriptFormatterStates
-import app.interpreter.PrintScriptInterpetI
+import app.interpreter.PrintScriptInterpret
 import app.interpreter.PrintScriptInterpretStates
 import app.printer.PrintScriptInterpretStatesPrinter
 import app.printer.Printer
@@ -21,6 +21,7 @@ interface PrintScriptApp {
 
 class MyPrintScriptApp(
     private val printScriptInterpretStatesPrinter: Printer<PrintScriptInterpretStates> = PrintScriptInterpretStatesPrinter(),
+    private val printScriptInterpret: PrintScriptInterpret,
     private val printScriptFormatter: PrintScriptFormatter
 ) : PrintScriptApp {
     override fun interpret(inputStream: InputStream) {
@@ -29,16 +30,15 @@ class MyPrintScriptApp(
             RegularParserState(),
             PrintScriptInterpreterStateI()
         )
-        val printScriptInterpetI = PrintScriptInterpetI()
         while (true) {
             getNextChar(inputStream)
                 ?.let { nextChar ->
-                    printScriptInterpetI.interpret(nextChar, state)
+                    printScriptInterpret.interpret(nextChar, state)
                         ?.let { printScriptInterpretStatesPrinter.print(it) }
                         ?.let { state = it }
                 } ?: break
         }
-        printScriptInterpetI.handleLastState(state)
+        printScriptInterpret.handleLastState(state)
             ?.let { printScriptInterpretStatesPrinter.print(it) }
     }
 
