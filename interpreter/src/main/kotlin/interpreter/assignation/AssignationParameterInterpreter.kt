@@ -3,6 +3,7 @@ package interpreter.assignation
 import ast.AssignationAst
 import ast.Literal
 import ast.Operation
+import ast.ReadInputAst
 import ast.StringConcatenation
 import ast.VariableNameNode
 import interpreter.ConcatErrorResponse
@@ -13,11 +14,12 @@ import interpreter.InterpreterError
 import interpreter.InterpreterErrorResponse
 import interpreter.InterpreterResponse
 import interpreter.NumberLiteralResponse
+import interpreter.SendLiteral
 import interpreter.StringLiteralResponse
-import interpreter.state.VariableInterpreterState
+import interpreter.state.PrintScriptInterpreterState
 
-class AssignationParameterInterpreter : Interpreter<AssignationAst, VariableInterpreterState> {
-    override fun interpret(abstractSyntaxTree: AssignationAst, interpreterState: VariableInterpreterState): InterpreterResponse =
+class AssignationParameterInterpreter : Interpreter<AssignationAst, PrintScriptInterpreterState> {
+    override fun interpret(abstractSyntaxTree: AssignationAst, interpreterState: PrintScriptInterpreterState): InterpreterResponse =
         when (val assignationParameterNode = abstractSyntaxTree.rightValue()) {
             is Literal -> interpreterState.setLiteralToVariable(abstractSyntaxTree.leftValue(), assignationParameterNode)
             is VariableNameNode -> interpreterState.setVariableValueToVariable(abstractSyntaxTree.leftValue(), assignationParameterNode)
@@ -31,6 +33,13 @@ class AssignationParameterInterpreter : Interpreter<AssignationAst, VariableInte
                     is ConcatErrorResponse -> solve.concatError
                     is StringLiteralResponse -> this.interpret(AssignationAst(abstractSyntaxTree.leftValue(), solve.literal), interpreterState)
                 }
+            is ReadInputAst ->
+                interpreterState.readInput()
+                    .let { (literal, state) ->
+                        literal
+                            ?.let { this.interpret(abstractSyntaxTree.copy(assignationParameter = literal), state) }
+                            ?: SendLiteral(state)
+                    }
             else -> InterpreterError()
         }
 }
