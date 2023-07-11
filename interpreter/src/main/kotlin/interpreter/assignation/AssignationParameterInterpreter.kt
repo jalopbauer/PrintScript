@@ -1,13 +1,9 @@
 package interpreter.assignation
 
 import ast.AssignationAst
-import ast.BooleanLiteral
-import ast.DoubleNumberLiteral
-import ast.IntNumberLiteral
 import ast.Literal
 import ast.Operation
 import ast.StringConcatenation
-import ast.StringLiteral
 import ast.VariableNameNode
 import interpreter.ConcatErrorResponse
 import interpreter.ConcatenationSolver
@@ -23,10 +19,7 @@ import interpreter.state.VariableInterpreterState
 class AssignationParameterInterpreter : Interpreter<AssignationAst, VariableInterpreterState> {
     override fun interpret(abstractSyntaxTree: AssignationAst, interpreterState: VariableInterpreterState): InterpreterResponse =
         when (val assignationParameterNode = abstractSyntaxTree.rightValue()) {
-            is IntNumberLiteral,
-            is StringLiteral,
-            is DoubleNumberLiteral,
-            is BooleanLiteral -> interpreterState.setLiteralToVariable(abstractSyntaxTree.leftValue(), assignationParameterNode as Literal)
+            is Literal -> interpreterState.setLiteralToVariable(abstractSyntaxTree.leftValue(), assignationParameterNode)
             is VariableNameNode -> interpreterState.setVariableValueToVariable(abstractSyntaxTree.leftValue(), assignationParameterNode)
             is Operation ->
                 when (val literalOrError = FullSolver().solve(assignationParameterNode, interpreterState)) {
