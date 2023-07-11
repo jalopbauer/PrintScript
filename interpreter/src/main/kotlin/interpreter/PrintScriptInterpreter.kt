@@ -6,6 +6,7 @@ import ast.AssignationDeclarationAst
 import ast.DeclarationAst
 import ast.PrintlnAst
 import interpreter.assignation.AssignationParameterInterpreter
+import interpreter.declaration.DeclarationInterpreter
 import interpreter.print.PrintlnParameterInterpreter
 import interpreter.state.PrintScriptInterpreterState
 
