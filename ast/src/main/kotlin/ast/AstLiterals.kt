@@ -1,6 +1,6 @@
 package ast
 
-interface Literal : AbstractSyntaxTree, AssignationParameterNode {
+interface Literal : AbstractSyntaxTree, AssignationParameterNode, PrintlnAstParameter {
     fun type(): Type
 }
 data class StringLiteral(val value: String) : PrintlnAstParameter, Literal, ConcatenationParameter {

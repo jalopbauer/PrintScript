@@ -3,6 +3,7 @@ package interpreter.print
 import ast.BooleanLiteral
 import ast.NumberLiteral
 import ast.PrintlnAstParameter
+import ast.ReadInputAst
 import ast.StringConcatenation
 import ast.StringLiteral
 import ast.VariableNameNode
@@ -11,11 +12,12 @@ import interpreter.ConcatenationSolver
 import interpreter.Interpreter
 import interpreter.InterpreterError
 import interpreter.InterpreterResponse
+import interpreter.SendLiteral
 import interpreter.StringLiteralResponse
-import interpreter.state.PrintlnInterpreterState
+import interpreter.state.PrintScriptInterpreterState
 
-class PrintlnParameterInterpreter : Interpreter<PrintlnAstParameter, PrintlnInterpreterState> {
-    override fun interpret(abstractSyntaxTree: PrintlnAstParameter, interpreterState: PrintlnInterpreterState): InterpreterResponse =
+class PrintlnParameterInterpreter : Interpreter<PrintlnAstParameter, PrintScriptInterpreterState> {
+    override fun interpret(abstractSyntaxTree: PrintlnAstParameter, interpreterState: PrintScriptInterpreterState): InterpreterResponse =
         when (abstractSyntaxTree) {
             is VariableNameNode ->
                 interpreterState.get(abstractSyntaxTree)
@@ -28,6 +30,12 @@ class PrintlnParameterInterpreter : Interpreter<PrintlnAstParameter, PrintlnInte
                 when (val solve = ConcatenationSolver().solve(abstractSyntaxTree, interpreterState)) {
                     is ConcatErrorResponse -> solve.concatError
                     is StringLiteralResponse -> interpreterState.println(solve.literal.value)
+                }
+            is ReadInputAst -> interpreterState.readInput()
+                .let { (literal, state) ->
+                    literal
+                        ?.let { this.interpret(literal, state) }
+                        ?: SendLiteral(state)
                 }
             else -> InterpreterError()
         }
