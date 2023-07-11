@@ -5,5 +5,7 @@ interface PrintScriptFormatter {
         nextChar: Char,
         states: PrintScriptFormatterStates
 
-    ): PrintScriptFormatterStates?
+    ): PrintScriptFormatterStates
+
+    fun handleLastState(states: PrintScriptFormatterStates): PrintScriptFormatterStates?
 }

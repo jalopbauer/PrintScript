@@ -37,7 +37,7 @@ class PrintScriptFormatterI(private val formatter: Formatter) : PrintScriptForma
                     ?: states.copy(tokens = tokens)
             }
 
-    fun handleLastState(states: PrintScriptFormatterStates): PrintScriptFormatterStates? =
+    override fun handleLastState(states: PrintScriptFormatterStates): PrintScriptFormatterStates? =
         when (val lexerState = states.lexerState) {
             is PreviousTokenDefinedLexerState -> formatStates(lexerState.previousToken, states)
             else -> null

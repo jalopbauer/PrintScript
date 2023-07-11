@@ -1,5 +1,5 @@
 package app
-import app.formatter.PrintScriptFormatterI
+import app.formatter.PrintScriptFormatter
 import app.formatter.PrintScriptFormatterStates
 import app.interpreter.PrintScriptInterpetI
 import app.interpreter.PrintScriptInterpretStates
@@ -7,7 +7,6 @@ import app.printer.PrintScriptInterpretStatesPrinter
 import app.printer.Printer
 import app.sca.PrintScriptStaticCodeAnalyserI
 import app.sca.PrintScriptStaticCodeAnalyserStates
-import formatter.PrintScriptFormatterFactory
 import interpreter.state.PrintScriptInterpreterStateI
 import lexer.lexerState.NoPreviousTokenDefinedLexerState
 import parser.parserState.RegularParserState
@@ -20,7 +19,10 @@ interface PrintScriptApp {
     fun lint(inputStream: InputStream)
 }
 
-class MyPrintScriptApp(private val printScriptInterpretStatesPrinter: Printer<PrintScriptInterpretStates> = PrintScriptInterpretStatesPrinter()) : PrintScriptApp {
+class MyPrintScriptApp(
+    private val printScriptInterpretStatesPrinter: Printer<PrintScriptInterpretStates> = PrintScriptInterpretStatesPrinter(),
+    private val printScriptFormatter: PrintScriptFormatter
+) : PrintScriptApp {
     override fun interpret(inputStream: InputStream) {
         var state = PrintScriptInterpretStates(
             NoPreviousTokenDefinedLexerState(),
@@ -44,9 +46,6 @@ class MyPrintScriptApp(private val printScriptInterpretStatesPrinter: Printer<Pr
         inputStream.read().takeIf { it != -1 }?.toChar()
 
     override fun format(inputStream: InputStream) {
-        val printScriptFormatter = PrintScriptFormatterFactory().build("declaration-spacing-both assignation-spacing-both")
-        val printScriptFormatterI = PrintScriptFormatterI(printScriptFormatter)
-
         var state = PrintScriptFormatterStates(
             NoPreviousTokenDefinedLexerState(),
             listOf(),
@@ -54,10 +53,10 @@ class MyPrintScriptApp(private val printScriptInterpretStatesPrinter: Printer<Pr
         )
         while (true) {
             getNextChar(inputStream)
-                ?.let { nextChar -> state = printScriptFormatterI.format(nextChar, state) }
+                ?.let { nextChar -> state = printScriptFormatter.format(nextChar, state) }
                 ?: break
         }
-        printScriptFormatterI.handleLastState(state)?.let { println(it.string) }
+        printScriptFormatter.handleLastState(state)?.let { println(it.string) }
     }
 
     override fun lint(inputStream: InputStream) {
