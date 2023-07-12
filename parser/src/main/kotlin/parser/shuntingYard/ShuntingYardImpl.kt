@@ -48,9 +48,10 @@ class ShuntingYardImpl : ShuntingYard {
         for (i in (stack.size - 1) downTo 0) {
             if (stack[i].tokenName() == TokenName.LEFT_PARENTHESIS) {
                 stack.remove(stack[i])
-                break
+                //break
+            }else {
+                queue.add(stack.removeLast())
             }
-            queue.add(stack.removeLast())
         }
     }
     private fun checkOperators(stack: ArrayDeque<Token>, queue: ArrayDeque<Token>, operator: Token) {
@@ -87,6 +88,7 @@ class ShuntingYardImpl : ShuntingYard {
             when (token) {
                 is IntNumberLiteralToken -> return IntNumberLiteral(token.value)
                 is DoubleNumberLiteralToken -> return DoubleNumberLiteral(token.value)
+                is VariableNameToken -> return VariableNameNode(token.value)
             }
         }
         // aca tengo que hacer el algoritmo de creacion de arbol

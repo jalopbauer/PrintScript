@@ -10,6 +10,8 @@ import token.SubToken
 import token.SumToken
 import token.Token
 import token.TokenName
+import token.VariableNameToken
+
 class ShuntingYardTest {
 
     private val simpleOperation: List<Token> = listOf(
@@ -54,6 +56,11 @@ class ShuntingYardTest {
         IntNumberLiteralToken(5, 0, 0)
     )
 
+    private val functionWithValue: List<Token> = listOf(
+        VariableNameToken(value = "pi", lineNumber = 2, position = 8),
+        DivToken(lineNumber = 2, position = 11),
+        IntNumberLiteralToken(value = 2, lineNumber = 2, position = 13))
+
     @Test
     fun sHWWorksWithSimpleEquation() {
         val shuntingYard = ShuntingYardImpl()
@@ -97,18 +104,27 @@ class ShuntingYardTest {
         assertEquals(TokenName.MULT, simpleTree[4].tokenName())
     }
 
-    // @Test
-    // fun sHWWorksWithComplexBracketsEquation() {
-    //    val shuntingYard = parser.shuntingYard.ShuntingYardImpl()
-    //    val simpleTree = shuntingYard.check(complexBracketsOperation)
-    //    assertEquals(TokenName.NUMBER_LITERAL, simpleTree[0].tokenName())
-    //    assertEquals(TokenName.NUMBER_LITERAL, simpleTree[1].tokenName())
-    //    assertEquals(TokenName.NUMBER_LITERAL, simpleTree[2].tokenName())
-    //    assertEquals(TokenName.SUM, simpleTree[3].tokenName())
-    //    assertEquals(TokenName.MULT, simpleTree[4].tokenName())
-    //    assertEquals(TokenName.NUMBER_LITERAL, simpleTree[5].tokenName())
-    //    assertEquals(TokenName.DIV, simpleTree[6].tokenName())
-    //    assertEquals(TokenName.NUMBER_LITERAL, simpleTree[7].tokenName())
-    //    assertEquals(TokenName.SUB, simpleTree[8].tokenName())
-    // }
+     @Test
+     fun sHWWorksWithComplexBracketsEquation() {
+        val shuntingYard = parser.shuntingYard.ShuntingYardImpl()
+        val simpleTree = shuntingYard.check(complexBracketsOperation)
+        assertEquals(TokenName.NUMBER_LITERAL, simpleTree[0].tokenName())
+        assertEquals(TokenName.NUMBER_LITERAL, simpleTree[1].tokenName())
+        assertEquals(TokenName.NUMBER_LITERAL, simpleTree[2].tokenName())
+        assertEquals(TokenName.SUM, simpleTree[3].tokenName())
+        assertEquals(TokenName.MULT, simpleTree[4].tokenName())
+        assertEquals(TokenName.NUMBER_LITERAL, simpleTree[5].tokenName())
+        assertEquals(TokenName.DIV, simpleTree[6].tokenName())
+        assertEquals(TokenName.NUMBER_LITERAL, simpleTree[7].tokenName())
+        assertEquals(TokenName.SUB, simpleTree[8].tokenName())
+     }
+
+    @Test
+    fun sHWWorksWithSimpleEquationVariable() {
+        val shuntingYard = ShuntingYardImpl()
+        val simpleTree = shuntingYard.check(functionWithValue)
+        assertEquals(TokenName.VARIABLE, simpleTree[0].tokenName())
+        assertEquals(TokenName.NUMBER_LITERAL, simpleTree[1].tokenName())
+        assertEquals(TokenName.DIV, simpleTree[2].tokenName())
+    }
 }
