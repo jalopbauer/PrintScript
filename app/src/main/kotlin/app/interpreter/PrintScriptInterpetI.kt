@@ -8,12 +8,14 @@ import lexer.LexerInput
 import lexer.NewTokenListLexer
 import lexer.TokenFoundLexerStateResponse
 import lexer.lexerState.PreviousTokenDefinedLexerState
+import lexer.tokenLexer.FirstVersionPrintScriptLexer
 import parser.PrintScriptParser
 import parser.parserRespose.AstFound
 import parser.parserRespose.SendToken
 import token.Token
 
 class PrintScriptInterpetI(private val tokenListLexer: NewTokenListLexer) : PrintScriptInterpret {
+    constructor(version: String) : this(NewTokenListLexer(FirstVersionPrintScriptLexer()))
     override fun interpret(
         nextChar: Char,
         states: PrintScriptInterpretStates
