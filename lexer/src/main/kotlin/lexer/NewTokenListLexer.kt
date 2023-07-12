@@ -12,7 +12,6 @@ data class NewTokenListLexer(val firstVersionPrintScriptLexer: FirstVersionPrint
                 is IntermediateLexerState -> IntermediateLexerStateResponse(it)
                 is TokenFoundLexerState -> {
                     val tokenize = TokenFoundLexerStateLexer(firstVersionPrintScriptLexer).tokenize(LexerInput(input.nextChar, it))
-
                     TokenFoundLexerStateResponse(it.token, tokenize)
                 }
             }

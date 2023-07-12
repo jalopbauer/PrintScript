@@ -13,18 +13,19 @@ import parser.parserRespose.AstFound
 import parser.parserRespose.SendToken
 import token.Token
 
-class PrintScriptInterpetI : PrintScriptInterpret {
+class PrintScriptInterpetI(private val tokenListLexer: NewTokenListLexer) : PrintScriptInterpret {
     override fun interpret(
         nextChar: Char,
         states: PrintScriptInterpretStates
-    ): PrintScriptInterpretStates? =
-        LexerInput(nextChar, states.lexerState)
+    ): PrintScriptInterpretStates? {
+        return LexerInput(nextChar, states.lexerState)
             .let { input ->
-                when (val stateLexerResponse = NewTokenListLexer().tokenize(input)) {
+                when (val stateLexerResponse = tokenListLexer.tokenize(input)) {
                     is IntermediateLexerStateResponse -> states.copy(lexerState = stateLexerResponse.intermediateLexerState)
                     is TokenFoundLexerStateResponse -> parseStates(stateLexerResponse.token, states.copy(lexerState = stateLexerResponse.intermediateLexerState))
                 }
             }
+    }
 
     private fun parseStates(
         nextToken: Token,

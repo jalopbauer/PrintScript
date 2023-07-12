@@ -1,41 +1,22 @@
 package app
 import app.formatter.PrintScriptFormatter
 import app.formatter.PrintScriptFormatterStates
-import app.interpreter.PrintScriptInterpret
-import app.interpreter.PrintScriptInterpretStates
+import app.interpreter.Interpret
 import app.printer.Printer
-import app.printer.interpret.PrintScriptInterpretStatesPrinter
 import app.sca.PrintScriptStaticCodeAnalyser
 import app.sca.PrintScriptStaticCodeAnalyserStates
-import interpreter.state.PrintScriptInterpreterStateI
 import lexer.lexerState.NoPreviousTokenDefinedLexerState
-import parser.parserState.RegularParserState
 import java.io.InputStream
 
 class PrintScriptApp(
-    private val interpretStatesPrinter: Printer<PrintScriptInterpretStates> = PrintScriptInterpretStatesPrinter(),
+    private val interpret: Interpret,
     private val formatterStates: Printer<PrintScriptFormatterStates>,
     private val staticCodeAnalyserStatesPrinter: Printer<PrintScriptStaticCodeAnalyserStates>,
-    private val printScriptInterpret: PrintScriptInterpret,
     private val printScriptFormatter: PrintScriptFormatter,
     private val printScriptStaticCodeAnalyser: PrintScriptStaticCodeAnalyser
 ) {
     fun interpret(inputStream: InputStream) {
-        var state = PrintScriptInterpretStates(
-            NoPreviousTokenDefinedLexerState(),
-            RegularParserState(),
-            PrintScriptInterpreterStateI()
-        )
-        while (true) {
-            getNextChar(inputStream)
-                ?.let { nextChar ->
-                    printScriptInterpret.interpret(nextChar, state)
-                        ?.let { interpretStatesPrinter.print(it) }
-                        ?.let { state = it }
-                } ?: break
-        }
-        printScriptInterpret.handleLastState(state)
-            ?.let { interpretStatesPrinter.print(it) }
+        interpret.interpret(inputStream)
     }
 
     fun format(inputStream: InputStream) {
