@@ -27,7 +27,7 @@ class NumberLiteralParameter(val numberLiteralToken: NumberLiteralToken) :
 class StringLiteralOrStringConcatValidListOfTokens(val stringOrConcat: List<Token>) :
     ValidListOfTokens,
     PrintlnParameterValidListOfTokens
-interface OperationValidListOfTokens : ValidListOfTokens, PrintlnParameterValidListOfTokens
+sealed interface OperationValidListOfTokens : ValidListOfTokens, PrintlnParameterValidListOfTokens
 class OperationValidListOfConcatTokens(val operationConcat: List<Token>) : OperationValidListOfTokens
 
 class BooleanLiteralParameter(val booleanLiteralToken: BooleanLiteralToken) :

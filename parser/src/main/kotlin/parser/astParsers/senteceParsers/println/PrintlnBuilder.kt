@@ -20,7 +20,7 @@ import token.Token
 import token.TrueLiteralToken
 import validlistoftokens.BooleanLiteralParameter
 import validlistoftokens.NumberLiteralParameter
-import validlistoftokens.OperationValidListOfTokens
+import validlistoftokens.OperationValidListOfConcatTokens
 import validlistoftokens.PrintlnValidListOfTokens
 import validlistoftokens.ReadInputValidListOfTokens
 import validlistoftokens.StringLiteralOrStringConcatValidListOfTokens
@@ -40,7 +40,7 @@ class PrintlnBuilder : AstBuilder<PrintlnValidListOfTokens, PrintlnAst> {
                     }
                 )
             is ReadInputValidListOfTokens -> PrintlnAst(ReadInputAst(StringLiteral(parameter.stringLiteralToken.value)))
-            is OperationValidListOfTokens -> TODO()
+            is OperationValidListOfConcatTokens -> PrintlnAst(ShuntingYardImpl().orderNumber(parameter.operationConcat))
         }
     }
 

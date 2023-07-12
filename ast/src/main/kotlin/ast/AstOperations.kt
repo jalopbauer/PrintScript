@@ -8,7 +8,7 @@ data class StringConcatenation(val concatenationParameterValues: List<Concatenat
 interface ConcatenationParameter : AbstractSyntaxTree
 
 // ast.Operation
-sealed interface OperationParameter : AbstractSyntaxTree, AssignationParameterNode
+sealed interface OperationParameter : AbstractSyntaxTree, AssignationParameterNode, PrintlnAstParameter
 sealed interface FinalOperationParameter : OperationParameter
 
 data class Operation(val left: OperationParameter, val operation: OperationType, val right: OperationParameter) :
