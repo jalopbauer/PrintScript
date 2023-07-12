@@ -20,6 +20,7 @@ import validlistoftokens.AssignationValidListOfTokens
 import validlistoftokens.BooleanLiteralParameter
 import validlistoftokens.DeclarationValidListOfTokens
 import validlistoftokens.NumberLiteralParameter
+import validlistoftokens.OperationValidListOfTokens
 import validlistoftokens.PrintlnValidListOfTokens
 import validlistoftokens.ReadInputValidListOfTokens
 import validlistoftokens.StringLiteralOrStringConcatValidListOfTokens
@@ -69,6 +70,7 @@ class EnterBeforePrintln(private val tokenListSpacingRule: TokenListSpacingRule,
                 is VariableParameter -> listOf(printlnValidParameter.variableToken)
                 is BooleanLiteralParameter -> TODO()
                 is ReadInputValidListOfTokens -> TODO()
+                is OperationValidListOfTokens -> TODO()
             }
         ).padStart(amount, '\n') + ");"
 }

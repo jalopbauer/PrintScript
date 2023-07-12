@@ -20,5 +20,6 @@ class PrintlnParameterValidListOfTokensBuilder : ValidListOfTokensBuilder<Printl
             }
             else -> ReadInputValidListOfTokensBuilder().validate(tokens)
                 ?: StringLiteralOrConcatValidListOfTokensBuilder().validate(tokens)
+                ?: OperationValidListOfTokensBuilder().validate(tokens)
         }
 }
