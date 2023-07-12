@@ -48,8 +48,8 @@ class ShuntingYardImpl : ShuntingYard {
         for (i in (stack.size - 1) downTo 0) {
             if (stack[i].tokenName() == TokenName.LEFT_PARENTHESIS) {
                 stack.remove(stack[i])
-                //break
-            }else {
+                // break
+            } else {
                 queue.add(stack.removeLast())
             }
         }

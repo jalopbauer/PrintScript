@@ -59,7 +59,8 @@ class ShuntingYardTest {
     private val functionWithValue: List<Token> = listOf(
         VariableNameToken(value = "pi", lineNumber = 2, position = 8),
         DivToken(lineNumber = 2, position = 11),
-        IntNumberLiteralToken(value = 2, lineNumber = 2, position = 13))
+        IntNumberLiteralToken(value = 2, lineNumber = 2, position = 13)
+    )
 
     @Test
     fun sHWWorksWithSimpleEquation() {
@@ -104,8 +105,8 @@ class ShuntingYardTest {
         assertEquals(TokenName.MULT, simpleTree[4].tokenName())
     }
 
-     @Test
-     fun sHWWorksWithComplexBracketsEquation() {
+    @Test
+    fun sHWWorksWithComplexBracketsEquation() {
         val shuntingYard = parser.shuntingYard.ShuntingYardImpl()
         val simpleTree = shuntingYard.check(complexBracketsOperation)
         assertEquals(TokenName.NUMBER_LITERAL, simpleTree[0].tokenName())
@@ -117,7 +118,7 @@ class ShuntingYardTest {
         assertEquals(TokenName.DIV, simpleTree[6].tokenName())
         assertEquals(TokenName.NUMBER_LITERAL, simpleTree[7].tokenName())
         assertEquals(TokenName.SUB, simpleTree[8].tokenName())
-     }
+    }
 
     @Test
     fun sHWWorksWithSimpleEquationVariable() {
