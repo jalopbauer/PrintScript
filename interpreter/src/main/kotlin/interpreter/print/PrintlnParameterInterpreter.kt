@@ -2,6 +2,7 @@ package interpreter.print
 
 import ast.BooleanLiteral
 import ast.NumberLiteral
+import ast.Operation
 import ast.PrintlnAstParameter
 import ast.ReadInputAst
 import ast.StringConcatenation
@@ -9,13 +10,15 @@ import ast.StringLiteral
 import ast.VariableNameNode
 import interpreter.ConcatErrorResponse
 import interpreter.ConcatenationSolver
+import interpreter.FullSolver
 import interpreter.Interpreter
 import interpreter.InterpreterError
+import interpreter.InterpreterErrorResponse
 import interpreter.InterpreterResponse
+import interpreter.NumberLiteralResponse
 import interpreter.StringLiteralResponse
 import interpreter.readInput.ReadInputInterpreter
 import interpreter.state.PrintScriptInterpreterState
-
 class PrintlnParameterInterpreter : Interpreter<PrintlnAstParameter, PrintScriptInterpreterState> {
     override fun interpret(abstractSyntaxTree: PrintlnAstParameter, interpreterState: PrintScriptInterpreterState): InterpreterResponse =
         when (abstractSyntaxTree) {
@@ -32,6 +35,11 @@ class PrintlnParameterInterpreter : Interpreter<PrintlnAstParameter, PrintScript
                     is StringLiteralResponse -> interpreterState.println(solve.literal.value)
                 }
             is ReadInputAst -> ReadInputInterpreter(this) { literal -> literal }.interpret(abstractSyntaxTree, interpreterState)
+            is Operation ->
+                when (val literalOrError = FullSolver().solve(abstractSyntaxTree, interpreterState)) {
+                    is InterpreterErrorResponse -> literalOrError.interpreterError
+                    is NumberLiteralResponse -> this.interpret(literalOrError.literal, interpreterState)
+                }
             else -> InterpreterError()
         }
 }
