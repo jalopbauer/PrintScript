@@ -26,7 +26,17 @@ class PrintlnParameterInterpreter : Interpreter<PrintlnAstParameter, PrintScript
                 interpreterState.get(abstractSyntaxTree)
                     ?.let { this.interpret(it as PrintlnAstParameter, interpreterState) }
                     ?: InterpreterError()
-            is NumberLiteral -> interpreterState.println(abstractSyntaxTree.value().toString())
+            is NumberLiteral -> {
+                val value = abstractSyntaxTree.value().toString()
+                    .let {
+                        if (it.takeLast(2) == ".0") {
+                            it.dropLast(2)
+                        } else {
+                            it
+                        }
+                    }
+                interpreterState.println(value)
+            }
             is BooleanLiteral -> interpreterState.println(abstractSyntaxTree.toString())
             is StringLiteral -> interpreterState.println(abstractSyntaxTree.value)
             is StringConcatenation ->
