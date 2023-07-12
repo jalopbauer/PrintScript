@@ -13,7 +13,9 @@ import parser.parserState.RegularParserState
 import java.io.InputStream
 
 class PrintScriptApp(
-    private val printScriptInterpretStatesPrinter: Printer<PrintScriptInterpretStates> = PrintScriptInterpretStatesPrinter(),
+    private val interpretStatesPrinter: Printer<PrintScriptInterpretStates> = PrintScriptInterpretStatesPrinter(),
+    private val formatterStates: Printer<PrintScriptFormatterStates>,
+    private val staticCodeAnalyserStatesPrinter: Printer<PrintScriptStaticCodeAnalyserStates>,
     private val printScriptInterpret: PrintScriptInterpret,
     private val printScriptFormatter: PrintScriptFormatter,
     private val printScriptStaticCodeAnalyser: PrintScriptStaticCodeAnalyser
@@ -28,12 +30,12 @@ class PrintScriptApp(
             getNextChar(inputStream)
                 ?.let { nextChar ->
                     printScriptInterpret.interpret(nextChar, state)
-                        ?.let { printScriptInterpretStatesPrinter.print(it) }
+                        ?.let { interpretStatesPrinter.print(it) }
                         ?.let { state = it }
                 } ?: break
         }
         printScriptInterpret.handleLastState(state)
-            ?.let { printScriptInterpretStatesPrinter.print(it) }
+            ?.let { interpretStatesPrinter.print(it) }
     }
 
     fun format(inputStream: InputStream) {
@@ -47,7 +49,7 @@ class PrintScriptApp(
                 ?.let { nextChar -> state = printScriptFormatter.format(nextChar, state) }
                 ?: break
         }
-        printScriptFormatter.handleLastState(state)?.let { println(it.string) }
+        printScriptFormatter.handleLastState(state)?.let { formatterStates.print(it) }
     }
 
     fun lint(inputStream: InputStream) {
@@ -61,7 +63,7 @@ class PrintScriptApp(
                 ?.let { nextChar -> state = printScriptStaticCodeAnalyser.format(nextChar, state) }
                 ?: break
         }
-        printScriptStaticCodeAnalyser.handleLastState(state)?.let { println(it.string) } ?: println("failed")
+        printScriptStaticCodeAnalyser.handleLastState(state)?.let { staticCodeAnalyserStatesPrinter.print(it) } ?: println("failed")
     }
 
     private fun getNextChar(inputStream: InputStream): Char? =
