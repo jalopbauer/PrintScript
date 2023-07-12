@@ -25,11 +25,11 @@ class ShuntingYardTest {
         IntNumberLiteralToken(3, 0, 0)
     )
     private val operationMulSum: List<Token> = listOf(
-        IntNumberLiteralToken(1, 0, 0),
+        IntNumberLiteralToken(5, 0, 0),
         MultToken(0, 0),
-        IntNumberLiteralToken(2, 0, 0),
-        SumToken(0, 0),
-        IntNumberLiteralToken(3, 0, 0)
+        IntNumberLiteralToken(5, 0, 0),
+        SubToken(0, 0),
+        IntNumberLiteralToken(8, 0, 0)
     )
     private val bracketsOperation: List<Token> = listOf(
         IntNumberLiteralToken(1, 0, 0),
@@ -78,11 +78,12 @@ class ShuntingYardTest {
     fun sHWWorksWithMSEquation() {
         val shuntingYard = ShuntingYardImpl()
         val simpleTree = shuntingYard.check(operationMulSum)
+        val arrangedTree = shuntingYard.orderNumber(operationMulSum)
         assertEquals(TokenName.NUMBER_LITERAL, simpleTree[0].tokenName())
         assertEquals(TokenName.NUMBER_LITERAL, simpleTree[1].tokenName())
         assertEquals(TokenName.MULT, simpleTree[2].tokenName())
         assertEquals(TokenName.NUMBER_LITERAL, simpleTree[3].tokenName())
-        assertEquals(TokenName.SUM, simpleTree[4].tokenName())
+        assertEquals(TokenName.SUB, simpleTree[4].tokenName())
     }
 
     @Test

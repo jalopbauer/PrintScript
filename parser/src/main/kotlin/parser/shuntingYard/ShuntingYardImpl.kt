@@ -103,11 +103,13 @@ class ShuntingYardImpl : ShuntingYard {
         return stack.removeLast()
     }
     private fun getOperationType(token: Token, stack: ArrayDeque<OperationParameter>) {
+        val tokenRight = stack.removeLast()
+        val tokenLeft = stack.removeLast()
         when (token.tokenName()) {
-            TokenName.SUM -> stack.add(Operation(stack.removeLast(), Sum(), stack.removeLast()))
-            TokenName.SUB -> stack.add(Operation(stack.removeLast(), Sub(), stack.removeLast()))
-            TokenName.MULT -> stack.add(Operation(stack.removeLast(), Mult(), stack.removeLast()))
-            TokenName.DIV -> stack.add(Operation(stack.removeLast(), Div(), stack.removeLast()))
+            TokenName.SUM -> stack.add(Operation(tokenLeft, Sum(), tokenRight))
+            TokenName.SUB -> stack.add(Operation(tokenLeft, Sub(), tokenRight))
+            TokenName.MULT -> stack.add(Operation(tokenLeft, Mult(), tokenRight))
+            TokenName.DIV -> stack.add(Operation(tokenLeft, Div(), tokenRight))
             else -> {}
         }
     }
