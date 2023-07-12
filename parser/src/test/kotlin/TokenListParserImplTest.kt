@@ -198,6 +198,23 @@ class TokenListParserImplTest {
         }
     }
 
+//    @Test
+//    fun printlnAstAcceptsOperation() {
+//        val declaration: List<Token> = listOf(
+//            PrintlnToken(2, position = 0),
+//            LeftParenthesisToken(lineNumber = 2, position = 7),
+//            VariableNameToken(value = "pi", lineNumber = 2, position = 8),
+//            DivToken(lineNumber = 2, position = 11),
+//            IntNumberLiteralToken(value = 2, lineNumber = 2, position = 13),
+//            RightParenthesisToken(lineNumber = 2, position = 14),
+//            SemicolonToken(lineNumber = 2, position = 15)
+//        )
+//        val declarationParser = PrintScriptAstParser()
+//        val printlnAst = declarationParser.parse(declaration)
+//
+//        assert(printlnAst is PrintlnAst && printlnAst.value() is Operation)
+//    }
+
     @Test
     fun declAssiWithWrongAssignation() {
         val declAssi: List<Token> = listOf(
