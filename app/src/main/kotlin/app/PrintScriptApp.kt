@@ -3,8 +3,8 @@ import app.formatter.PrintScriptFormatter
 import app.formatter.PrintScriptFormatterStates
 import app.interpreter.PrintScriptInterpret
 import app.interpreter.PrintScriptInterpretStates
-import app.printer.PrintScriptInterpretStatesPrinter
 import app.printer.Printer
+import app.printer.interpret.PrintScriptInterpretStatesPrinter
 import app.sca.PrintScriptStaticCodeAnalyser
 import app.sca.PrintScriptStaticCodeAnalyserStates
 import interpreter.state.PrintScriptInterpreterStateI
