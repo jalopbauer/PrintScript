@@ -71,6 +71,8 @@ class ShuntingYardImpl : ShuntingYard {
             when (val stringToken = content.component1()) {
                 is StringLiteralToken -> concatenation.add(StringLiteral(stringToken.value))
                 is VariableNameToken -> concatenation.add(VariableNameNode(stringToken.value))
+                is IntNumberLiteralToken -> concatenation.add(IntNumberLiteral(stringToken.value))
+                is DoubleNumberLiteralToken -> concatenation.add(DoubleNumberLiteral(stringToken.value))
             }
             return StringConcatenation(concatenation)
         }
@@ -78,6 +80,8 @@ class ShuntingYardImpl : ShuntingYard {
             when (token) {
                 is StringLiteralToken -> concatenation.add(StringLiteral(token.value))
                 is VariableNameToken -> concatenation.add(VariableNameNode(token.value))
+                is IntNumberLiteralToken -> concatenation.add(IntNumberLiteral(token.value))
+                is DoubleNumberLiteralToken -> concatenation.add(DoubleNumberLiteral(token.value))
             }
         }
         return StringConcatenation(concatenation)

@@ -15,7 +15,7 @@ class OperationValidListOfTokensBuilder : ValidListOfTokensBuilder<OperationVali
         }
         for (token in tokens.subList(1, tokens.size)) {
             when (token.tokenName()) {
-                TokenName.NUMBER_LITERAL -> if (!(
+                TokenName.NUMBER_LITERAL, TokenName.VARIABLE -> if (!(
                     previousToken.tokenName() == TokenName.LEFT_PARENTHESIS ||
                         previousToken.tokenName() == TokenName.SUM ||
                         previousToken.tokenName() == TokenName.SUB ||
@@ -25,7 +25,8 @@ class OperationValidListOfTokensBuilder : ValidListOfTokensBuilder<OperationVali
                 ) { return null }
                 TokenName.SUM, TokenName.SUB, TokenName.MULT, TokenName.DIV -> if (!(
                     previousToken.tokenName() == TokenName.NUMBER_LITERAL ||
-                        previousToken.tokenName() == TokenName.RIGHT_PARENTHESIS
+                        previousToken.tokenName() == TokenName.RIGHT_PARENTHESIS ||
+                        previousToken.tokenName() == TokenName.VARIABLE
                     )
                 ) { return null }
                 TokenName.LEFT_PARENTHESIS -> if (!(
@@ -35,7 +36,9 @@ class OperationValidListOfTokensBuilder : ValidListOfTokensBuilder<OperationVali
                         previousToken.tokenName() == TokenName.DIV
                     )
                 ) { return null }
-                TokenName.RIGHT_PARENTHESIS -> if (previousToken.tokenName() != TokenName.NUMBER_LITERAL) { return null }
+                TokenName.RIGHT_PARENTHESIS -> if (previousToken.tokenName() != TokenName.NUMBER_LITERAL ||
+                    previousToken.tokenName() != TokenName.VARIABLE
+                ) { return null }
                 else -> return null
             }
             previousToken = token
@@ -52,7 +55,7 @@ class OperationValidListOfTokensBuilder : ValidListOfTokensBuilder<OperationVali
         }
         for (token in tokens.subList(1, tokens.size)) {
             when (token.tokenName()) {
-                TokenName.NUMBER_LITERAL -> if (!(
+                TokenName.NUMBER_LITERAL, TokenName.VARIABLE -> if (!(
                     previousToken.tokenName() == TokenName.LEFT_PARENTHESIS ||
                         previousToken.tokenName() == TokenName.SUM ||
                         previousToken.tokenName() == TokenName.SUB ||
@@ -62,7 +65,8 @@ class OperationValidListOfTokensBuilder : ValidListOfTokensBuilder<OperationVali
                 ) { return false }
                 TokenName.SUM, TokenName.SUB, TokenName.MULT, TokenName.DIV -> if (!(
                     previousToken.tokenName() == TokenName.NUMBER_LITERAL ||
-                        previousToken.tokenName() == TokenName.RIGHT_PARENTHESIS
+                        previousToken.tokenName() == TokenName.RIGHT_PARENTHESIS ||
+                        previousToken.tokenName() == TokenName.VARIABLE
                     )
                 ) { return false }
                 TokenName.LEFT_PARENTHESIS -> if (!(
@@ -72,7 +76,9 @@ class OperationValidListOfTokensBuilder : ValidListOfTokensBuilder<OperationVali
                         previousToken.tokenName() == TokenName.DIV
                     )
                 ) { return false }
-                TokenName.RIGHT_PARENTHESIS -> if (previousToken.tokenName() != TokenName.NUMBER_LITERAL) { return false }
+                TokenName.RIGHT_PARENTHESIS -> if (previousToken.tokenName() != TokenName.NUMBER_LITERAL ||
+                    previousToken.tokenName() !== TokenName.VARIABLE
+                ) { return false }
                 else -> return false
             }
             previousToken = token
