@@ -55,9 +55,9 @@ class PrintScriptInterpetI(private val tokenListLexer: NewTokenListLexer, privat
             else -> TODO()
         }
     }
-    override fun handleLastState(states: PrintScriptInterpretStates): PrintScriptInterpretStates? =
+    override fun handleLastState(states: PrintScriptInterpretStates): PrintScriptInterpretStates =
         when (val lexerState = states.lexerState) {
             is PreviousTokenDefinedLexerState -> parseStates(lexerState.previousToken, states)
-            else -> null
+            else -> errorHandler.handle("Token not found", states)
         }
 }
