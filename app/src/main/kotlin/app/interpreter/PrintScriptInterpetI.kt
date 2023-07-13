@@ -1,7 +1,10 @@
 package app.interpreter
 
+import app.errorHandler.ErrorHandler
 import ast.AbstractSyntaxTree
+import interpreter.InterpreterError
 import interpreter.PrintScriptInterpreter
+import interpreter.SendLiteral
 import interpreter.state.PrintScriptInterpreterState
 import lexer.IntermediateLexerStateResponse
 import lexer.LexerInput
@@ -14,12 +17,12 @@ import parser.parserRespose.AstFound
 import parser.parserRespose.SendToken
 import token.Token
 
-class PrintScriptInterpetI(private val tokenListLexer: NewTokenListLexer) : PrintScriptInterpret {
-    constructor(version: String) : this(NewTokenListLexer(FirstVersionPrintScriptLexer()))
+class PrintScriptInterpetI(private val tokenListLexer: NewTokenListLexer, private val errorHandler: ErrorHandler<PrintScriptInterpretStates>) : PrintScriptInterpret {
+    constructor(version: String, errorHandler: ErrorHandler<PrintScriptInterpretStates>) : this(NewTokenListLexer(FirstVersionPrintScriptLexer()), errorHandler)
     override fun interpret(
         nextChar: Char,
         states: PrintScriptInterpretStates
-    ): PrintScriptInterpretStates? {
+    ): PrintScriptInterpretStates {
         return LexerInput(nextChar, states.lexerState)
             .let { input ->
                 when (val stateLexerResponse = tokenListLexer.tokenize(input)) {
@@ -32,7 +35,7 @@ class PrintScriptInterpetI(private val tokenListLexer: NewTokenListLexer) : Prin
     private fun parseStates(
         nextToken: Token,
         states: PrintScriptInterpretStates
-    ): PrintScriptInterpretStates? =
+    ): PrintScriptInterpretStates =
         states.parserState.addToken(nextToken)
             .let { addedTokenParserState ->
                 when (val parse = PrintScriptParser().parse(addedTokenParserState)) {
@@ -44,10 +47,12 @@ class PrintScriptInterpetI(private val tokenListLexer: NewTokenListLexer) : Prin
     private fun interpretStates(
         abstractSyntaxTree: AbstractSyntaxTree,
         states: PrintScriptInterpretStates
-    ): PrintScriptInterpretStates? {
+    ): PrintScriptInterpretStates {
         return when (val interpret = PrintScriptInterpreter().interpret(abstractSyntaxTree, states.printScriptInterpreterState)) {
             is PrintScriptInterpreterState -> states.copy(printScriptInterpreterState = interpret)
-            else -> null
+            is InterpreterError -> errorHandler.handle(interpret.message, states)
+            is SendLiteral -> states.copy(printScriptInterpreterState = interpret.state)
+            else -> TODO()
         }
     }
     override fun handleLastState(states: PrintScriptInterpretStates): PrintScriptInterpretStates? =
