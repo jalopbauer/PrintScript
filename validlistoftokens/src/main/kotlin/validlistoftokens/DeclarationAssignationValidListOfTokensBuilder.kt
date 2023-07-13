@@ -4,6 +4,8 @@ import token.AssignationToken
 import token.BooleanLiteralToken
 import token.DeclarationToken
 import token.LetToken
+import token.NumberTypeToken
+import token.StringLiteralToken
 import token.Token
 import token.TypeToken
 import token.VariableNameToken
@@ -24,11 +26,15 @@ class DeclarationAssignationValidListOfTokensBuilder :
                     OperationValidListOfTokensBuilder().validateChain(tokens.subList(5, (tokens.size - 1)))
                 )
         ) {
-            return DeclarationAssignationValidListOfTokens(
-                tokens.component2() as VariableNameToken,
-                tokens.subList(5, (tokens.size - 1)),
-                tokens.component4() as TypeToken
-            )
+            return if (tokens.component4() is NumberTypeToken && tokens.getOrNull(5) is StringLiteralToken) {
+                null
+            } else {
+                DeclarationAssignationValidListOfTokens(
+                    tokens.component2() as VariableNameToken,
+                    tokens.subList(5, (tokens.size - 1)),
+                    tokens.component4() as TypeToken
+                )
+            }
         }
         return null
     }
