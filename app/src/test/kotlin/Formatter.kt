@@ -1,5 +1,3 @@
-package interpret
-
 import org.junit.jupiter.api.Test
 
 class Formatter {
