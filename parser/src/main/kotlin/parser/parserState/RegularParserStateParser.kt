@@ -21,7 +21,7 @@ class RegularParserStateParser : Parser<ParserResponse, RegularParserState> {
                         }
                     }
                     ?: if (tokens.lastOrNull() is SemicolonToken) {
-                        SentenceInvalid(tokens, RegularParserState())
+                        SentenceInvalid(tokens.toString(), RegularParserState())
                     } else {
                         SendToken(tokensInCodeBlock)
                     }
