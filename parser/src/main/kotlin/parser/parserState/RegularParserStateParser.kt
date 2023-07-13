@@ -6,6 +6,8 @@ import parser.PrintScriptAstParser
 import parser.parserRespose.AstFound
 import parser.parserRespose.ParserResponse
 import parser.parserRespose.SendToken
+import parser.parserRespose.SentenceInvalid
+import token.SemicolonToken
 
 class RegularParserStateParser : Parser<ParserResponse, RegularParserState> {
     override fun parse(tokensInCodeBlock: RegularParserState): ParserResponse =
@@ -18,6 +20,10 @@ class RegularParserStateParser : Parser<ParserResponse, RegularParserState> {
                             else -> AstFound(RegularParserState(), ast)
                         }
                     }
-                    ?: SendToken(tokensInCodeBlock)
+                    ?: if (tokens.lastOrNull() is SemicolonToken) {
+                        SentenceInvalid(tokens, RegularParserState())
+                    } else {
+                        SendToken(tokensInCodeBlock)
+                    }
             }
 }

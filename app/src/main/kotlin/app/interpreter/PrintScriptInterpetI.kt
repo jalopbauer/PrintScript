@@ -15,6 +15,7 @@ import lexer.tokenLexer.FirstVersionPrintScriptLexer
 import parser.PrintScriptParser
 import parser.parserRespose.AstFound
 import parser.parserRespose.SendToken
+import parser.parserRespose.SentenceInvalid
 import token.Token
 
 class PrintScriptInterpetI(private val tokenListLexer: NewTokenListLexer, private val errorHandler: ErrorHandler<PrintScriptInterpretStates>) : PrintScriptInterpret {
@@ -41,6 +42,11 @@ class PrintScriptInterpetI(private val tokenListLexer: NewTokenListLexer, privat
                 when (val parse = PrintScriptParser().parse(addedTokenParserState)) {
                     is SendToken -> states.copy(parserState = addedTokenParserState)
                     is AstFound -> interpretStates(parse.abstractSyntaxTree, states.copy(parserState = parse.parserState))
+                    is SentenceInvalid -> {
+                        val state = states.copy(parserState = parse.parserState)
+                        errorHandler.handle(parse.tokens.toString(), state)
+                        state
+                    }
                 }
             }
 
