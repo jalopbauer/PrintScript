@@ -10,6 +10,9 @@ data class PreviousTokenDefinedLexerState(
     val previousPossibleTokenString: String,
     val previousToken: Token
 ) : IntermediateLexerState {
+    override fun isEmpty(): Boolean =
+        previousPossibleTokenString == ""
+
     override fun handleNextToken(nextChar: Char, nextToken: Token): LexerState =
         when (nextToken) {
             is ErrorToken -> {

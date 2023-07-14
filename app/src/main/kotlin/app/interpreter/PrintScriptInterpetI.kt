@@ -10,7 +10,9 @@ import lexer.IntermediateLexerStateResponse
 import lexer.LexerInput
 import lexer.NewTokenListLexer
 import lexer.TokenFoundLexerStateResponse
+import lexer.lexerState.IntermediateLexerState
 import lexer.lexerState.PreviousTokenDefinedLexerState
+import lexer.lexerState.TokenFoundLexerState
 import lexer.tokenLexer.FirstVersionPrintScriptLexer
 import parser.PrintScriptParser
 import parser.parserRespose.AstFound
@@ -61,9 +63,15 @@ class PrintScriptInterpetI(private val tokenListLexer: NewTokenListLexer, privat
             else -> TODO()
         }
     }
-    override fun handleLastState(states: PrintScriptInterpretStates): PrintScriptInterpretStates? =
+    override fun handleLastState(states: PrintScriptInterpretStates): PrintScriptInterpretStates =
         when (val lexerState = states.lexerState) {
             is PreviousTokenDefinedLexerState -> parseStates(lexerState.previousToken, states)
-            else -> null
+            is IntermediateLexerState ->
+                if (!lexerState.isEmpty()) {
+                    errorHandler.handle("interpret.message", states)
+                } else {
+                    states
+                }
+            is TokenFoundLexerState -> parseStates(lexerState.token, states)
         }
 }

@@ -9,6 +9,8 @@ data class NoPreviousTokenDefinedLexerState(
     val lineNumber: Int = 0,
     val previousPossibleTokenString: String = ""
 ) : IntermediateLexerState {
+    override fun isEmpty(): Boolean =
+        previousPossibleTokenString == ""
 
     override fun handleNextToken(nextChar: Char, nextToken: Token): LexerState =
         when (nextToken) {

@@ -1,3 +1,5 @@
 package lexer.lexerState
 
-interface IntermediateLexerState : LexerState
+interface IntermediateLexerState : LexerState {
+    fun isEmpty(): Boolean
+}
