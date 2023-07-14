@@ -73,5 +73,11 @@ class PrintScriptInterpetI(private val tokenListLexer: NewTokenListLexer, privat
                     states
                 }
             is TokenFoundLexerState -> parseStates(lexerState.token, states)
+        }.let {
+            if (!states.parserState.hasEndedProperly()) {
+                errorHandler.handle("parser error", states)
+            } else {
+                states
+            }
         }
 }

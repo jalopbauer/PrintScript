@@ -7,4 +7,7 @@ data class IfParserState(val ifStatement: IfStatement, val regularParserState: R
     override fun tokens(): List<Token> = regularParserState.tokens
     override fun addToken(token: Token): IfParserState = this.copy(regularParserState = regularParserState.addToken(token))
     override fun firstToken(): Token? = regularParserState.firstToken()
+    override fun hasEndedProperly(): Boolean {
+        TODO("Not yet implemented")
+    }
 }
