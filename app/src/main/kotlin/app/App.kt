@@ -21,7 +21,7 @@ fun main() {
     selector(interpreter)
 }
 
-private fun selector(interpret: Interpret){
+private fun selector(interpret: Interpret) {
     println("Please select what you want to do:")
     println("1. Run a snippet")
     println("2. Format a snippet")
@@ -32,21 +32,21 @@ private fun selector(interpret: Interpret){
     executeSelection(selection, interpret)
 }
 
-private fun executeSelection(selection: String?, interpret: Interpret){
-    when(selection){
+private fun executeSelection(selection: String?, interpret: Interpret) {
+    when (selection) {
         "1", "2", "3" -> selectSnippetLocation(selection, interpret)
         "4" -> greet()
         else -> selector(interpret)
     }
 }
 
-private fun selectSnippetLocation(selection: String?, interpret: Interpret){
+private fun selectSnippetLocation(selection: String?, interpret: Interpret) {
     println("The snippet is:")
     println("1. From a file")
     println("2. Inserted manually")
     val file = readlnOrNull()
     println("----//----//----//----//----//----")
-    when(file) {
+    when (file) {
         "1" -> runFromFile(selection, interpret)
         "2" -> runFromString(selection, interpret)
         else -> selectSnippetLocation(selection, interpret)
@@ -57,14 +57,13 @@ private fun greet() {
     println("bye bye")
 }
 
-
 private fun runFromFile(selection: String?, interpret: Interpret) {
     println("Please copy the path to your file")
     val location = readlnOrNull()
     val file = File(location)
     try {
         val inputStream = file.inputStream()
-        when(selection) {
+        when (selection) {
             "1" -> interpret.interpret(inputStream)
             "2" -> println("printScript.format(inputStream)")
             "3" -> println("printScript.lint(inputStream)")
@@ -81,11 +80,10 @@ private fun runFromString(selection: String?, interpret: Interpret) {
     println("Please insert your snippet")
     val snippet = readlnOrNull()
     val inputStream = ByteArrayInputStream(snippet?.toByteArray())
-    when(selection) {
+    when (selection) {
         "1" -> interpret.interpret(inputStream)
         "2" -> println("printScript.format(inputStream)")
         "3" -> println("printScript.lint(inputStream)")
         else -> selector(interpret)
     }
 }
-
