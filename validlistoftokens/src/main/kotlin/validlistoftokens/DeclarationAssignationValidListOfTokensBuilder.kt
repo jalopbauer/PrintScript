@@ -4,6 +4,8 @@ import token.AssignationToken
 import token.BooleanLiteralToken
 import token.DeclarationToken
 import token.LetToken
+import token.NumberTypeToken
+import token.StringTypeToken
 import token.Token
 import token.TypeToken
 import token.VariableNameToken
@@ -24,12 +26,31 @@ class DeclarationAssignationValidListOfTokensBuilder :
                     OperationValidListOfTokensBuilder().validateChain(tokens.subList(5, (tokens.size - 1)))
                 )
         ) {
-            return DeclarationAssignationValidListOfTokens(
-                tokens.component2() as VariableNameToken,
-                tokens.subList(5, (tokens.size - 1)),
-                tokens.component4() as TypeToken
-            )
+            val parameterTokens = tokens.subList(5, (tokens.size - 1))
+            return OperationValidListOfTokensBuilder().validate(parameterTokens)
+                ?.let {
+                    tokens.component4().takeIf { it is NumberTypeToken }
+                        ?.let {
+                            DeclarationAssignationValidListOfTokens(
+                                tokens.component2() as VariableNameToken,
+                                tokens.subList(5, (tokens.size - 1)),
+                                tokens.component4() as TypeToken
+                            )
+                        }
+                }
+                ?: StringLiteralOrConcatValidListOfTokensBuilder().validate(parameterTokens)
+                    ?.let {
+                        tokens.component4().takeIf { it is StringTypeToken }
+                            ?.let {
+                                DeclarationAssignationValidListOfTokens(
+                                    tokens.component2() as VariableNameToken,
+                                    tokens.subList(5, (tokens.size - 1)),
+                                    tokens.component4() as TypeToken
+                                )
+                            }
+                    }
+        } else {
+            return null
         }
-        return null
     }
 }

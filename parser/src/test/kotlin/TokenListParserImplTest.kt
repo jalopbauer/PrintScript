@@ -235,8 +235,8 @@ class TokenListParserImplTest {
         val declAssiAst = declAssiParser.parse(declAssi)
 
         when (declAssiAst) {
-            is AssignationDeclarationAst -> assert(true)
-            else -> assert(false)
+            is AssignationDeclarationAst -> assert(false)
+            else -> assert(true)
         }
     }
 
