@@ -1,7 +1,6 @@
 package validlistoftokens
 
 import token.AssignationToken
-import token.BooleanLiteralToken
 import token.DeclarationToken
 import token.LetToken
 import token.NumberTypeToken
@@ -18,13 +17,7 @@ class DeclarationAssignationValidListOfTokensBuilder :
             tokens.component2() is VariableNameToken &&
             tokens.component3() is DeclarationToken &&
             (tokens.component4() is TypeToken) &&
-            tokens.component5() is AssignationToken &&
-            (
-                tokens.component3() is VariableNameToken ||
-                    tokens.component3() is BooleanLiteralToken ||
-                    StringLiteralOrConcatValidListOfTokensBuilder().validateChain(tokens.subList(5, (tokens.size - 1))) ||
-                    OperationValidListOfTokensBuilder().validateChain(tokens.subList(5, (tokens.size - 1)))
-                )
+            tokens.component5() is AssignationToken
         ) {
             val parameterTokens = tokens.subList(5, (tokens.size - 1))
             return OperationValidListOfTokensBuilder().validate(parameterTokens)
