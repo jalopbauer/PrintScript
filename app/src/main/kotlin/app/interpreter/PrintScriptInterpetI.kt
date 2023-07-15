@@ -65,6 +65,7 @@ class PrintScriptInterpetI(private val tokenListLexer: NewTokenListLexer, privat
         abstractSyntaxTree: AbstractSyntaxTree,
         states: PrintScriptInterpretStates
     ): PrintScriptInterpretStates {
+        println(abstractSyntaxTree)
         return when (val interpret = PrintScriptInterpreter().interpret(abstractSyntaxTree, states.printScriptInterpreterState)) {
             is PrintScriptInterpreterState -> states.copy(printScriptInterpreterState = interpret)
             is InterpreterError -> errorHandler.handle(interpret.message, states)
@@ -84,9 +85,9 @@ class PrintScriptInterpetI(private val tokenListLexer: NewTokenListLexer, privat
             is TokenFoundLexerState -> parseStates(lexerState.token, states)
         }.let {
             if (!it.parserState.hasEndedProperly() && it.parserState.tokens().isNotEmpty()) {
-                errorHandler.handle("parser error", states)
+                errorHandler.handle("parser error", it)
             } else {
-                states
+                it
             }
         }
 }
