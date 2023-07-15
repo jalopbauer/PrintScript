@@ -15,7 +15,12 @@ sealed interface LexerState {
         )
     fun addChar(nextChar: Char, string: String) =
         when (nextChar) {
-            ' ', '\n' -> string
+            ' ' -> if (string.firstOrNull() == '\"' || string.firstOrNull() == '\'') {
+                string + nextChar
+            } else {
+                string
+            }
+            '\n' -> string
             else -> string + nextChar
         }
     fun initialPosition(): Int
