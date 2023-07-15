@@ -6,7 +6,8 @@ data class VariableNameNode(val variableName: String) :
     PrintlnAstParameter,
     AssignationParameterNode,
     FinalOperationParameter,
-    ConcatenationParameter {
+    ConcatenationParameter,
+    ConditionBlockParameter {
     fun value(): String =
         variableName
 }

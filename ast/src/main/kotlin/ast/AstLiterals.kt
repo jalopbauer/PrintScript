@@ -32,7 +32,7 @@ data class DoubleNumberLiteral(val number: Double) :
     override fun type(): NumberType = NumberType
 }
 
-sealed interface BooleanLiteral : AbstractSyntaxTree, PrintlnAstParameter, AssignationParameterNode, Literal
+sealed interface BooleanLiteral : AbstractSyntaxTree, PrintlnAstParameter, AssignationParameterNode, Literal, ConditionBlockParameter
 
 object FalseLiteral : BooleanLiteral {
     override fun type(): Type = BooleanType

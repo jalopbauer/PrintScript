@@ -1,5 +1,9 @@
 package ast
 
 sealed interface ConditionBlock : AbstractSyntaxTree {
-    fun getSentences(): List<AbstractSyntaxTree>?
+
+    fun getConditionBlockParameter(): ConditionBlockParameter
+    fun getSentences(booleanLiteral: BooleanLiteral): List<AbstractSyntaxTree>?
 }
+
+sealed interface ConditionBlockParameter : AbstractSyntaxTree
