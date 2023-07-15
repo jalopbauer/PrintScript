@@ -51,7 +51,7 @@ class PrintScriptInterpetI(private val tokenListLexer: NewTokenListLexer, privat
         states.parserState.addToken(nextToken)
             .let { addedTokenParserState ->
                 when (val parse = PrintScriptParser().parse(addedTokenParserState)) {
-                    is SendToken -> states.copy(parserState = addedTokenParserState)
+                    is SendToken -> states.copy(parserState = parse.parserState)
                     is AstFound -> interpretStates(parse.abstractSyntaxTree, states.copy(parserState = parse.parserState))
                     is SentenceInvalid -> {
                         val state = states.copy(parserState = parse.parserState)
