@@ -12,17 +12,25 @@ class ConditionBlockInterpreter(private val sentencesInterpreter: SentencesInter
     ): InterpreterResponse =
         when (val conditionBlockParameter = abstractSyntaxTree.getConditionBlockParameter()) {
             is BooleanLiteral -> conditionBlockParameter
-            is VariableNameNode -> interpreterState.get(conditionBlockParameter)?.takeIf { it is BooleanLiteral }
-        }?.let { booleanLiteral ->
-            abstractSyntaxTree.getSentences(booleanLiteral as BooleanLiteral)
-                ?.let { sentences ->
-                    val initial: InterpreterResponse = interpreterState
-                    sentences.fold(initial) { acc, abstractSyntaxTree ->
-                        when (acc) {
-                            is PrintScriptInterpreterState -> sentencesInterpreter.interpret(abstractSyntaxTree, acc)
-                            else -> acc
+            is VariableNameNode -> interpreterState.get(conditionBlockParameter)
+        }.takeIf { it is BooleanLiteral }.let { booleanLiteral ->
+            if (booleanLiteral is BooleanLiteral) {
+                abstractSyntaxTree.getSentences(booleanLiteral)
+                    ?.let { sentences ->
+                        val initial: InterpreterResponse = interpreterState
+                        sentences.fold(initial) { acc, abstractSyntaxTree ->
+                            when (acc) {
+                                is PrintScriptInterpreterState -> sentencesInterpreter.interpret(
+                                    abstractSyntaxTree,
+                                    acc
+                                )
+
+                                else -> acc
+                            }
                         }
                     }
-                }
-        } ?: interpreterState
+            } else {
+                null
+            }
+        } ?: InterpreterError()
 }

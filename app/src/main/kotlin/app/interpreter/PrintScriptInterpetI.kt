@@ -19,6 +19,7 @@ import parser.PrintScriptParser
 import parser.parserRespose.AstFound
 import parser.parserRespose.SendToken
 import parser.parserRespose.SentenceInvalid
+import parser.parserState.IfParserState
 import token.Token
 
 class PrintScriptInterpetI(private val tokenListLexer: NewTokenListLexer, private val errorHandler: ErrorHandler<PrintScriptInterpretStates>) : PrintScriptInterpret {
@@ -83,10 +84,19 @@ class PrintScriptInterpetI(private val tokenListLexer: NewTokenListLexer, privat
                 }
             is TokenFoundLexerState -> parseStates(lexerState.token, states)
         }.let {
+            if (it.parserState is IfParserState) {
+                interpretStates(it.parserState.ifStatement, states)
+            } else {
+                it
+            }
+        }.let {
             if (!it.parserState.hasEndedProperly() && it.parserState.tokens().isNotEmpty()) {
                 errorHandler.handle("parser error", it)
             } else {
                 it
             }
+        }.let {
+            println(it.parserState)
+            it
         }
 }
