@@ -95,8 +95,5 @@ class PrintScriptInterpetI(private val tokenListLexer: NewTokenListLexer, privat
             } else {
                 it
             }
-        }.let {
-            println(it.parserState)
-            it
         }
 }
