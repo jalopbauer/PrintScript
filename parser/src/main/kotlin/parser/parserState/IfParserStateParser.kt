@@ -15,7 +15,7 @@ class IfParserStateParser : Parser<ParserResponse, IfParserState> {
                 when (firstToken) {
                     is ElseToken -> {
                         ElseTokenListParser().parse(tokensInCodeBlock.tokens())
-                            ?.let { elseStatement -> AstFound(tokensInCodeBlock.regularParserState, IfElseStatement(tokensInCodeBlock.ifStatement, elseStatement)) }
+                            ?.let { elseStatement -> AstFound(RegularParserState(), IfElseStatement(tokensInCodeBlock.ifStatement, elseStatement)) }
                             ?: SendToken(tokensInCodeBlock)
                     }
                     else -> AstFound(tokensInCodeBlock.regularParserState, tokensInCodeBlock.ifStatement)
