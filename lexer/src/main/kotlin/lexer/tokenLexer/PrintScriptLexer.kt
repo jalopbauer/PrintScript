@@ -3,7 +3,10 @@ package lexer.tokenLexer
 import token.ErrorToken
 import token.Token
 
-class FirstVersionPrintScriptLexer : TokenLexer {
+interface VersionPrintScriptLexer : TokenLexer {
+    override fun tokenize(input: TokenLexerInput): Token
+}
+class FirstVersionPrintScriptLexer : VersionPrintScriptLexer {
     override fun tokenize(input: TokenLexerInput): Token =
         ListTokenLexer(
             listOf(
@@ -17,7 +20,7 @@ class FirstVersionPrintScriptLexer : TokenLexer {
         ).tokenize(input)
 }
 
-class SecondVersionPrintScriptLexer : TokenLexer {
+class SecondVersionPrintScriptLexer : VersionPrintScriptLexer {
     override fun tokenize(input: TokenLexerInput): Token =
         ListTokenLexer(
             listOf(

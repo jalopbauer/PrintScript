@@ -14,6 +14,7 @@ import lexer.lexerState.IntermediateLexerState
 import lexer.lexerState.PreviousTokenDefinedLexerState
 import lexer.lexerState.TokenFoundLexerState
 import lexer.tokenLexer.FirstVersionPrintScriptLexer
+import lexer.tokenLexer.SecondVersionPrintScriptLexer
 import parser.PrintScriptParser
 import parser.parserRespose.AstFound
 import parser.parserRespose.SendToken
@@ -21,7 +22,15 @@ import parser.parserRespose.SentenceInvalid
 import token.Token
 
 class PrintScriptInterpetI(private val tokenListLexer: NewTokenListLexer, private val errorHandler: ErrorHandler<PrintScriptInterpretStates>) : PrintScriptInterpret {
-    constructor(version: String, errorHandler: ErrorHandler<PrintScriptInterpretStates>) : this(NewTokenListLexer(FirstVersionPrintScriptLexer()), errorHandler)
+    constructor(version: String, errorHandler: ErrorHandler<PrintScriptInterpretStates>) :
+        this(
+            if (version == "1.1") {
+                NewTokenListLexer(SecondVersionPrintScriptLexer())
+            } else {
+                NewTokenListLexer(FirstVersionPrintScriptLexer())
+            },
+            errorHandler
+        )
     override fun interpret(
         nextChar: Char,
         states: PrintScriptInterpretStates

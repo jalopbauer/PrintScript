@@ -3,9 +3,9 @@ package lexer
 import lexer.lexerState.IntermediateLexerState
 import lexer.lexerState.LexerState
 import lexer.lexerState.TokenFoundLexerState
-import lexer.tokenLexer.FirstVersionPrintScriptLexer
+import lexer.tokenLexer.VersionPrintScriptLexer
 
-class LexerStateLexer(private val firstVersionPrintScriptLexer: FirstVersionPrintScriptLexer) : Lexer<LexerInput<*>, LexerState> {
+class LexerStateLexer(private val firstVersionPrintScriptLexer: VersionPrintScriptLexer) : Lexer<LexerInput<*>, LexerState> {
     override fun tokenize(input: LexerInput<*>): LexerState =
         input.lexerState.tokenLexerInput(input.nextChar)
             .let { tokenLexerInput ->
@@ -16,7 +16,7 @@ class LexerStateLexer(private val firstVersionPrintScriptLexer: FirstVersionPrin
             }
 }
 
-class TokenFoundLexerStateLexer(private val firstVersionPrintScriptLexer: FirstVersionPrintScriptLexer) : Lexer<LexerInput<TokenFoundLexerState>, IntermediateLexerState> {
+class TokenFoundLexerStateLexer(private val firstVersionPrintScriptLexer: VersionPrintScriptLexer) : Lexer<LexerInput<TokenFoundLexerState>, IntermediateLexerState> {
     override fun tokenize(input: LexerInput<TokenFoundLexerState>): IntermediateLexerState =
         input.lexerState.tokenLexerInput(input.nextChar)
             .let { tokenLexerInput ->
