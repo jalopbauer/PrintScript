@@ -11,7 +11,7 @@ class SentencesValidListOfTokensBuilder(private val validListOfTokensBuilders: V
                     if (token is SemicolonToken) {
                         TokensAndSentenceValidListOfTokens(
                             listOf(),
-                            validListOfTokens + validListOfTokensBuilders.validate(tokens)
+                            validListOfTokens + validListOfTokensBuilders.validate(tokens + token)
                         )
                     } else {
                         TokensAndSentenceValidListOfTokens(tokens + token, validListOfTokens)
