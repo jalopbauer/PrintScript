@@ -14,9 +14,14 @@ import java.io.FileNotFoundException
 
 fun main() {
     val interpreter = Interpret(
-        PrintScriptInterpretStatesPrinter(),
+        PrintScriptInterpretStatesPrinter { string -> println(string) },
         PrintScriptInterpetI("", MyErrorHandler())
     )
+    // val formatterStatesPrinter: Printer<PrintScriptFormatterStates>
+    // val scaStatesPrinter: Printer<PrintScriptStaticCodeAnalyserStates>
+    // val printScriptFormatter = PrintScriptFormatterI()
+    // val printScriptSCA = PrintScriptStaticCodeAnalyserI()
+    // val printScript = PrintScriptApp(interpreter,formatterStatesPrinter,scaStatesPrinter,printScriptFormatter, printScriptSCA)
     println("Welcome to Printscript 2023")
     selector(interpreter)
 }
@@ -28,7 +33,7 @@ private fun selector(interpret: Interpret) {
     println("3. Lint a snippet")
     println("4. Exit")
     val selection = readlnOrNull()
-    println("----//----//----//----//----//----")
+    println("----------------------------------")
     executeSelection(selection, interpret)
 }
 
@@ -45,7 +50,7 @@ private fun selectSnippetLocation(selection: String?, interpret: Interpret) {
     println("1. From a file")
     println("2. Inserted manually")
     val file = readlnOrNull()
-    println("----//----//----//----//----//----")
+    println("----------------------------------")
     when (file) {
         "1" -> runFromFile(selection, interpret)
         "2" -> runFromString(selection, interpret)
@@ -54,7 +59,7 @@ private fun selectSnippetLocation(selection: String?, interpret: Interpret) {
 }
 
 private fun greet() {
-    println("bye bye")
+    println("Adios!")
 }
 
 private fun runFromFile(selection: String?, interpret: Interpret) {
@@ -71,9 +76,10 @@ private fun runFromFile(selection: String?, interpret: Interpret) {
         }
     } catch (e: FileNotFoundException) {
         println("No existe un archivo en esa posicion, por favor intente de nuevo")
-        println("----//----//----//----//----//----")
+        println("----------------------------------")
         selector(interpret)
     }
+    selector(interpret)
 }
 
 private fun runFromString(selection: String?, interpret: Interpret) {
@@ -86,4 +92,5 @@ private fun runFromString(selection: String?, interpret: Interpret) {
         "3" -> println("printScript.lint(inputStream)")
         else -> selector(interpret)
     }
+    selector(interpret)
 }
