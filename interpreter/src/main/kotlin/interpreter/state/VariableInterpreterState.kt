@@ -49,8 +49,8 @@ data class VariableInterpreterStateI(
             ?.let {
                 if (it == value.type()) {
                     if (consts.contains(key.value())) {
-                        get(key)?.let { add(key, value) }
-                            ?: InterpreterError()
+                        get(key)?.let { InterpreterError() }
+                            ?: add(key, value)
                     } else {
                         add(key, value)
                     }
