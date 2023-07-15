@@ -8,7 +8,7 @@ class PrintScriptInterpreterStatePrinter(val func: (string: String) -> Unit = { 
     override fun print(t: PrintScriptInterpreterState): PrintScriptInterpreterState =
         t.print()
             .let { (string, postPrintState) ->
-                string?.let { func(it) }
+                string.map { func(it) }
                 postPrintState
             }
 }

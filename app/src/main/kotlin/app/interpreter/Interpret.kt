@@ -26,7 +26,10 @@ class Interpret(
                 } ?: break
         }
         printScriptInterpret.handleLastState(state)
-            ?.let { interpretStatesPrinter.print(it) }
+            ?.let {
+                println(it.printScriptInterpreterState)
+                interpretStatesPrinter.print(it)
+            }
     }
 
     private fun getNextChar(inputStream: InputStream): Char? =

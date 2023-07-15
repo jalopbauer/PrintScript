@@ -6,7 +6,7 @@ import ast.VariableNameNode
 import interpreter.InterpreterResponse
 
 interface PrintScriptInterpreterState : InterpreterState, PrintlnInterpreterState, VariableInterpreterState, ReadInputInterpreterState {
-    override fun print(): Pair<String?, PrintScriptInterpreterState>
+    override fun print(): Pair<List<String>, PrintScriptInterpreterState>
     override fun readInput(): Pair<Literal?, PrintScriptInterpreterState>
 }
 
@@ -23,7 +23,7 @@ data class PrintScriptInterpreterStateI(
             }
         }
 
-    override fun print(): Pair<String?, PrintScriptInterpreterStateI> =
+    override fun print(): Pair<List<String>, PrintScriptInterpreterStateI> =
         printlnInterpreterState.print().let { (string, state) ->
             Pair(string, this.copy(printlnInterpreterState = state))
         }

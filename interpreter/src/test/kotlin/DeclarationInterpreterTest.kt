@@ -14,7 +14,7 @@ class DeclarationInterpreterTest {
     private fun getState(variableInterpreterStateI: VariableInterpreterStateI) =
         PrintScriptInterpreterStateI(
             PrintlnInterpreterStateI(
-                null,
+                listOf(),
                 variableInterpreterStateI
             )
         )

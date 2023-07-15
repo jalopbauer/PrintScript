@@ -7,13 +7,13 @@ import interpreter.InterpreterResponse
 
 interface PrintlnInterpreterState : InterpreterState, VariableInterpreterState {
     fun println(value: String): InterpreterResponse
-    fun print(): Pair<String?, PrintlnInterpreterState>
+    fun print(): Pair<List<String>, PrintlnInterpreterState>
 }
 
-data class PrintlnInterpreterStateI(val printList: String? = null, val variableInterpreterState: VariableInterpreterState = VariableInterpreterStateI()) :
+data class PrintlnInterpreterStateI(val printList: List<String> = listOf(), val variableInterpreterState: VariableInterpreterState = VariableInterpreterStateI()) :
     PrintlnInterpreterState {
     override fun println(value: String): InterpreterResponse =
-        this.copy(printList = value)
+        this.copy(printList = printList + value)
 
     override fun initializeVariable(variableInstance: VariableInstance): InterpreterResponse =
         variableInterpreterState.initializeVariable(variableInstance).let {
@@ -52,6 +52,6 @@ data class PrintlnInterpreterStateI(val printList: String? = null, val variableI
     override fun isVariableDefined(key: VariableNameNode): Boolean =
         variableInterpreterState.isVariableDefined(key)
 
-    override fun print(): Pair<String?, PrintlnInterpreterState> =
-        Pair(printList, this.copy(printList = null))
+    override fun print(): Pair<List<String>, PrintlnInterpreterState> =
+        Pair(printList, this.copy(printList = listOf()))
 }

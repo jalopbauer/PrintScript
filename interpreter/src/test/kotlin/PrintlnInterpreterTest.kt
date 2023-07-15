@@ -23,14 +23,16 @@ class PrintlnInterpreterTest {
     private fun getState(variableInterpreterStateI: VariableInterpreterStateI) =
         PrintScriptInterpreterStateI(
             PrintlnInterpreterStateI(
-                null,
+                listOf(),
                 variableInterpreterStateI
             )
         )
 
     private fun testExpectedValue(interpreterResponse: InterpreterResponse, valueToTest: String) =
         if (interpreterResponse is PrintScriptInterpreterState) {
-            assertEquals(valueToTest, interpreterResponse.print().first)
+            val print = interpreterResponse.print()
+            assertEquals(valueToTest, print.first.firstOrNull())
+            assert(print.second.print().first.isEmpty())
         } else {
             assert(false)
         }
