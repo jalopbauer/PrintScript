@@ -13,7 +13,7 @@ class ConditionBlockInterpreter(private val sentencesInterpreter: SentencesInter
         when (val conditionBlockParameter = abstractSyntaxTree.getConditionBlockParameter()) {
             is BooleanLiteral -> conditionBlockParameter
             is VariableNameNode -> interpreterState.get(conditionBlockParameter)
-        }.takeIf { it is BooleanLiteral }.let { booleanLiteral ->
+        }.let { booleanLiteral ->
             if (booleanLiteral is BooleanLiteral) {
                 abstractSyntaxTree.getSentences(booleanLiteral)
                     ?.let { sentences ->
