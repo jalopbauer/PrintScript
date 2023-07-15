@@ -7,6 +7,7 @@ import parser.parserRespose.AstFound
 import parser.parserRespose.ParserResponse
 import parser.parserRespose.SendToken
 import parser.parserRespose.SentenceInvalid
+import token.IfToken
 import token.SemicolonToken
 
 class RegularParserStateParser : Parser<ParserResponse, RegularParserState> {
@@ -20,7 +21,7 @@ class RegularParserStateParser : Parser<ParserResponse, RegularParserState> {
                             else -> AstFound(RegularParserState(), ast)
                         }
                     }
-                    ?: if (tokens.lastOrNull() is SemicolonToken) {
+                    ?: if (tokens.lastOrNull() is SemicolonToken && tokens.firstOrNull() !is IfToken) {
                         SentenceInvalid(tokens.toString(), RegularParserState())
                     } else {
                         SendToken(tokensInCodeBlock)
