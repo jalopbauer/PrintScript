@@ -28,9 +28,9 @@ class ConditionBlockInterpreter(private val sentencesInterpreter: SentencesInter
                                 else -> acc
                             }
                         }
-                    }
+                    } ?: interpreterState
             } else {
-                null
+                InterpreterError("If: Not boolean")
             }
-        } ?: InterpreterError()
+        }
 }
