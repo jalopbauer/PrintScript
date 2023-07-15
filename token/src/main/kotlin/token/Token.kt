@@ -4,6 +4,9 @@ interface Token {
     fun lineNumber(): Int
     fun position(): Int
 }
+
+sealed interface IfStatementValidListOfTokensParameter : Token
+
 data class ErrorToken(private val lineNumber: Int, private val position: Int) : Token {
     override fun tokenName(): TokenName {
         return TokenName.ERROR
@@ -17,7 +20,7 @@ data class ErrorToken(private val lineNumber: Int, private val position: Int) : 
         return position
     }
 }
-data class VariableNameToken(val value: String, private val lineNumber: Int, private val position: Int) : Token {
+data class VariableNameToken(val value: String, private val lineNumber: Int, private val position: Int) : Token, IfStatementValidListOfTokensParameter {
     override fun tokenName(): TokenName {
         return TokenName.VARIABLE
     }
@@ -192,6 +195,34 @@ data class ReadInputToken(private val lineNumber: Int, private val position: Int
 data class ConstToken(private val lineNumber: Int, private val position: Int) : Token {
     override fun tokenName(): TokenName {
         return TokenName.CONST
+    }
+
+    override fun lineNumber(): Int {
+        return lineNumber
+    }
+
+    override fun position(): Int {
+        return position
+    }
+}
+
+sealed interface BooleanLiteralToken : Token, IfStatementValidListOfTokensParameter
+data class FalseLiteralToken(private val lineNumber: Int, private val position: Int) : BooleanLiteralToken {
+    override fun tokenName(): TokenName {
+        return TokenName.BOOLEAN_LITERAL
+    }
+
+    override fun lineNumber(): Int {
+        return lineNumber
+    }
+
+    override fun position(): Int {
+        return position
+    }
+}
+data class TrueLiteralToken(private val lineNumber: Int, private val position: Int) : BooleanLiteralToken {
+    override fun tokenName(): TokenName {
+        return TokenName.BOOLEAN_LITERAL
     }
 
     override fun lineNumber(): Int {

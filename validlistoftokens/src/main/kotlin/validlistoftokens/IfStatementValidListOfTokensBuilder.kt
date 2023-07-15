@@ -1,6 +1,6 @@
 package validlistoftokens
 
-import token.BooleanLiteralToken
+import token.IfStatementValidListOfTokensParameter
 import token.IfToken
 import token.LeftCurlyBracketsToken
 import token.LeftParenthesisToken
@@ -12,15 +12,15 @@ class IfStatementValidListOfTokensBuilder(private val sentencesValidListOfTokens
     override fun validate(tokens: List<Token>): IfStatementValidListOfTokens? {
         return if (
             tokens.size >= 6 &&
-            tokens.component1() is IfToken &&
-            tokens.component2() is LeftParenthesisToken &&
-            tokens.component3() is BooleanLiteralToken &&
-            tokens.component4() is RightParenthesisToken &&
-            tokens.component5() is LeftCurlyBracketsToken &&
-            tokens.last() is RightCurlyBracketsToken
+            tokens.getOrNull(0) is IfToken &&
+            tokens.getOrNull(1) is LeftParenthesisToken &&
+            tokens.getOrNull(2) is IfStatementValidListOfTokensParameter &&
+            tokens.getOrNull(3) is RightParenthesisToken &&
+            tokens.getOrNull(4) is LeftCurlyBracketsToken &&
+            tokens.lastOrNull() is RightCurlyBracketsToken
         ) {
-            sentencesValidListOfTokensBuilder.validate(tokens.subList(6, tokens.size - 1))
-                ?.let { IfStatementValidListOfTokens(tokens.component3() as BooleanLiteralToken, it) }
+            sentencesValidListOfTokensBuilder.validate(tokens.subList(5, tokens.size - 1))
+                ?.let { IfStatementValidListOfTokens(tokens[2] as IfStatementValidListOfTokensParameter, it) }
         } else {
             null
         }

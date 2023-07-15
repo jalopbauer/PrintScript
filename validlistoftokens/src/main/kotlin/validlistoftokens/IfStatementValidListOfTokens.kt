@@ -1,8 +1,8 @@
 package validlistoftokens
 
-import token.BooleanLiteralToken
+import token.IfStatementValidListOfTokensParameter
 
 data class IfStatementValidListOfTokens(
-    val booleanLiteralToken: BooleanLiteralToken,
+    val booleanLiteralToken: IfStatementValidListOfTokensParameter,
     val sentencesValidListOfTokens: SentencesValidListOfTokens
 ) : ValidListOfTokens
