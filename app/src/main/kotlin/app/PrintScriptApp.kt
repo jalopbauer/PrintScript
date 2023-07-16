@@ -1,5 +1,5 @@
 package app
-import app.formatter.PrintScriptFormatter
+import app.formatter.Format
 import app.formatter.PrintScriptFormatterStates
 import app.interpreter.Interpret
 import app.printer.Printer
@@ -12,7 +12,7 @@ class PrintScriptApp(
     private val interpret: Interpret,
     private val formatterStates: Printer<PrintScriptFormatterStates>,
     private val staticCodeAnalyserStatesPrinter: Printer<PrintScriptStaticCodeAnalyserStates>,
-    private val printScriptFormatter: PrintScriptFormatter,
+    private val format: Format,
     private val printScriptStaticCodeAnalyser: PrintScriptStaticCodeAnalyser
 ) {
     fun interpret(inputStream: InputStream) {
@@ -20,17 +20,7 @@ class PrintScriptApp(
     }
 
     fun format(inputStream: InputStream) {
-        var state = PrintScriptFormatterStates(
-            NoPreviousTokenDefinedLexerState(),
-            listOf(),
-            ""
-        )
-        while (true) {
-            getNextChar(inputStream)
-                ?.let { nextChar -> state = printScriptFormatter.format(nextChar, state) }
-                ?: break
-        }
-        printScriptFormatter.handleLastState(state)?.let { formatterStates.print(it) }
+        format.format(inputStream)
     }
 
     fun lint(inputStream: InputStream) {
