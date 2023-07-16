@@ -20,6 +20,6 @@ class ReadInputInterpreter<T : AbstractSyntaxTree>(
             .let { (literal, state) ->
                 literal
                     ?.let { interpreter.interpret(func(literal), state) }
-                    ?: SendLiteral(state)
+                    ?: SendLiteral(state.println(abstractSyntaxTree.message.value))
             }
 }

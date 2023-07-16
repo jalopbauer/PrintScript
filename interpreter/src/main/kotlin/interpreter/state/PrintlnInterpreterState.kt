@@ -6,13 +6,13 @@ import ast.VariableNameNode
 import interpreter.InterpreterResponse
 
 interface PrintlnInterpreterState : InterpreterState, VariableInterpreterState {
-    fun println(value: String): InterpreterResponse
+    fun println(value: String): PrintlnInterpreterState
     fun print(): Pair<List<String>, PrintlnInterpreterState>
 }
 
 data class PrintlnInterpreterStateI(val printList: List<String> = listOf(), val variableInterpreterState: VariableInterpreterState = VariableInterpreterStateI()) :
     PrintlnInterpreterState {
-    override fun println(value: String): InterpreterResponse =
+    override fun println(value: String): PrintlnInterpreterState =
         this.copy(printList = printList + value)
 
     override fun initializeVariable(variableInstance: VariableInstance): InterpreterResponse =

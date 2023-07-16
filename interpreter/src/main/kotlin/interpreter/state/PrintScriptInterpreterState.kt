@@ -8,6 +8,8 @@ import interpreter.InterpreterResponse
 interface PrintScriptInterpreterState : InterpreterState, PrintlnInterpreterState, VariableInterpreterState, ReadInputInterpreterState {
     override fun print(): Pair<List<String>, PrintScriptInterpreterState>
     override fun readInput(): Pair<Literal?, PrintScriptInterpreterState>
+    override fun setReadInput(literal: Literal): PrintScriptInterpreterState
+    override fun println(value: String): PrintScriptInterpreterState
 }
 
 data class PrintScriptInterpreterStateI(
@@ -15,12 +17,9 @@ data class PrintScriptInterpreterStateI(
     private val inputtedValue: Literal? = null
 ) :
     PrintScriptInterpreterState {
-    override fun println(value: String): InterpreterResponse =
+    override fun println(value: String): PrintScriptInterpreterState =
         printlnInterpreterState.println(value).let {
-            when (it) {
-                is PrintlnInterpreterState -> this.copy(printlnInterpreterState = it)
-                else -> it
-            }
+            this.copy(printlnInterpreterState = it)
         }
 
     override fun print(): Pair<List<String>, PrintScriptInterpreterStateI> =
@@ -66,4 +65,7 @@ data class PrintScriptInterpreterStateI(
 
     override fun readInput(): Pair<Literal?, PrintScriptInterpreterState> =
         Pair(inputtedValue, this.copy(inputtedValue = null))
+
+    override fun setReadInput(literal: Literal): PrintScriptInterpreterState =
+        this.copy(inputtedValue = literal)
 }
