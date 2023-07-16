@@ -1,9 +1,15 @@
 package app
 
 import app.errorHandler.MyErrorHandler
+import app.formatter.Format
+import app.formatter.PrintScriptFormatterI
 import app.interpreter.Interpret
 import app.interpreter.PrintScriptInterpetI
 import app.printer.interpret.PrintScriptInterpretStatesPrinter
+import app.sca.Lint
+import app.sca.PrintScriptStaticCodeAnalyserI
+import formatter.PrintScriptFormatterFactory
+import staticcodeanalyser.PrintScriptStaticCodeAnalyserFactory
 import java.io.ByteArrayInputStream
 import java.io.File
 import java.io.FileNotFoundException
@@ -13,20 +19,30 @@ import java.io.FileNotFoundException
  */
 
 fun main() {
-    val interpreter = Interpret(
-        PrintScriptInterpretStatesPrinter { string -> println(string) },
-        PrintScriptInterpetI("", MyErrorHandler())
-    )
-    // val formatterStatesPrinter: Printer<PrintScriptFormatterStates>
-    // val scaStatesPrinter: Printer<PrintScriptStaticCodeAnalyserStates>
-    // val printScriptFormatter = PrintScriptFormatterI()
-    // val printScriptSCA = PrintScriptStaticCodeAnalyserI()
-    // val printScript = PrintScriptApp(interpreter,formatterStatesPrinter,scaStatesPrinter,printScriptFormatter, printScriptSCA)
     println("Welcome to Printscript 2023")
-    selector(interpreter)
+    println("Please select version 1.0 or 1.1")
+    val version = readlnOrNull()
+    versionSelector(version)
 }
 
-private fun selector(interpret: Interpret) {
+private fun versionSelector(version: String?) {
+    if (version == "1.0" || version == "1.1") {
+        val interpreter = Interpret(
+            PrintScriptInterpretStatesPrinter { string -> println(string) },
+            PrintScriptInterpetI(version, MyErrorHandler())
+        )
+        val configString = "camel-case-variable"
+        val linter = PrintScriptStaticCodeAnalyserFactory().build(configString)
+        val lint = Lint(PrintScriptStaticCodeAnalyserI(version, linter))
+        val formatter = PrintScriptFormatterFactory().build(configString)
+        val format = Format(PrintScriptFormatterI(version, formatter))
+        selector(interpreter, format, lint)
+    } else {
+        println("Next time enter a valid version, either 1.0 or 1.1")
+    }
+}
+
+private fun selector(interpret: Interpret, formatter: Format, lint: Lint) {
     println("Please select what you want to do:")
     println("1. Run a snippet")
     println("2. Format a snippet")
@@ -34,27 +50,27 @@ private fun selector(interpret: Interpret) {
     println("4. Exit")
     val selection = readlnOrNull()
     println("----------------------------------")
-    executeSelection(selection, interpret)
+    executeSelection(selection, interpret, formatter, lint)
 }
 
-private fun executeSelection(selection: String?, interpret: Interpret) {
+private fun executeSelection(selection: String?, interpret: Interpret, formatter: Format, lint: Lint) {
     when (selection) {
-        "1", "2", "3" -> selectSnippetLocation(selection, interpret)
+        "1", "2", "3" -> selectSnippetLocation(selection, interpret, formatter, lint)
         "4" -> greet()
-        else -> selector(interpret)
+        else -> selector(interpret, formatter, lint)
     }
 }
 
-private fun selectSnippetLocation(selection: String?, interpret: Interpret) {
+private fun selectSnippetLocation(selection: String?, interpret: Interpret, formatter: Format, lint: Lint) {
     println("The snippet is:")
     println("1. From a file")
     println("2. Inserted manually")
     val file = readlnOrNull()
     println("----------------------------------")
     when (file) {
-        "1" -> runFromFile(selection, interpret)
-        "2" -> runFromString(selection, interpret)
-        else -> selectSnippetLocation(selection, interpret)
+        "1" -> runFromFile(selection, interpret, formatter, lint)
+        "2" -> runFromString(selection, interpret, formatter, lint)
+        else -> selectSnippetLocation(selection, interpret, formatter, lint)
     }
 }
 
@@ -62,7 +78,7 @@ private fun greet() {
     println("Adios!")
 }
 
-private fun runFromFile(selection: String?, interpret: Interpret) {
+private fun runFromFile(selection: String?, interpret: Interpret, formatter: Format, lint: Lint) {
     println("Please copy the path to your file")
     val location = readlnOrNull()
     val file = File(location)
@@ -70,27 +86,26 @@ private fun runFromFile(selection: String?, interpret: Interpret) {
         val inputStream = file.inputStream()
         when (selection) {
             "1" -> interpret.interpret(inputStream)
-            "2" -> println("printScript.format(inputStream)")
-            "3" -> println("printScript.lint(inputStream)")
-            else -> selector(interpret)
+            "2" -> println(formatter.format(inputStream))
+            "3" -> println(lint.lint(inputStream))
+            else -> selector(interpret, formatter, lint)
         }
     } catch (e: FileNotFoundException) {
         println("No existe un archivo en esa posicion, por favor intente de nuevo")
         println("----------------------------------")
-        selector(interpret)
     }
-    selector(interpret)
+    selector(interpret, formatter, lint)
 }
 
-private fun runFromString(selection: String?, interpret: Interpret) {
+private fun runFromString(selection: String?, interpret: Interpret, formatter: Format, lint: Lint) {
     println("Please insert your snippet")
     val snippet = readlnOrNull()
     val inputStream = ByteArrayInputStream(snippet?.toByteArray())
     when (selection) {
         "1" -> interpret.interpret(inputStream)
-        "2" -> println("printScript.format(inputStream)")
-        "3" -> println("printScript.lint(inputStream)")
-        else -> selector(interpret)
+        "2" -> formatter.format(inputStream)
+        "3" -> lint.lint(inputStream)
+        else -> selector(interpret, formatter, lint)
     }
-    selector(interpret)
+    selector(interpret, formatter, lint)
 }
