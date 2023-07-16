@@ -7,6 +7,8 @@ import ast.ConstAssignationDeclarationAst
 import ast.DeclarationAst
 import ast.FalseLiteral
 import ast.NumberType
+import ast.ReadInputAst
+import ast.StringLiteral
 import ast.StringType
 import ast.TrueLiteral
 import ast.VariableNameNode
@@ -16,6 +18,7 @@ import token.BooleanLiteralToken
 import token.FalseLiteralToken
 import token.TrueLiteralToken
 import validlistoftokens.ConstDeclarationAssignationListValidListOfTokens
+import validlistoftokens.ConstDeclarationAssignationParameterValidListOfTokens
 import validlistoftokens.ConstDeclarationAssignationValidListOfTokens
 
 class ConstDeclarationAssignationBuilder : AstBuilder<ConstDeclarationAssignationValidListOfTokens, AssignationDeclarationAst> {
@@ -57,5 +60,17 @@ class ConstDeclarationAssignationBuilder : AstBuilder<ConstDeclarationAssignatio
                     )
                 )
             }
+
+            is ConstDeclarationAssignationParameterValidListOfTokens ->
+                ConstAssignationDeclarationAst(
+                    AssignationAst(
+                        VariableNameNode(validListOfTokens.variable.value),
+                        ReadInputAst(StringLiteral(validListOfTokens.content.stringLiteralToken.value))
+                    ),
+                    DeclarationAst(
+                        VariableNameNode(validListOfTokens.variable.value),
+                        findType(validListOfTokens.type)
+                    )
+                )
         }
 }

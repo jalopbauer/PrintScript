@@ -54,6 +54,13 @@ class ConstDeclarationAssignationValidListOfTokensBuilder :
                                 )
                             }
                     }
+                ?: ReadInputValidListOfTokensBuilder().validate(tokens.subList(5, (tokens.size - 1))) ?.let {
+                    ConstDeclarationAssignationParameterValidListOfTokens(
+                        tokens.component2() as VariableNameToken,
+                        it,
+                        tokens.component4() as TypeToken
+                    )
+                }
         }
         return null
     }
