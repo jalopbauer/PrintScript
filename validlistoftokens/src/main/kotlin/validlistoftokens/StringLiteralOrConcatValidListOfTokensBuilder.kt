@@ -1,7 +1,9 @@
 package validlistoftokens
 
+import token.StringLiteralToken
 import token.Token
 import token.TokenName
+import token.VariableNameToken
 
 class StringLiteralOrConcatValidListOfTokensBuilder :
     ValidListOfTokensBuilder<StringLiteralOrStringConcatValidListOfTokens> {
@@ -12,7 +14,7 @@ class StringLiteralOrConcatValidListOfTokensBuilder :
                 if (token.tokenName() != TokenName.SUM) {
                     return null
                 }
-            } else if (token.tokenName() != TokenName.STRING_LITERAL) {
+            } else if (token !is StringLiteralToken && token !is VariableNameToken) {
                 return null
             }
             tokenCounter++
