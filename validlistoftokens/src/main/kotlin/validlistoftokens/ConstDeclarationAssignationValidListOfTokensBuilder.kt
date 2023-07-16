@@ -25,7 +25,7 @@ class ConstDeclarationAssignationValidListOfTokensBuilder :
             return tokens.getOrNull(5).takeIf { it is BooleanLiteralToken }
                 ?.let { booleanLiteral ->
                     tokens.component4().takeIf { it is BooleanTypeToken }?.let {
-                        ConstDeclarationAssignationValidListOfTokens(
+                        ConstDeclarationAssignationListValidListOfTokens(
                             tokens.component2() as VariableNameToken,
                             listOf(booleanLiteral as BooleanLiteralToken),
                             it as BooleanTypeToken
@@ -36,7 +36,7 @@ class ConstDeclarationAssignationValidListOfTokensBuilder :
                     ?.let {
                         tokens.component4().takeIf { it is NumberTypeToken }
                             ?.let {
-                                ConstDeclarationAssignationValidListOfTokens(
+                                ConstDeclarationAssignationListValidListOfTokens(
                                     tokens.component2() as VariableNameToken,
                                     tokens.subList(5, (tokens.size - 1)),
                                     tokens.component4() as TypeToken
@@ -47,7 +47,7 @@ class ConstDeclarationAssignationValidListOfTokensBuilder :
                     ?.let {
                         tokens.component4().takeIf { it is StringTypeToken }
                             ?.let {
-                                ConstDeclarationAssignationValidListOfTokens(
+                                ConstDeclarationAssignationListValidListOfTokens(
                                     tokens.component2() as VariableNameToken,
                                     tokens.subList(5, (tokens.size - 1)),
                                     tokens.component4() as TypeToken
