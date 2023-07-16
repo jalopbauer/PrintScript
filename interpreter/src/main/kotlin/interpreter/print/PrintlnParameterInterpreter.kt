@@ -17,6 +17,7 @@ import interpreter.InterpreterErrorResponse
 import interpreter.InterpreterResponse
 import interpreter.NumberLiteralResponse
 import interpreter.StringLiteralResponse
+import interpreter.other.Helper
 import interpreter.readInput.ReadInputInterpreter
 import interpreter.state.PrintScriptInterpreterState
 class PrintlnParameterInterpreter : Interpreter<PrintlnAstParameter, PrintScriptInterpreterState> {
@@ -47,7 +48,10 @@ class PrintlnParameterInterpreter : Interpreter<PrintlnAstParameter, PrintScript
             is ReadInputAst -> ReadInputInterpreter(this) { literal -> literal }.interpret(abstractSyntaxTree, interpreterState)
             is Operation ->
                 when (val literalOrError = FullSolver().solve(abstractSyntaxTree, interpreterState)) {
-                    is InterpreterErrorResponse -> literalOrError.interpreterError
+                    is InterpreterErrorResponse -> {
+                        Helper().fromOperationToStringConcat(abstractSyntaxTree)?.let { this.interpret(it, interpreterState) }
+                            ?: literalOrError.interpreterError
+                    }
                     is NumberLiteralResponse -> this.interpret(literalOrError.literal, interpreterState)
                 }
             else -> InterpreterError()
