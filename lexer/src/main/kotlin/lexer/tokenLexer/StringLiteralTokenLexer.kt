@@ -13,7 +13,7 @@ class StringLiteralSingleQuoteTokenLexer : TokenLexer {
 }
 
 class StringLiteralDoubleQuoteTokenLexer : TokenLexer {
-    override fun tokenize(input: TokenLexerInput): Token? =
+    override fun tokenize(input: TokenLexerInput): StringLiteralToken? =
         if (input.string.first() == '\"' && input.string.last() == '\"' && input.string.length >= 2) {
             StringLiteralToken(input.string.substring(1, input.string.length - 1), input.lineNumber, input.position)
         } else {

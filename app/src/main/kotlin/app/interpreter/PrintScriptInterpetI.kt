@@ -1,6 +1,9 @@
 package app.interpreter
 
 import app.errorHandler.ErrorHandler
+import app.interpreter.handler.SendLiteralHandler
+import app.literalInputter.CliLiteralInputter
+import app.literalInputter.LiteralInputter
 import ast.AbstractSyntaxTree
 import interpreter.InterpreterError
 import interpreter.PrintScriptInterpreter
@@ -22,15 +25,26 @@ import parser.parserRespose.SentenceInvalid
 import parser.parserState.IfParserState
 import token.Token
 
-class PrintScriptInterpetI(private val tokenListLexer: NewTokenListLexer, private val errorHandler: ErrorHandler<PrintScriptInterpretStates>) : PrintScriptInterpret {
-    constructor(version: String, errorHandler: ErrorHandler<PrintScriptInterpretStates>) :
+class PrintScriptInterpetI(
+    private val tokenListLexer: NewTokenListLexer,
+    private val errorHandler: ErrorHandler<PrintScriptInterpretStates>,
+    val literalInputter: LiteralInputter
+) : PrintScriptInterpret {
+    constructor(
+        version: String,
+        errorHandler: ErrorHandler<PrintScriptInterpretStates>,
+        literalInputter: LiteralInputter = CliLiteralInputter(
+            listOf()
+        )
+    ) :
         this(
             if (version == "1.1") {
                 NewTokenListLexer(SecondVersionPrintScriptLexer())
             } else {
                 NewTokenListLexer(FirstVersionPrintScriptLexer())
             },
-            errorHandler
+            errorHandler,
+            literalInputter
         )
     override fun interpret(
         nextChar: Char,
@@ -69,7 +83,15 @@ class PrintScriptInterpetI(private val tokenListLexer: NewTokenListLexer, privat
         return when (val interpret = PrintScriptInterpreter().interpret(abstractSyntaxTree, states.printScriptInterpreterState)) {
             is PrintScriptInterpreterState -> states.copy(printScriptInterpreterState = interpret)
             is InterpreterError -> errorHandler.handle("Interoreter error ${interpret.message}", states)
-            is SendLiteral -> states.copy(printScriptInterpreterState = interpret.state)
+            is SendLiteral -> {
+                interpretStates(
+                    abstractSyntaxTree,
+                    SendLiteralHandler(literalInputter).handle(states.copy(printScriptInterpreterState = interpret.state))
+                ).let {
+                    println(it)
+                    it
+                }
+            }
             else -> TODO()
         }
     }
