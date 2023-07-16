@@ -6,16 +6,28 @@ import lexer.LexerInput
 import lexer.NewTokenListLexer
 import lexer.TokenFoundLexerStateResponse
 import lexer.lexerState.PreviousTokenDefinedLexerState
+import lexer.tokenLexer.FirstVersionPrintScriptLexer
+import lexer.tokenLexer.SecondVersionPrintScriptLexer
 import token.Token
 
-class PrintScriptFormatterI(private val formatter: Formatter) : PrintScriptFormatter {
+class PrintScriptFormatterI(private val tokenListLexer: NewTokenListLexer, private val formatter: Formatter) : PrintScriptFormatter {
+
+    constructor(version: String, formatter: Formatter) :
+        this(
+            if (version == "1.1") {
+                NewTokenListLexer(SecondVersionPrintScriptLexer())
+            } else {
+                NewTokenListLexer(FirstVersionPrintScriptLexer())
+            },
+            formatter
+        )
     override fun format(
         nextChar: Char,
         states: PrintScriptFormatterStates
     ): PrintScriptFormatterStates =
         LexerInput(nextChar, states.lexerState)
             .let { input ->
-                when (val stateLexerResponse = NewTokenListLexer().tokenize(input)) {
+                when (val stateLexerResponse = tokenListLexer.tokenize(input)) {
                     is IntermediateLexerStateResponse -> states.copy(lexerState = stateLexerResponse.intermediateLexerState)
                     is TokenFoundLexerStateResponse -> formatStates(stateLexerResponse.token, states.copy(lexerState = stateLexerResponse.intermediateLexerState))
                 }
