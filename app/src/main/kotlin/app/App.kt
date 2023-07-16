@@ -32,9 +32,9 @@ private fun versionSelector(version: String?) {
             PrintScriptInterpetI(version, MyErrorHandler())
         )
         val configString = "camel-case-variable"
-        val linter = PrintScriptStaticCodeAnalyserFactory().build(configString)
+        val linter = PrintScriptStaticCodeAnalyserFactory().build("")
         val lint = Lint(PrintScriptStaticCodeAnalyserI(version, linter))
-        val formatter = PrintScriptFormatterFactory().build(configString)
+        val formatter = PrintScriptFormatterFactory().build("")
         val format = Format(PrintScriptFormatterI(version, formatter))
         selector(interpreter, format, lint)
     } else {
