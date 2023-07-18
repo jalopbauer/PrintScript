@@ -37,7 +37,7 @@ class FormatterTest {
             """.trimIndent()
         )
         val sentenceBoth = formatterBoth.format(tokens)
-        assert(sentenceBoth == "let test : number;\n")
+        assert(sentenceBoth == "let test : number;")
     }
 
     @Test
@@ -55,7 +55,7 @@ class FormatterTest {
             """.trimIndent()
         )
         val sentenceAfter = formatterAfter.format(tokens)
-        assert(sentenceAfter == "let test: string;\n")
+        assert(sentenceAfter == "let test: string;")
     }
 
     @Test
@@ -73,7 +73,7 @@ class FormatterTest {
             """.trimIndent()
         )
         val sentenceBefore = formatterBefore.format(tokens)
-        assert(sentenceBefore == "let test :number;\n")
+        assert(sentenceBefore == "let test :number;")
     }
 
     @Test
@@ -90,7 +90,7 @@ class FormatterTest {
             """.trimIndent()
         )
         val sentence = formatter.format(tokens)
-        val correctSentence = "test = " + '"' + "Hello World" + '"' + ";\n"
+        val correctSentence = "test = " + '"' + "Hello World" + '"' + ";"
         assert(sentence == correctSentence)
     }
 
@@ -149,7 +149,7 @@ class FormatterTest {
         )
         val formatter = PrintScriptFormatterFactory().build("")
         val sentence = formatter.format(tokens)
-        val correctSentence = "test = \"Hello World\" ;\n"
+        val correctSentence = "test = \"Hello World\" ;"
         assertEquals(correctSentence, sentence)
     }
 
@@ -163,7 +163,7 @@ class FormatterTest {
         )
         val formatter = PrintScriptFormatterFactory().build("no-conventional")
         val sentence = formatter.format(tokens)
-        val correctSentence = "test=\"Hello World\";\n"
+        val correctSentence = "test=\"Hello World\";"
         assertEquals(correctSentence, sentence)
     }
 }

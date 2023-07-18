@@ -11,6 +11,7 @@ import token.NumberTypeToken
 import token.PrintlnToken
 import token.RightParenthesisToken
 import token.StringLiteralToken
+import token.StringTypeToken
 import token.SubToken
 import token.SumToken
 import token.Token
@@ -98,7 +99,7 @@ class PreviousSpacingBetweenEveryToken : TokenListSpacingRule {
 
 class EnterAfterEndOfLine : Rule<String> {
     override fun apply(listOfTokens: String): String =
-        listOfTokens + '\n'
+        listOfTokens
 }
 
 class TokenToString : Rule<Token> {
@@ -115,6 +116,7 @@ class TokenToString : Rule<Token> {
             is SumToken -> "+"
             is SubToken -> "-"
             is NumberTypeToken -> "number"
+            is StringTypeToken -> "number"
             is RightParenthesisToken -> ")"
             is LeftParenthesisToken -> "("
             is PrintlnToken -> "println"
