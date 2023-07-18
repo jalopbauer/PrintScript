@@ -10,6 +10,13 @@ repositories {
     mavenCentral()
 }
 
+jacoco {
+    toolVersion = "0.8.9"
+    reportsDirectory.set(layout.buildDirectory.dir("customJacocoReportDir"))
+}
+
+
+
 dependencies {
     constraints {
         // Define dependency versions as constraints
@@ -20,12 +27,13 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.1'
 }
 
-tasks.named('test') {
+test {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
+    finalizedBy('jacocoTestReport')
 }
 
-tasks.named('jacocoTestReport') {
+jacocoTestReport {
     dependsOn(tasks.test)
 }
 
