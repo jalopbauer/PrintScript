@@ -6,15 +6,29 @@ import lexer.lexerState.IntermediateLexerState
 import lexer.lexerState.NoPreviousTokenDefinedLexerState
 import lexer.lexerState.PreviousTokenDefinedLexerState
 import lexer.tokenLexer.FirstVersionPrintScriptLexer
+import lexer.tokenLexer.SecondVersionPrintScriptLexer
+import lexer.tokenLexer.VersionPrintScriptLexer
 import org.junit.jupiter.api.Test
 import token.Token
 class LexerTester {
     @Test
-    fun test() {
+    fun firstVersionPrintScriptLexer() {
         ListTester(
             LexerTesterBuilder(),
-            LexerExpectedValuesBuilder(),
-            LexerTestFolderPathBuilder(),
+            LexerExpectedValuesBuilder(FirstVersionPrintScriptLexer()),
+            LexerTestFolderPathBuilder(8),
+            "src/test/resources/",
+            "tokenResult",
+            "input"
+        ).test()
+    }
+
+    @Test
+    fun secondVersionPrintScriptLexer() {
+        ListTester(
+            LexerTesterBuilder(),
+            LexerExpectedValuesBuilder(SecondVersionPrintScriptLexer()),
+            LexerTestFolderPathBuilder(9),
             "src/test/resources/",
             "tokenResult",
             "input"
@@ -65,12 +79,13 @@ data class LexerTokenResult(private val tokenName: String, private val lineNumbe
         }
 }
 
-class LexerExpectedValuesBuilder : ExpectedValuesBuilder<Token> {
+class LexerExpectedValuesBuilder(val firstVersionPrintScriptLexer: VersionPrintScriptLexer) : ExpectedValuesBuilder<Token> {
     override fun build(s: String): List<Token> {
         val initial: Pair<IntermediateLexerState, List<Token>> = Pair(NoPreviousTokenDefinedLexerState(), listOf())
+
         return s.fold(initial) { (state, tokens), nextChar ->
             val input = LexerInput(nextChar, state)
-            NewTokenListLexer(FirstVersionPrintScriptLexer()).tokenize(input)
+            NewTokenListLexer(firstVersionPrintScriptLexer).tokenize(input)
                 .let {
                     when (it) {
                         is IntermediateLexerStateResponse -> Pair(it.intermediateLexerState, tokens)
@@ -85,8 +100,8 @@ class LexerExpectedValuesBuilder : ExpectedValuesBuilder<Token> {
         }
     }
 }
-class LexerTestFolderPathBuilder : TestFolderPathBuilder {
-    override fun build(): List<String> = (1..8).map { it.toString() }
+class LexerTestFolderPathBuilder(val int: Int) : TestFolderPathBuilder {
+    override fun build(): List<String> = (1..int).map { it.toString() }
 }
 class LexerTesterBuilder : TesterBuilder<Token, Tester<Token, LexerTokenResult, LexerTokenResultTransformer>> {
     override fun build(expectedValues: List<Token>): Tester<Token, LexerTokenResult, LexerTokenResultTransformer> =
