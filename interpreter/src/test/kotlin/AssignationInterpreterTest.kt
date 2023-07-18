@@ -6,6 +6,7 @@ import ast.Literal
 import ast.Mult
 import ast.NumberType
 import ast.Operation
+import ast.ReadInputAst
 import ast.StringConcatenation
 import ast.StringLiteral
 import ast.StringType
@@ -14,6 +15,7 @@ import ast.Sum
 import ast.VariableNameNode
 import interpreter.InterpreterError
 import interpreter.PrintScriptInterpreter
+import interpreter.SendLiteral
 import interpreter.state.PrintScriptInterpreterState
 import interpreter.state.PrintScriptInterpreterStateI
 import interpreter.state.PrintlnInterpreterStateI
@@ -604,5 +606,63 @@ class AssignationInterpreterTest {
             ?: {
                 assert(false)
             }
+    }
+
+    @Test
+    fun readInputSendLiteral() {
+        val variableToBeSetName = "variableToBeSet"
+        val variableToBeSet = VariableNameNode(variableToBeSetName)
+        val valeue = ReadInputAst(StringLiteral("hello"))
+
+        val assignationInterpreterState = getState(
+            VariableInterpreterStateI(
+                variableLiteralMap = mapOf(),
+                variableTypeMap = mapOf(
+                    variableToBeSetName to StringType
+                )
+            )
+        )
+        val assignationAst = AssignationAst(
+            variableToBeSet,
+            valeue
+        )
+
+        val interpreter = PrintScriptInterpreter()
+
+        val interpreterResponse = interpreter.interpret(
+            assignationAst,
+            assignationInterpreterState
+        )
+
+        assert(interpreterResponse is SendLiteral)
+    }
+
+    @Test
+    fun readInputGetVal() {
+        val variableToBeSetName = "variableToBeSet"
+        val variableToBeSet = VariableNameNode(variableToBeSetName)
+        val valeue = ReadInputAst(StringLiteral("hello"))
+
+        val assignationInterpreterState = getState(
+            VariableInterpreterStateI(
+                variableLiteralMap = mapOf(),
+                variableTypeMap = mapOf(
+                    variableToBeSetName to StringType
+                )
+            )
+        ).setReadInput(StringLiteral("hello"))
+        val assignationAst = AssignationAst(
+            variableToBeSet,
+            valeue
+        )
+
+        val interpreter = PrintScriptInterpreter()
+
+        val interpreterResponse = interpreter.interpret(
+            assignationAst,
+            assignationInterpreterState
+        )
+
+        assert(interpreterResponse is PrintScriptInterpreterState)
     }
 }
