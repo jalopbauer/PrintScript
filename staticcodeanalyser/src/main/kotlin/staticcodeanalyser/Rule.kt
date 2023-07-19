@@ -27,7 +27,7 @@ class PrintlnParameterRule :
                 } else {
                     "StringConcat not valid"
                 }
-            is ReadInputValidListOfTokens -> "StringConcat not valid"
+            is ReadInputValidListOfTokens -> "ReadInput not valid"
             is OperationValidListOfTokens -> "StringConcat not valid"
         }
 }

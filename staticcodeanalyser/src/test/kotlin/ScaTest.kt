@@ -6,6 +6,7 @@ import staticcodeanalyser.Valid
 import token.IntNumberLiteralToken
 import token.LeftParenthesisToken
 import token.PrintlnToken
+import token.ReadInputToken
 import token.RightParenthesisToken
 import token.SemicolonToken
 import token.StringLiteralToken
@@ -78,6 +79,22 @@ class ScaTest {
         )
         val scaCamel = PrintScriptStaticCodeAnalyserFactory().build("allow-literals-or-variable-only")
         assertEquals(Valid, scaCamel.format(tokens))
+    }
+
+    @Test
+    fun printLnStringLiteralReadInputInvalid() {
+        val tokens = listOf(
+            PrintlnToken(0, 0),
+            LeftParenthesisToken(0, 0),
+            ReadInputToken(0, 0),
+            LeftParenthesisToken(0, 0),
+            StringLiteralToken("Hello World", 0, 0),
+            RightParenthesisToken(0, 0),
+            RightParenthesisToken(0, 0),
+            SemicolonToken(0, 0)
+        )
+        val scaCamel = PrintScriptStaticCodeAnalyserFactory().build("allow-literals-or-variable-only")
+        assertEquals(ErrorResponse("ReadInput not valid"), scaCamel.format(tokens))
     }
 
     @Test
