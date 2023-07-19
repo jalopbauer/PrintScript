@@ -15,7 +15,6 @@ import interpreter.InterpreterErrorResponse
 import interpreter.InterpreterResponse
 import interpreter.NumberLiteralResponse
 import interpreter.StringLiteralResponse
-import interpreter.readInput.ReadInputInterpreter
 import interpreter.state.PrintScriptInterpreterState
 
 class AssignationParameterInterpreter : Interpreter<AssignationAst, PrintScriptInterpreterState> {

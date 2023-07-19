@@ -1,23 +1,22 @@
-import formatter.EnterBeforePrintln
-import formatter.OneSpaceBetweenEveryToken
+
 import formatter.PrintScriptFormatterFactory
-import formatter.ValidListOfTokensFormatter
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import token.AssignationToken
 import token.DeclarationToken
+import token.FalseLiteralToken
 import token.IntNumberLiteralToken
 import token.LeftParenthesisToken
 import token.LetToken
 import token.NumberTypeToken
 import token.PrintlnToken
+import token.ReadInputToken
 import token.RightParenthesisToken
 import token.SemicolonToken
 import token.StringLiteralToken
 import token.StringTypeToken
 import token.Token
 import token.VariableNameToken
-import validlistoftokens.PrintlnValidListOfTokensBuilder
 
 class FormatterTest {
 
@@ -103,7 +102,11 @@ class FormatterTest {
             RightParenthesisToken(0, 0),
             SemicolonToken(0, 0)
         )
-        val formatter = ValidListOfTokensFormatter(PrintlnValidListOfTokensBuilder(), EnterBeforePrintln(OneSpaceBetweenEveryToken(), 1))
+        val formatter = PrintScriptFormatterFactory().build(
+            """
+                enter-before-println-1
+            """.trimIndent()
+        )
         val sentence = formatter.format(tokens)
         val sentenceCorrect = "println(\"Hello World\");"
         assert(sentence == sentenceCorrect)
@@ -118,7 +121,11 @@ class FormatterTest {
             RightParenthesisToken(0, 0),
             SemicolonToken(0, 0)
         )
-        val formatter = ValidListOfTokensFormatter(PrintlnValidListOfTokensBuilder(), EnterBeforePrintln(OneSpaceBetweenEveryToken(), 1))
+        val formatter = PrintScriptFormatterFactory().build(
+            """
+                enter-before-println-0
+            """.trimIndent()
+        )
         val sentence = formatter.format(tokens)
         val sentenceCorrect = "println(1);"
         assert(sentence == sentenceCorrect)
@@ -129,14 +136,40 @@ class FormatterTest {
         val tokens = listOf(
             PrintlnToken(0, 0),
             LeftParenthesisToken(0, 0),
-            VariableNameToken("HelloWorld", 0, 0),
+            FalseLiteralToken(0, 0),
             RightParenthesisToken(0, 0),
             SemicolonToken(0, 0)
         )
-        val formatter = ValidListOfTokensFormatter(PrintlnValidListOfTokensBuilder(), EnterBeforePrintln(OneSpaceBetweenEveryToken(), 1))
+        val formatter = PrintScriptFormatterFactory().build(
+            """
+                enter-before-println-2
+            """.trimIndent()
+        )
         val sentence = formatter.format(tokens)
-        val sentenceCorrect = "println(HelloWorld);"
-        assert(sentence == sentenceCorrect)
+        val sentenceCorrect = "println(false);"
+        assertEquals(sentenceCorrect, sentence)
+    }
+
+    @Test
+    fun printVariableParameterFormatterReadInput() {
+        val tokens = listOf(
+            PrintlnToken(0, 0),
+            LeftParenthesisToken(0, 0),
+            ReadInputToken(0, 0),
+            LeftParenthesisToken(0, 0),
+            StringLiteralToken("Hello World", 0, 0),
+            RightParenthesisToken(0, 0),
+            RightParenthesisToken(0, 0),
+            SemicolonToken(0, 0)
+        )
+        val formatter = PrintScriptFormatterFactory().build(
+            """
+                enter-before-println-2
+            """.trimIndent()
+        )
+        val sentence = formatter.format(tokens)
+        val sentenceCorrect = "println(readInput ( \"Hello World\" ));"
+        assertEquals(sentenceCorrect, sentence)
     }
 
     @Test

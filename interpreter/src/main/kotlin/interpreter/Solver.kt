@@ -52,22 +52,10 @@ class FullSolver : Solver<OperationParameter> {
                 val rightSolve = this.solve(operationParameter.right, variableInterpreterState)
                 if (leftSolve is NumberLiteralResponse && rightSolve is NumberLiteralResponse) {
                     when (operationParameter.operation) {
-                        is Sum ->
-                            sum(leftSolve.literal, rightSolve.literal)
-                                ?.let { NumberLiteralResponse(it) }
-                                ?: InterpreterErrorResponse(InterpreterError())
-                        is Sub ->
-                            sub(leftSolve.literal, rightSolve.literal)
-                                ?.let { NumberLiteralResponse(it) }
-                                ?: InterpreterErrorResponse(InterpreterError())
-                        is Div -> div(leftSolve.literal, rightSolve.literal)
-                            ?.let { NumberLiteralResponse(it) }
-                            ?: InterpreterErrorResponse(InterpreterError())
-                        is Mult ->
-                            mult(leftSolve.literal, rightSolve.literal)
-                                ?.let { NumberLiteralResponse(it) }
-                                ?: InterpreterErrorResponse(InterpreterError())
-                        else -> InterpreterErrorResponse(InterpreterError())
+                        is Sum -> NumberLiteralResponse(sum(leftSolve.literal, rightSolve.literal))
+                        is Sub -> NumberLiteralResponse(sub(leftSolve.literal, rightSolve.literal))
+                        is Div -> NumberLiteralResponse(div(leftSolve.literal, rightSolve.literal))
+                        is Mult -> NumberLiteralResponse(mult(leftSolve.literal, rightSolve.literal))
                     }
                 } else {
                     InterpreterErrorResponse(InterpreterError())
@@ -75,40 +63,14 @@ class FullSolver : Solver<OperationParameter> {
             }
         }
 
-    fun sum(leftLiteral: NumberLiteral, rightLiteral: NumberLiteral): NumberLiteral? =
-        when {
-            leftLiteral is DoubleNumberLiteral && rightLiteral is DoubleNumberLiteral -> DoubleNumberLiteral(leftLiteral.number + rightLiteral.number)
-            leftLiteral is DoubleNumberLiteral && rightLiteral is IntNumberLiteral -> DoubleNumberLiteral(leftLiteral.number + rightLiteral.number)
-            leftLiteral is IntNumberLiteral && rightLiteral is DoubleNumberLiteral -> DoubleNumberLiteral(leftLiteral.number + rightLiteral.number)
-            leftLiteral is IntNumberLiteral && rightLiteral is IntNumberLiteral -> IntNumberLiteral(leftLiteral.number + rightLiteral.value())
-            else -> null
-        }
-    fun sub(leftLiteral: NumberLiteral, rightLiteral: NumberLiteral): NumberLiteral? =
-        when {
-            leftLiteral is DoubleNumberLiteral && rightLiteral is DoubleNumberLiteral -> DoubleNumberLiteral(leftLiteral.number - rightLiteral.number)
-            leftLiteral is DoubleNumberLiteral && rightLiteral is IntNumberLiteral -> DoubleNumberLiteral(leftLiteral.number - rightLiteral.number)
-            leftLiteral is IntNumberLiteral && rightLiteral is DoubleNumberLiteral -> DoubleNumberLiteral(leftLiteral.number - rightLiteral.number)
-            leftLiteral is IntNumberLiteral && rightLiteral is IntNumberLiteral -> IntNumberLiteral(leftLiteral.number - rightLiteral.value())
-            else -> null
-        }
+    fun sum(leftLiteral: NumberLiteral, rightLiteral: NumberLiteral): NumberLiteral =
+        DoubleNumberLiteral(leftLiteral.value().toDouble() + rightLiteral.value().toDouble())
+    fun sub(leftLiteral: NumberLiteral, rightLiteral: NumberLiteral): NumberLiteral =
+        DoubleNumberLiteral(leftLiteral.value().toDouble() - rightLiteral.value().toDouble())
 
-    fun mult(leftLiteral: NumberLiteral, rightLiteral: NumberLiteral): NumberLiteral? =
-        when {
-            leftLiteral is DoubleNumberLiteral && rightLiteral is DoubleNumberLiteral -> DoubleNumberLiteral(leftLiteral.number * rightLiteral.number)
-            leftLiteral is DoubleNumberLiteral && rightLiteral is IntNumberLiteral -> DoubleNumberLiteral(leftLiteral.number * rightLiteral.number)
-            leftLiteral is IntNumberLiteral && rightLiteral is DoubleNumberLiteral -> DoubleNumberLiteral(leftLiteral.number * rightLiteral.number)
-            leftLiteral is IntNumberLiteral && rightLiteral is IntNumberLiteral -> IntNumberLiteral(leftLiteral.number * rightLiteral.value())
-            else -> null
-        }
+    fun mult(leftLiteral: NumberLiteral, rightLiteral: NumberLiteral): NumberLiteral =
+        DoubleNumberLiteral(leftLiteral.value().toDouble() * rightLiteral.value().toDouble())
 
-    fun div(leftLiteral: NumberLiteral, rightLiteral: NumberLiteral): NumberLiteral? =
-        when {
-            rightLiteral is DoubleNumberLiteral && rightLiteral.number == 0.0 ||
-                rightLiteral is IntNumberLiteral && rightLiteral.number == 0 -> null
-            leftLiteral is DoubleNumberLiteral && rightLiteral is DoubleNumberLiteral -> DoubleNumberLiteral(leftLiteral.number / rightLiteral.number)
-            leftLiteral is DoubleNumberLiteral && rightLiteral is IntNumberLiteral -> DoubleNumberLiteral(leftLiteral.number / rightLiteral.number)
-            leftLiteral is IntNumberLiteral && rightLiteral is DoubleNumberLiteral -> DoubleNumberLiteral(leftLiteral.number / rightLiteral.number)
-            leftLiteral is IntNumberLiteral && rightLiteral is IntNumberLiteral -> IntNumberLiteral(leftLiteral.number / rightLiteral.value())
-            else -> null
-        }
+    fun div(leftLiteral: NumberLiteral, rightLiteral: NumberLiteral): NumberLiteral =
+        DoubleNumberLiteral(leftLiteral.value().toDouble() / rightLiteral.value().toDouble())
 }

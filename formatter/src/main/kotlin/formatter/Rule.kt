@@ -2,26 +2,25 @@ package formatter
 
 import token.AssignationToken
 import token.DeclarationToken
-import token.DoubleNumberLiteralToken
+import token.FalseLiteralToken
 import token.IntNumberLiteralToken
 import token.LeftParenthesisToken
-import token.LetToken
-import token.MultToken
 import token.NumberTypeToken
 import token.PrintlnToken
+import token.ReadInputToken
 import token.RightParenthesisToken
+import token.SemicolonToken
 import token.StringLiteralToken
 import token.StringTypeToken
 import token.SubToken
 import token.SumToken
 import token.Token
-import token.TokenName
 import token.VariableNameToken
 import validlistoftokens.AssignationValidListOfTokens
 import validlistoftokens.BooleanLiteralParameter
 import validlistoftokens.DeclarationValidListOfTokens
 import validlistoftokens.NumberLiteralParameter
-import validlistoftokens.OperationValidListOfTokens
+import validlistoftokens.OperationValidListOfConcatTokens
 import validlistoftokens.PrintlnValidListOfTokens
 import validlistoftokens.ReadInputValidListOfTokens
 import validlistoftokens.StringLiteralOrStringConcatValidListOfTokens
@@ -32,27 +31,20 @@ interface Rule<T> {
     fun apply(listOfTokens: T): String
 }
 interface ValidListOfTokensRule<T : ValidListOfTokens> : Rule<T>
-interface DeclarationRule : ValidListOfTokensRule<DeclarationValidListOfTokens> {
-    fun getType(tokenName: TokenName): String =
-        when (tokenName) {
-            TokenName.STRING_TYPE -> "string"
-            TokenName.NUMBER_TYPE -> "number"
-            else -> "error"
-        }
-}
+interface DeclarationRule : ValidListOfTokensRule<DeclarationValidListOfTokens>
 class AddSpaceBeforeAndAfterDeclaration : DeclarationRule {
     override fun apply(listOfTokens: DeclarationValidListOfTokens): String =
-        "let ${listOfTokens.variable.value} : ${getType(listOfTokens.type.tokenName())};"
+        "let ${listOfTokens.variable.value} : ${TokenToString().apply(listOfTokens.type)};"
 }
 
 class AddSpaceBeforeDeclaration : DeclarationRule {
     override fun apply(listOfTokens: DeclarationValidListOfTokens): String =
-        "let ${listOfTokens.variable.value} :${getType(listOfTokens.type.tokenName())};"
+        "let ${listOfTokens.variable.value} :${TokenToString().apply(listOfTokens.type)};"
 }
 
 class AddSpaceAfterDeclaration : DeclarationRule {
     override fun apply(listOfTokens: DeclarationValidListOfTokens): String =
-        "let ${listOfTokens.variable.value}: ${getType(listOfTokens.type.tokenName())};"
+        "let ${listOfTokens.variable.value}: ${TokenToString().apply(listOfTokens.type)};"
 }
 
 class AddSpaceBeforeAndAfterAssignation(private val tokenListSpacingRule: TokenListSpacingRule) :
@@ -69,9 +61,9 @@ class EnterBeforePrintln(private val tokenListSpacingRule: TokenListSpacingRule,
                 is NumberLiteralParameter -> listOf(printlnValidParameter.numberLiteralToken)
                 is StringLiteralOrStringConcatValidListOfTokens -> printlnValidParameter.stringOrConcat
                 is VariableParameter -> listOf(printlnValidParameter.variableToken)
-                is BooleanLiteralParameter -> TODO()
-                is ReadInputValidListOfTokens -> TODO()
-                is OperationValidListOfTokens -> TODO()
+                is BooleanLiteralParameter -> listOf(printlnValidParameter.booleanLiteralToken)
+                is ReadInputValidListOfTokens -> listOf(printlnValidParameter.readInputToken, printlnValidParameter.leftParenthesisToken, printlnValidParameter.stringLiteralToken, printlnValidParameter.rightParenthesisToken)
+                is OperationValidListOfConcatTokens -> printlnValidParameter.operationConcat
             }
         ).padStart(amount, '\n') + ");"
 }
@@ -107,25 +99,19 @@ class TokenToString : Rule<Token> {
         when (listOfTokens) {
             is StringLiteralToken -> "\"${listOfTokens.value}\""
             is IntNumberLiteralToken -> listOfTokens.value.toString()
-            is DoubleNumberLiteralToken -> listOfTokens.value.toString()
             is VariableNameToken -> listOfTokens.value
-            is LetToken -> "let"
             is AssignationToken -> "="
             is DeclarationToken -> ":"
-            is MultToken -> "*"
+            is FalseLiteralToken -> "false"
             is SumToken -> "+"
             is SubToken -> "-"
+            is ReadInputToken -> "readInput"
             is NumberTypeToken -> "number"
-            is StringTypeToken -> "number"
+            is StringTypeToken -> "string"
             is RightParenthesisToken -> ")"
             is LeftParenthesisToken -> "("
             is PrintlnToken -> "println"
-            else -> {
-                when (listOfTokens.tokenName()) {
-                    TokenName.ASSIGNATION -> "="
-                    TokenName.SEMICOLON -> ";"
-                    else -> "error"
-                }
-            }
+            is SemicolonToken -> ";"
+            else -> "error"
         }
 }

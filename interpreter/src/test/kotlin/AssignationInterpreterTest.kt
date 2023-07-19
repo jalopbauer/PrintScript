@@ -1,11 +1,14 @@
 import ast.AssignationAst
+import ast.BooleanType
 import ast.Div
 import ast.DoubleNumberLiteral
+import ast.FalseLiteral
 import ast.IntNumberLiteral
 import ast.Literal
 import ast.Mult
 import ast.NumberType
 import ast.Operation
+import ast.ReadInputAst
 import ast.StringConcatenation
 import ast.StringLiteral
 import ast.StringType
@@ -14,6 +17,7 @@ import ast.Sum
 import ast.VariableNameNode
 import interpreter.InterpreterError
 import interpreter.PrintScriptInterpreter
+import interpreter.SendLiteral
 import interpreter.state.PrintScriptInterpreterState
 import interpreter.state.PrintScriptInterpreterStateI
 import interpreter.state.PrintlnInterpreterStateI
@@ -148,7 +152,7 @@ class AssignationInterpreterTest {
 
         val leftNumberValue = 69
         val rightNumberValue = 420
-        val expectedResult = leftNumberValue + rightNumberValue
+        val expectedResult: Double = (leftNumberValue + rightNumberValue).toDouble()
         val operation = Operation(IntNumberLiteral(leftNumberValue), Sum(), IntNumberLiteral(rightNumberValue))
 
         val assignationInterpreterState = getState(
@@ -174,8 +178,8 @@ class AssignationInterpreterTest {
         assert(interpreterResponse is PrintScriptInterpreterState)
         (interpreterResponse as PrintScriptInterpreterState).get(variableToBeSet)
             ?.let {
-                assert(it is IntNumberLiteral)
-                assertEquals(expectedResult, (it as IntNumberLiteral).number)
+                assert(it is DoubleNumberLiteral)
+                assertEquals(expectedResult, (it as DoubleNumberLiteral).number)
             }
             ?: {
                 assert(false)
@@ -189,7 +193,7 @@ class AssignationInterpreterTest {
 
         val leftNumberValue = 69
         val rightNumberValue = 420
-        val expectedResult = leftNumberValue - rightNumberValue
+        val expectedResult: Double = (leftNumberValue - rightNumberValue).toDouble()
         val operation = Operation(IntNumberLiteral(leftNumberValue), Sub(), IntNumberLiteral(rightNumberValue))
 
         val assignationInterpreterState = getState(
@@ -215,8 +219,8 @@ class AssignationInterpreterTest {
         assert(interpreterResponse is PrintScriptInterpreterState)
         (interpreterResponse as PrintScriptInterpreterState).get(variableToBeSet)
             ?.let {
-                assert(it is IntNumberLiteral)
-                assertEquals(expectedResult, (it as IntNumberLiteral).number)
+                assert(it is DoubleNumberLiteral)
+                assertEquals(expectedResult, (it as DoubleNumberLiteral).number)
             }
             ?: {
                 assert(false)
@@ -230,7 +234,7 @@ class AssignationInterpreterTest {
 
         val leftNumberValue = 69
         val rightNumberValue = 420
-        val expectedResult = leftNumberValue * rightNumberValue
+        val expectedResult: Double = (leftNumberValue * rightNumberValue).toDouble()
         val operation = Operation(IntNumberLiteral(leftNumberValue), Mult(), IntNumberLiteral(rightNumberValue))
 
         val assignationInterpreterState = getState(
@@ -256,8 +260,8 @@ class AssignationInterpreterTest {
         assert(interpreterResponse is PrintScriptInterpreterState)
         (interpreterResponse as PrintScriptInterpreterState).get(variableToBeSet)
             ?.let {
-                assert(it is IntNumberLiteral)
-                assertEquals(expectedResult, (it as IntNumberLiteral).number)
+                assert(it is DoubleNumberLiteral)
+                assertEquals(expectedResult, (it as DoubleNumberLiteral).number)
             }
             ?: {
                 assert(false)
@@ -271,7 +275,7 @@ class AssignationInterpreterTest {
 
         val leftNumberValue = 69
         val rightNumberValue = 69
-        val expectedResult = leftNumberValue / rightNumberValue
+        val expectedResult: Double = (leftNumberValue / rightNumberValue).toDouble()
         val operation = Operation(IntNumberLiteral(leftNumberValue), Div(), IntNumberLiteral(rightNumberValue))
 
         val assignationInterpreterState = getState(
@@ -297,8 +301,8 @@ class AssignationInterpreterTest {
         assert(interpreterResponse is PrintScriptInterpreterState)
         (interpreterResponse as PrintScriptInterpreterState).get(variableToBeSet)
             ?.let {
-                assert(it is IntNumberLiteral)
-                assertEquals(expectedResult, (it as IntNumberLiteral).number)
+                assert(it is DoubleNumberLiteral)
+                assertEquals(expectedResult, (it as DoubleNumberLiteral).number)
             }
             ?: {
                 assert(false)
@@ -312,10 +316,10 @@ class AssignationInterpreterTest {
 
         val variableWithPreviousValue = "variableWithPreviousValue"
 
-        val leftNumberValue = 69
+        val leftNumberValue = 69.3
         val rightNumberValue = 420
-        val expectedResult = leftNumberValue + rightNumberValue
-        val operation = Operation(IntNumberLiteral(leftNumberValue), Sum(), VariableNameNode(variableWithPreviousValue))
+        val expectedResult: Double = (leftNumberValue + rightNumberValue)
+        val operation = Operation(DoubleNumberLiteral(leftNumberValue), Sum(), VariableNameNode(variableWithPreviousValue))
 
         val assignationInterpreterState = getState(
             VariableInterpreterStateI(
@@ -344,12 +348,48 @@ class AssignationInterpreterTest {
         assert(interpreterResponse is PrintScriptInterpreterState)
         (interpreterResponse as PrintScriptInterpreterState).get(variableToBeSet)
             ?.let {
-                assert(it is IntNumberLiteral)
-                assertEquals(expectedResult, (it as IntNumberLiteral).number)
+                assert(it is DoubleNumberLiteral)
+                assertEquals(expectedResult, (it as DoubleNumberLiteral).number)
             }
             ?: {
                 assert(false)
             }
+    }
+
+    @Test
+    fun testSetSumVariableNotDefinedResultToVariable() {
+        val variableToBeSetName = "variableToBeSet"
+        val variableToBeSet = VariableNameNode(variableToBeSetName)
+
+        val variableWithPreviousValue = "variableWithPreviousValue"
+
+        val leftNumberValue = 69.3
+        val rightNumberValue = 420
+        val expectedResult: Double = (leftNumberValue + rightNumberValue)
+        val operation = Operation(DoubleNumberLiteral(leftNumberValue), Sum(), VariableNameNode(variableWithPreviousValue))
+
+        val assignationInterpreterState = getState(
+            VariableInterpreterStateI(
+                variableTypeMap = mapOf(
+                    variableToBeSetName to NumberType
+                ),
+                variableLiteralMap = mapOf()
+            )
+        )
+
+        val assignationAst = AssignationAst(
+            variableToBeSet,
+            operation
+        )
+
+        val interpreter = PrintScriptInterpreter()
+
+        val interpreterResponse = interpreter.interpret(
+            assignationAst,
+            assignationInterpreterState
+        )
+
+        assert(interpreterResponse is InterpreterError)
     }
 
     @Test
@@ -561,6 +601,42 @@ class AssignationInterpreterTest {
     }
 
     @Test
+    fun testSetConcatenationVariableBooleanResultToVariable() {
+        val variableToBeSetName = "variableToBeSet"
+        val variableToBeSet = VariableNameNode(variableToBeSetName)
+
+        val variableWithPreviousValue = "variableWithPreviousValue"
+
+        val operation = StringConcatenation(listOf(VariableNameNode(variableWithPreviousValue)))
+
+        val assignationInterpreterState = getState(
+            VariableInterpreterStateI(
+                variableLiteralMap = mapOf(
+                    variableWithPreviousValue to FalseLiteral
+                ),
+                variableTypeMap = mapOf(
+                    variableToBeSetName to StringType,
+                    variableWithPreviousValue to BooleanType
+                )
+            )
+        )
+
+        val assignationAst = AssignationAst(
+            variableToBeSet,
+            operation
+        )
+
+        val interpreter = PrintScriptInterpreter()
+
+        val interpreterResponse = interpreter.interpret(
+            assignationAst,
+            assignationInterpreterState
+        )
+
+        assert(interpreterResponse is InterpreterError)
+    }
+
+    @Test
     fun testSetConcatenationVariableStringResultToVariable() {
         val variableToBeSetName = "variableToBeSet"
         val variableToBeSet = VariableNameNode(variableToBeSetName)
@@ -604,5 +680,63 @@ class AssignationInterpreterTest {
             ?: {
                 assert(false)
             }
+    }
+
+    @Test
+    fun readInputSendLiteral() {
+        val variableToBeSetName = "variableToBeSet"
+        val variableToBeSet = VariableNameNode(variableToBeSetName)
+        val valeue = ReadInputAst(StringLiteral("hello"))
+
+        val assignationInterpreterState = getState(
+            VariableInterpreterStateI(
+                variableLiteralMap = mapOf(),
+                variableTypeMap = mapOf(
+                    variableToBeSetName to StringType
+                )
+            )
+        )
+        val assignationAst = AssignationAst(
+            variableToBeSet,
+            valeue
+        )
+
+        val interpreter = PrintScriptInterpreter()
+
+        val interpreterResponse = interpreter.interpret(
+            assignationAst,
+            assignationInterpreterState
+        )
+
+        assert(interpreterResponse is SendLiteral)
+    }
+
+    @Test
+    fun readInputGetVal() {
+        val variableToBeSetName = "variableToBeSet"
+        val variableToBeSet = VariableNameNode(variableToBeSetName)
+        val valeue = ReadInputAst(StringLiteral("hello"))
+
+        val assignationInterpreterState = getState(
+            VariableInterpreterStateI(
+                variableLiteralMap = mapOf(),
+                variableTypeMap = mapOf(
+                    variableToBeSetName to StringType
+                )
+            )
+        ).setReadInput(StringLiteral("hello"))
+        val assignationAst = AssignationAst(
+            variableToBeSet,
+            valeue
+        )
+
+        val interpreter = PrintScriptInterpreter()
+
+        val interpreterResponse = interpreter.interpret(
+            assignationAst,
+            assignationInterpreterState
+        )
+
+        assert(interpreterResponse is PrintScriptInterpreterState)
     }
 }
