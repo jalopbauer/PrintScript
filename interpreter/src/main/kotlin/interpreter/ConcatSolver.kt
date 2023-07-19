@@ -51,7 +51,6 @@ class ConcatMapperSolver : ConcatenationParameterSolver<ConcatenationParameter> 
             is IntNumberLiteral -> NumberConcatSolver().solve(concatenationParameter, variableInterpreterState)
             is VariableNameNode -> VariableConcatSolver().solve(concatenationParameter, variableInterpreterState)
             is StringLiteral -> StringConcatSolver().solve(concatenationParameter, variableInterpreterState)
-            else -> ConcatErrorResponse(InterpreterError())
         }
 }
 

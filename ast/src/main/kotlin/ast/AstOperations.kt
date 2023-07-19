@@ -5,7 +5,7 @@ data class StringConcatenation(val concatenationParameterValues: List<Concatenat
     AbstractSyntaxTree,
     PrintlnAstParameter,
     AssignationParameterNode
-interface ConcatenationParameter : AbstractSyntaxTree
+sealed interface ConcatenationParameter : AbstractSyntaxTree
 
 // ast.Operation
 sealed interface OperationParameter : AbstractSyntaxTree, AssignationParameterNode, PrintlnAstParameter
