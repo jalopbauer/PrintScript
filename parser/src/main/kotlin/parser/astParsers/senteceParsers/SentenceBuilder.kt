@@ -17,10 +17,10 @@ import validlistoftokens.SentenceValidListOfTokens
 class SentenceBuilder : AstBuilder<SentenceValidListOfTokens, SentenceAbstractSyntaxTree> {
     override fun build(validListOfTokens: SentenceValidListOfTokens): SentenceAbstractSyntaxTree =
         when (validListOfTokens) {
+            is PrintlnValidListOfTokens -> PrintlnBuilder().build(validListOfTokens)
             is AssignationValidListOfTokens -> AssignationBuilder().build(validListOfTokens)
             is ConstDeclarationAssignationValidListOfTokens -> ConstDeclarationAssignationBuilder().build(validListOfTokens)
             is DeclarationAssignationValidListOfTokens -> DeclarationAssignationBuilder().build(validListOfTokens)
             is DeclarationValidListOfTokens -> DeclarationBuilder().build(validListOfTokens)
-            is PrintlnValidListOfTokens -> PrintlnBuilder().build(validListOfTokens)
         }
 }
