@@ -20,17 +20,15 @@ class PrintlnParameterRule :
     ValidListOfTokensRule<PrintlnValidListOfTokens> {
     override fun apply(listOfTokens: PrintlnValidListOfTokens): String? =
         when (val printLnParameterValidListOfTokens = listOfTokens.printLnParameterValidListOfTokens) {
-            is NumberLiteralParameter, is VariableParameter -> null
+            is NumberLiteralParameter, is VariableParameter, is BooleanLiteralParameter -> null
             is StringLiteralOrStringConcatValidListOfTokens ->
                 if (printLnParameterValidListOfTokens.stringOrConcat.size == 1) {
                     null
                 } else {
                     "StringConcat not valid"
                 }
-
-            is BooleanLiteralParameter -> TODO()
-            is ReadInputValidListOfTokens -> TODO()
-            is OperationValidListOfTokens -> TODO()
+            is ReadInputValidListOfTokens -> "StringConcat not valid"
+            is OperationValidListOfTokens -> "StringConcat not valid"
         }
 }
 interface VariableRule : Rule<Token>
