@@ -1,4 +1,4 @@
-package interpreter.readInput
+package interpreter.assignation
 
 import ast.AbstractSyntaxTree
 import ast.Literal

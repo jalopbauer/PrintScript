@@ -19,8 +19,8 @@ import interpreter.InterpreterErrorResponse
 import interpreter.InterpreterResponse
 import interpreter.NumberLiteralResponse
 import interpreter.StringLiteralResponse
+import interpreter.assignation.ReadInputInterpreter
 import interpreter.other.Helper
-import interpreter.readInput.ReadInputInterpreter
 import interpreter.state.PrintScriptInterpreterState
 class PrintlnParameterInterpreter : Interpreter<PrintlnAstParameter, PrintScriptInterpreterState> {
     override fun interpret(abstractSyntaxTree: PrintlnAstParameter, interpreterState: PrintScriptInterpreterState): InterpreterResponse =
