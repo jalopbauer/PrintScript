@@ -14,7 +14,7 @@ sealed interface FinalOperationParameter : OperationParameter
 data class Operation(val left: OperationParameter, val operation: OperationType, val right: OperationParameter) :
     OperationParameter,
     AssignationParameterNode
-interface OperationType
+sealed interface OperationType
 
 class Sum : OperationType
 class Sub : OperationType

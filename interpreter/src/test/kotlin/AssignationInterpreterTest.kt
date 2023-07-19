@@ -314,10 +314,10 @@ class AssignationInterpreterTest {
 
         val variableWithPreviousValue = "variableWithPreviousValue"
 
-        val leftNumberValue = 69
+        val leftNumberValue = 69.3
         val rightNumberValue = 420
-        val expectedResult: Double = (leftNumberValue + rightNumberValue).toDouble()
-        val operation = Operation(IntNumberLiteral(leftNumberValue), Sum(), VariableNameNode(variableWithPreviousValue))
+        val expectedResult: Double = (leftNumberValue + rightNumberValue)
+        val operation = Operation(DoubleNumberLiteral(leftNumberValue), Sum(), VariableNameNode(variableWithPreviousValue))
 
         val assignationInterpreterState = getState(
             VariableInterpreterStateI(

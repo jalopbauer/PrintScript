@@ -52,14 +52,10 @@ class FullSolver : Solver<OperationParameter> {
                 val rightSolve = this.solve(operationParameter.right, variableInterpreterState)
                 if (leftSolve is NumberLiteralResponse && rightSolve is NumberLiteralResponse) {
                     when (operationParameter.operation) {
-                        is Sum ->
-                            NumberLiteralResponse(sum(leftSolve.literal, rightSolve.literal))
-                        is Sub ->
-                            NumberLiteralResponse(sub(leftSolve.literal, rightSolve.literal))
+                        is Sum -> NumberLiteralResponse(sum(leftSolve.literal, rightSolve.literal))
+                        is Sub -> NumberLiteralResponse(sub(leftSolve.literal, rightSolve.literal))
                         is Div -> NumberLiteralResponse(div(leftSolve.literal, rightSolve.literal))
-                        is Mult ->
-                            NumberLiteralResponse(mult(leftSolve.literal, rightSolve.literal))
-                        else -> InterpreterErrorResponse(InterpreterError())
+                        is Mult -> NumberLiteralResponse(mult(leftSolve.literal, rightSolve.literal))
                     }
                 } else {
                     InterpreterErrorResponse(InterpreterError())
