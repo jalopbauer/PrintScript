@@ -150,7 +150,7 @@ class AssignationInterpreterTest {
 
         val leftNumberValue = 69
         val rightNumberValue = 420
-        val expectedResult = leftNumberValue + rightNumberValue
+        val expectedResult: Double = (leftNumberValue + rightNumberValue).toDouble()
         val operation = Operation(IntNumberLiteral(leftNumberValue), Sum(), IntNumberLiteral(rightNumberValue))
 
         val assignationInterpreterState = getState(
@@ -176,8 +176,8 @@ class AssignationInterpreterTest {
         assert(interpreterResponse is PrintScriptInterpreterState)
         (interpreterResponse as PrintScriptInterpreterState).get(variableToBeSet)
             ?.let {
-                assert(it is IntNumberLiteral)
-                assertEquals(expectedResult, (it as IntNumberLiteral).number)
+                assert(it is DoubleNumberLiteral)
+                assertEquals(expectedResult, (it as DoubleNumberLiteral).number)
             }
             ?: {
                 assert(false)
@@ -191,7 +191,7 @@ class AssignationInterpreterTest {
 
         val leftNumberValue = 69
         val rightNumberValue = 420
-        val expectedResult = leftNumberValue - rightNumberValue
+        val expectedResult: Double = (leftNumberValue - rightNumberValue).toDouble()
         val operation = Operation(IntNumberLiteral(leftNumberValue), Sub(), IntNumberLiteral(rightNumberValue))
 
         val assignationInterpreterState = getState(
@@ -217,8 +217,8 @@ class AssignationInterpreterTest {
         assert(interpreterResponse is PrintScriptInterpreterState)
         (interpreterResponse as PrintScriptInterpreterState).get(variableToBeSet)
             ?.let {
-                assert(it is IntNumberLiteral)
-                assertEquals(expectedResult, (it as IntNumberLiteral).number)
+                assert(it is DoubleNumberLiteral)
+                assertEquals(expectedResult, (it as DoubleNumberLiteral).number)
             }
             ?: {
                 assert(false)
@@ -232,7 +232,7 @@ class AssignationInterpreterTest {
 
         val leftNumberValue = 69
         val rightNumberValue = 420
-        val expectedResult = leftNumberValue * rightNumberValue
+        val expectedResult: Double = (leftNumberValue * rightNumberValue).toDouble()
         val operation = Operation(IntNumberLiteral(leftNumberValue), Mult(), IntNumberLiteral(rightNumberValue))
 
         val assignationInterpreterState = getState(
@@ -258,8 +258,8 @@ class AssignationInterpreterTest {
         assert(interpreterResponse is PrintScriptInterpreterState)
         (interpreterResponse as PrintScriptInterpreterState).get(variableToBeSet)
             ?.let {
-                assert(it is IntNumberLiteral)
-                assertEquals(expectedResult, (it as IntNumberLiteral).number)
+                assert(it is DoubleNumberLiteral)
+                assertEquals(expectedResult, (it as DoubleNumberLiteral).number)
             }
             ?: {
                 assert(false)
@@ -273,7 +273,7 @@ class AssignationInterpreterTest {
 
         val leftNumberValue = 69
         val rightNumberValue = 69
-        val expectedResult = leftNumberValue / rightNumberValue
+        val expectedResult: Double = (leftNumberValue / rightNumberValue).toDouble()
         val operation = Operation(IntNumberLiteral(leftNumberValue), Div(), IntNumberLiteral(rightNumberValue))
 
         val assignationInterpreterState = getState(
@@ -299,8 +299,8 @@ class AssignationInterpreterTest {
         assert(interpreterResponse is PrintScriptInterpreterState)
         (interpreterResponse as PrintScriptInterpreterState).get(variableToBeSet)
             ?.let {
-                assert(it is IntNumberLiteral)
-                assertEquals(expectedResult, (it as IntNumberLiteral).number)
+                assert(it is DoubleNumberLiteral)
+                assertEquals(expectedResult, (it as DoubleNumberLiteral).number)
             }
             ?: {
                 assert(false)
@@ -316,7 +316,7 @@ class AssignationInterpreterTest {
 
         val leftNumberValue = 69
         val rightNumberValue = 420
-        val expectedResult = leftNumberValue + rightNumberValue
+        val expectedResult: Double = (leftNumberValue + rightNumberValue).toDouble()
         val operation = Operation(IntNumberLiteral(leftNumberValue), Sum(), VariableNameNode(variableWithPreviousValue))
 
         val assignationInterpreterState = getState(
@@ -346,8 +346,8 @@ class AssignationInterpreterTest {
         assert(interpreterResponse is PrintScriptInterpreterState)
         (interpreterResponse as PrintScriptInterpreterState).get(variableToBeSet)
             ?.let {
-                assert(it is IntNumberLiteral)
-                assertEquals(expectedResult, (it as IntNumberLiteral).number)
+                assert(it is DoubleNumberLiteral)
+                assertEquals(expectedResult, (it as DoubleNumberLiteral).number)
             }
             ?: {
                 assert(false)
