@@ -55,6 +55,7 @@ class FormatterTest {
             """.trimIndent()
         )
         val sentenceAfter = formatterAfter.format(tokens)
+        println(sentenceAfter)
         assert(sentenceAfter == "let test: string;")
     }
 
