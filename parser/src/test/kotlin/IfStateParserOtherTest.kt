@@ -9,9 +9,13 @@ import parser.parserState.IfParserState
 import parser.parserState.RegularParserState
 import token.ElseToken
 import token.LeftCurlyBracketsToken
+import token.LeftParenthesisToken
 import token.LetToken
+import token.PrintlnToken
 import token.RightCurlyBracketsToken
-
+import token.RightParenthesisToken
+import token.SemicolonToken
+import token.StringLiteralToken
 class IfStateParserOtherTest {
 
     @Test
@@ -33,11 +37,19 @@ class IfStateParserOtherTest {
     @Test
     fun testIfElseAstFound() {
         val declaration = IfParserState(
-            IfStatement(TrueLiteral, listOf()),
+            IfStatement(
+                TrueLiteral,
+                listOf()
+            ),
             RegularParserState(
                 listOf(
                     ElseToken(0, 0),
                     LeftCurlyBracketsToken(0, 0),
+                    PrintlnToken(0, 0),
+                    LeftParenthesisToken(0, 0),
+                    StringLiteralToken("", 0, 0),
+                    RightParenthesisToken(0, 0),
+                    SemicolonToken(0, 0),
                     RightCurlyBracketsToken(0, 0)
                 )
             )
