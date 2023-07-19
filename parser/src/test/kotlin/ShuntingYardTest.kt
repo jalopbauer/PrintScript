@@ -86,7 +86,6 @@ class ShuntingYardTest {
     fun sHWWorksWithMSEquation() {
         val shuntingYard = ShuntingYardImpl()
         val simpleTree = shuntingYard.check(operationMulSum)
-        val arrangedTree = shuntingYard.orderNumber(operationMulSum)
         assertEquals(TokenName.NUMBER_LITERAL, simpleTree[0].tokenName())
         assertEquals(TokenName.NUMBER_LITERAL, simpleTree[1].tokenName())
         assertEquals(TokenName.MULT, simpleTree[2].tokenName())
@@ -107,7 +106,7 @@ class ShuntingYardTest {
 
     @Test
     fun sHWWorksWithComplexBracketsEquation() {
-        val shuntingYard = parser.shuntingYard.ShuntingYardImpl()
+        val shuntingYard = ShuntingYardImpl()
         val simpleTree = shuntingYard.check(complexBracketsOperation)
         assertEquals(TokenName.NUMBER_LITERAL, simpleTree[0].tokenName())
         assertEquals(TokenName.NUMBER_LITERAL, simpleTree[1].tokenName())
