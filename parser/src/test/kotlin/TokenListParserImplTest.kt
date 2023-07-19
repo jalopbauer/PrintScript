@@ -19,6 +19,7 @@ import token.DeclarationToken
 import token.DivToken
 import token.DoubleNumberLiteralToken
 import token.ElseToken
+import token.FalseLiteralToken
 import token.IfToken
 import token.IntNumberLiteralToken
 import token.LeftCurlyBracketsToken
@@ -394,6 +395,72 @@ class TokenListParserImplTest {
             IfToken(0, 0),
             LeftParenthesisToken(0, 0),
             TrueLiteralToken(0, 0),
+            RightParenthesisToken(0, 0),
+            LeftCurlyBracketsToken(0, 0),
+            PrintlnToken(0, 0),
+            LeftParenthesisToken(0, 0),
+            StringLiteralToken("Hello", 0, 0),
+            RightParenthesisToken(0, 0),
+            SemicolonToken(0, 0),
+            RightCurlyBracketsToken(0, 0)
+        )
+        val elseTokens: List<Token> = listOf(
+            ElseToken(0, 0),
+            LeftCurlyBracketsToken(0, 0),
+            PrintlnToken(0, 0),
+            LeftParenthesisToken(0, 0),
+            StringLiteralToken("Hello", 0, 0),
+            RightParenthesisToken(0, 0),
+            SemicolonToken(0, 0),
+            RightCurlyBracketsToken(0, 0)
+        )
+        val parser = PrintScriptAstParser()
+        val treeIf = parser.parse(ifTokens)
+        val treeElse = parser.parse(elseTokens)
+        println(treeElse)
+        assert(treeIf is IfStatement)
+        // assert(treeElse is ElseStatement)
+    }
+
+    @Test
+    fun parserWorksWithIfFalse() {
+        val ifTokens: List<Token> = listOf(
+            IfToken(0, 0),
+            LeftParenthesisToken(0, 0),
+            FalseLiteralToken(0, 0),
+            RightParenthesisToken(0, 0),
+            LeftCurlyBracketsToken(0, 0),
+            PrintlnToken(0, 0),
+            LeftParenthesisToken(0, 0),
+            StringLiteralToken("Hello", 0, 0),
+            RightParenthesisToken(0, 0),
+            SemicolonToken(0, 0),
+            RightCurlyBracketsToken(0, 0)
+        )
+        val elseTokens: List<Token> = listOf(
+            ElseToken(0, 0),
+            LeftCurlyBracketsToken(0, 0),
+            PrintlnToken(0, 0),
+            LeftParenthesisToken(0, 0),
+            StringLiteralToken("Hello", 0, 0),
+            RightParenthesisToken(0, 0),
+            SemicolonToken(0, 0),
+            RightCurlyBracketsToken(0, 0)
+        )
+        val parser = PrintScriptAstParser()
+        val treeIf = parser.parse(ifTokens)
+        val treeElse = parser.parse(elseTokens)
+        println(treeElse)
+        assert(treeIf is IfStatement)
+        // assert(treeElse is ElseStatement)
+    }
+
+    @Test
+    fun parserWorksWithIfVariableNameNome() {
+        val ifTokens: List<Token> = listOf(
+            IfToken(0, 0),
+            LeftParenthesisToken(0, 0),
+            VariableNameToken("", 0, 0),
             RightParenthesisToken(0, 0),
             LeftCurlyBracketsToken(0, 0),
             PrintlnToken(0, 0),
