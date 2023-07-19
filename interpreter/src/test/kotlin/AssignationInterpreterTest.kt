@@ -353,6 +353,40 @@ class AssignationInterpreterTest {
                 assert(false)
             }
     }
+    fun testSetSumVariableNotDefinedResultToVariable() {
+        val variableToBeSetName = "variableToBeSet"
+        val variableToBeSet = VariableNameNode(variableToBeSetName)
+
+        val variableWithPreviousValue = "variableWithPreviousValue"
+
+        val leftNumberValue = 69.3
+        val rightNumberValue = 420
+        val expectedResult: Double = (leftNumberValue + rightNumberValue)
+        val operation = Operation(DoubleNumberLiteral(leftNumberValue), Sum(), VariableNameNode(variableWithPreviousValue))
+
+        val assignationInterpreterState = getState(
+            VariableInterpreterStateI(
+                variableTypeMap = mapOf(
+                    variableToBeSetName to NumberType
+                ),
+                variableLiteralMap = mapOf()
+            )
+        )
+
+        val assignationAst = AssignationAst(
+            variableToBeSet,
+            operation
+        )
+
+        val interpreter = PrintScriptInterpreter()
+
+        val interpreterResponse = interpreter.interpret(
+            assignationAst,
+            assignationInterpreterState
+        )
+
+        assert(interpreterResponse is InterpreterError)
+    }
 
     @Test
     fun testSetSumStringVariableResultToVariable() {
