@@ -1,5 +1,6 @@
-
 import ast.ConcatenationParameter
+import ast.Div
+import ast.DoubleNumberLiteral
 import ast.FalseLiteral
 import ast.IntNumberLiteral
 import ast.Operation
@@ -178,5 +179,85 @@ class PrintlnInterpreterTest {
         val interpreterResponse = interpreter.interpret(printlnAst, printlnInterpreterState)
 
         testExpectedValue(interpreterResponse, "1 + 1")
+    }
+
+    @Test
+    fun testOperationExistsToStringConcatDouble() {
+        val printlnAstParameter = Operation(DoubleNumberLiteral(1.0), Sum(), VariableNameNode("testVariable"))
+        val printlnAst = PrintlnAst(printlnAstParameter)
+        val printlnInterpreterState = getState(
+            VariableInterpreterStateI(
+                listOf(),
+                mapOf(
+                    "testVariable" to StringType
+                ),
+                mapOf(
+                    "testVariable" to StringLiteral(" + 1")
+                )
+            )
+        )
+        val interpreterResponse = interpreter.interpret(printlnAst, printlnInterpreterState)
+
+        testExpectedValue(interpreterResponse, "1.0 + 1")
+    }
+
+    @Test
+    fun testOperationExistsToStringConcatButDiv() {
+        val printlnAstParameter = Operation(IntNumberLiteral(1), Div(), VariableNameNode("testVariable"))
+        val printlnAst = PrintlnAst(printlnAstParameter)
+        val printlnInterpreterState = getState(
+            VariableInterpreterStateI(
+                listOf(),
+                mapOf(
+                    "testVariable" to StringType
+                ),
+                mapOf(
+                    "testVariable" to StringLiteral(" + 1")
+                )
+            )
+        )
+        val interpreterResponse = interpreter.interpret(printlnAst, printlnInterpreterState)
+
+        assert(interpreterResponse is InterpreterError)
+    }
+
+    @Test
+    fun testOperationExistsToStringConcatButDivOnRight() {
+        val printlnAstParameter = Operation(Operation(IntNumberLiteral(1), Div(), VariableNameNode("testVariable")), Sum(), IntNumberLiteral(1))
+        val printlnAst = PrintlnAst(printlnAstParameter)
+        val printlnInterpreterState = getState(
+            VariableInterpreterStateI(
+                listOf(),
+                mapOf(
+                    "testVariable" to StringType
+                ),
+                mapOf(
+                    "testVariable" to StringLiteral(" + 1")
+                )
+            )
+        )
+        val interpreterResponse = interpreter.interpret(printlnAst, printlnInterpreterState)
+
+        assert(interpreterResponse is InterpreterError)
+    }
+
+    @Test
+    fun testOperationExistsToStringConcatButDivOnLeft() {
+        val printlnAstParameter = Operation(IntNumberLiteral(1), Sum(), Operation(IntNumberLiteral(1), Div(), VariableNameNode("testVariable")))
+        val printlnAst = PrintlnAst(printlnAstParameter)
+        val printlnInterpreterState = getState(
+            VariableInterpreterStateI(
+                listOf(),
+                mapOf(
+                    "testVariable" to StringType
+                ),
+                mapOf(
+                    "testVariable" to StringLiteral(" + 1")
+                )
+            )
+        )
+        val interpreterResponse = interpreter.interpret(printlnAst, printlnInterpreterState)
+
+        assert(interpreterResponse is InterpreterError)
     }
 }
