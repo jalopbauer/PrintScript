@@ -25,6 +25,10 @@ class StateParserOtherTest {
         val declarationParser = RegularParserStateParser()
         val declarationAst = declarationParser.parse(declaration)
         assert(declarationAst is SentenceInvalid)
+        assert(
+            (declarationAst as SentenceInvalid).parserState.tokens.zip(declaration.tokens)
+                .none { it.first != it.second }
+        )
     }
 
     @Test
