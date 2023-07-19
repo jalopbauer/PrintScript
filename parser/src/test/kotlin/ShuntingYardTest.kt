@@ -1,11 +1,14 @@
+
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import parser.shuntingYard.ShuntingYardImpl
 import token.DivToken
+import token.DoubleNumberLiteralToken
 import token.IntNumberLiteralToken
 import token.LeftParenthesisToken
 import token.MultToken
 import token.RightParenthesisToken
+import token.StringLiteralToken
 import token.SubToken
 import token.SumToken
 import token.Token
@@ -126,5 +129,36 @@ class ShuntingYardTest {
         assertEquals(TokenName.VARIABLE, simpleTree[0].tokenName())
         assertEquals(TokenName.NUMBER_LITERAL, simpleTree[1].tokenName())
         assertEquals(TokenName.DIV, simpleTree[2].tokenName())
+    }
+
+    @Test
+    fun sHWWorksWithSimpleEquationVariableStr() {
+        val shuntingYard = ShuntingYardImpl()
+        shuntingYard.orderString(
+            listOf(
+                IntNumberLiteralToken(1, 0, 0),
+                SumToken(0, 0),
+                StringLiteralToken("2", 0, 0),
+                SumToken(0, 0),
+                DoubleNumberLiteralToken(3.0, 0, 0),
+                SumToken(0, 0),
+                VariableNameToken("3.0", 0, 0)
+            )
+        )
+        shuntingYard.orderString(
+            listOf(
+                IntNumberLiteralToken(1, 0, 0)
+            )
+        )
+        shuntingYard.orderString(
+            listOf(
+                DoubleNumberLiteralToken(3.0, 0, 0)
+            )
+        )
+        shuntingYard.orderString(
+            listOf(
+                VariableNameToken("3.0", 0, 0)
+            )
+        )
     }
 }
