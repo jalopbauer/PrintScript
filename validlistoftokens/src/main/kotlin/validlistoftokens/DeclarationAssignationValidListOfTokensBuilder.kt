@@ -1,6 +1,8 @@
 package validlistoftokens
 
 import token.AssignationToken
+import token.BooleanLiteralToken
+import token.BooleanTypeToken
 import token.DeclarationToken
 import token.LetToken
 import token.NumberTypeToken
@@ -41,6 +43,16 @@ class DeclarationAssignationValidListOfTokensBuilder :
                                     tokens.component4() as TypeToken
                                 )
                             }
+                    }
+                ?: tokens.getOrNull(5).takeIf { it is BooleanLiteralToken }
+                    ?.let { booleanLiteral ->
+                        tokens.component4().takeIf { it is BooleanTypeToken }?.let {
+                            DeclarationAssignationValidListOfTokens(
+                                tokens.component2() as VariableNameToken,
+                                listOf(booleanLiteral as BooleanLiteralToken),
+                                it as BooleanTypeToken
+                            )
+                        }
                     }
         } else {
             return null

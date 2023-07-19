@@ -47,12 +47,5 @@ class DeclarationAssignationBuilder : AstBuilder<DeclarationAssignationValidList
                     )
                 )
             }
-            else -> LetAssignationDeclarationAst(
-                AssignationAst(VariableNameNode(validListOfTokens.variable.value), ShuntingYardImpl().orderNumber(validListOfTokens.content)),
-                DeclarationAst(
-                    VariableNameNode(validListOfTokens.variable.value),
-                    findType(validListOfTokens.type)
-                )
-            )
         }
 }
