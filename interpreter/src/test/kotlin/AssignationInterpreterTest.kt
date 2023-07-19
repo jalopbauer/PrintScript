@@ -1,6 +1,8 @@
 import ast.AssignationAst
+import ast.BooleanType
 import ast.Div
 import ast.DoubleNumberLiteral
+import ast.FalseLiteral
 import ast.IntNumberLiteral
 import ast.Literal
 import ast.Mult
@@ -594,6 +596,42 @@ class AssignationInterpreterTest {
             ?: {
                 assert(false)
             }
+    }
+
+    @Test
+    fun testSetConcatenationVariableBooleanResultToVariable() {
+        val variableToBeSetName = "variableToBeSet"
+        val variableToBeSet = VariableNameNode(variableToBeSetName)
+
+        val variableWithPreviousValue = "variableWithPreviousValue"
+
+        val operation = StringConcatenation(listOf(VariableNameNode(variableWithPreviousValue)))
+
+        val assignationInterpreterState = getState(
+            VariableInterpreterStateI(
+                variableLiteralMap = mapOf(
+                    variableWithPreviousValue to FalseLiteral
+                ),
+                variableTypeMap = mapOf(
+                    variableToBeSetName to StringType,
+                    variableWithPreviousValue to BooleanType
+                )
+            )
+        )
+
+        val assignationAst = AssignationAst(
+            variableToBeSet,
+            operation
+        )
+
+        val interpreter = PrintScriptInterpreter()
+
+        val interpreterResponse = interpreter.interpret(
+            assignationAst,
+            assignationInterpreterState
+        )
+
+        assert(interpreterResponse is InterpreterError)
     }
 
     @Test
