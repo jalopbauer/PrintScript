@@ -42,6 +42,7 @@ class IfStateParserOtherTest {
                 )
             )
         )
+        assert(declaration.hasEndedProperly())
         val declarationParser = PrintScriptParser()
         val declarationAst = declarationParser.parse(declaration)
         assert(declarationAst is AstFound)
@@ -50,13 +51,8 @@ class IfStateParserOtherTest {
     @Test
     fun testIfAstFound() {
         val declaration = IfParserState(
-            IfStatement(TrueLiteral, listOf()),
-            RegularParserState(
-                listOf(
-                    LetToken(0, 0)
-                )
-            )
-        )
+            IfStatement(TrueLiteral, listOf())
+        ).addToken(LetToken(0, 0))
         val declarationParser = PrintScriptParser()
         val declarationAst = declarationParser.parse(declaration)
         assert(declarationAst is AstFound)
