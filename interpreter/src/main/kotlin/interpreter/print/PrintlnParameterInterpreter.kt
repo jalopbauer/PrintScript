@@ -1,12 +1,14 @@
 package interpreter.print
 
 import ast.BooleanLiteral
+import ast.FalseLiteral
 import ast.NumberLiteral
 import ast.Operation
 import ast.PrintlnAstParameter
 import ast.ReadInputAst
 import ast.StringConcatenation
 import ast.StringLiteral
+import ast.TrueLiteral
 import ast.VariableNameNode
 import interpreter.ConcatErrorResponse
 import interpreter.ConcatenationSolver
@@ -27,18 +29,13 @@ class PrintlnParameterInterpreter : Interpreter<PrintlnAstParameter, PrintScript
                 interpreterState.get(abstractSyntaxTree)
                     ?.let { this.interpret(it as PrintlnAstParameter, interpreterState) }
                     ?: InterpreterError()
-            is NumberLiteral -> {
-                val value = abstractSyntaxTree.value().toString()
-                    .let {
-                        if (it.takeLast(2) == ".0") {
-                            it.dropLast(2)
-                        } else {
-                            it
-                        }
-                    }
-                interpreterState.println(value)
-            }
-            is BooleanLiteral -> interpreterState.println(abstractSyntaxTree.toString())
+            is NumberLiteral -> interpreterState.println(abstractSyntaxTree.value().toString())
+            is BooleanLiteral -> interpreterState.println(
+                when (abstractSyntaxTree) {
+                    FalseLiteral -> "false"
+                    TrueLiteral -> "true"
+                }
+            )
             is StringLiteral -> interpreterState.println(abstractSyntaxTree.value)
             is StringConcatenation ->
                 when (val solve = ConcatenationSolver().solve(abstractSyntaxTree, interpreterState)) {

@@ -1,10 +1,12 @@
 
 import ast.ConcatenationParameter
+import ast.FalseLiteral
 import ast.IntNumberLiteral
 import ast.PrintlnAst
 import ast.StringConcatenation
 import ast.StringLiteral
 import ast.StringType
+import ast.TrueLiteral
 import ast.VariableNameNode
 import interpreter.InterpreterError
 import interpreter.InterpreterResponse
@@ -102,5 +104,25 @@ class PrintlnInterpreterTest {
         val interpreterResponse = interpreter.interpret(printlnAst, printlnInterpreterState)
 
         testExpectedValue(interpreterResponse, "valueToTestvalueToTest")
+    }
+
+    @Test
+    fun testFalseExists() {
+        val printlnAstParameter = FalseLiteral
+        val printlnAst = PrintlnAst(printlnAstParameter)
+        val printlnInterpreterState = getState(VariableInterpreterStateI())
+        val interpreterResponse = interpreter.interpret(printlnAst, printlnInterpreterState)
+
+        testExpectedValue(interpreterResponse, "false")
+    }
+
+    @Test
+    fun testTrueExists() {
+        val printlnAstParameter = TrueLiteral
+        val printlnAst = PrintlnAst(printlnAstParameter)
+        val printlnInterpreterState = getState(VariableInterpreterStateI())
+        val interpreterResponse = interpreter.interpret(printlnAst, printlnInterpreterState)
+
+        testExpectedValue(interpreterResponse, "true")
     }
 }
