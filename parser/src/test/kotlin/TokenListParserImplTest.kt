@@ -27,6 +27,7 @@ import token.LeftParenthesisToken
 import token.LetToken
 import token.NumberTypeToken
 import token.PrintlnToken
+import token.ReadInputToken
 import token.RightCurlyBracketsToken
 import token.RightParenthesisToken
 import token.SemicolonToken
@@ -300,6 +301,69 @@ class TokenListParserImplTest {
         println(doubleAst)
 
         assert(printlnAst is PrintlnAst && printlnAst.value() is Operation)
+    }
+
+    @Test
+    fun printlnAstAcceptsInt() {
+        val numberPrint: List<Token> = listOf(
+            PrintlnToken(2, position = 0),
+            LeftParenthesisToken(lineNumber = 2, position = 7),
+            IntNumberLiteralToken(value = 1, lineNumber = 2, position = 8),
+            RightParenthesisToken(lineNumber = 2, position = 14),
+            SemicolonToken(lineNumber = 2, position = 15)
+        )
+        val declarationParser = PrintScriptAstParser()
+        val doubleAst = declarationParser.parse(numberPrint)
+
+        assert(doubleAst is PrintlnAst)
+    }
+
+    @Test
+    fun printlnAstAcceptsVar() {
+        val numberPrint: List<Token> = listOf(
+            PrintlnToken(2, position = 0),
+            LeftParenthesisToken(lineNumber = 2, position = 7),
+            VariableNameToken("1", lineNumber = 2, position = 8),
+            RightParenthesisToken(lineNumber = 2, position = 14),
+            SemicolonToken(lineNumber = 2, position = 15)
+        )
+        val declarationParser = PrintScriptAstParser()
+        val doubleAst = declarationParser.parse(numberPrint)
+
+        assert(doubleAst is PrintlnAst)
+    }
+
+    @Test
+    fun printlnAstAcceptsFalse() {
+        val numberPrint: List<Token> = listOf(
+            PrintlnToken(2, position = 0),
+            LeftParenthesisToken(lineNumber = 2, position = 7),
+            FalseLiteralToken(lineNumber = 2, position = 8),
+            RightParenthesisToken(lineNumber = 2, position = 14),
+            SemicolonToken(lineNumber = 2, position = 15)
+        )
+        val declarationParser = PrintScriptAstParser()
+        val doubleAst = declarationParser.parse(numberPrint)
+
+        assert(doubleAst is PrintlnAst)
+    }
+
+    @Test
+    fun printlnAstAcceptsRead() {
+        val numberPrint: List<Token> = listOf(
+            PrintlnToken(2, position = 0),
+            LeftParenthesisToken(lineNumber = 2, position = 7),
+            ReadInputToken(0, 0),
+            LeftParenthesisToken(0, 0),
+            StringLiteralToken("", 0, 0),
+            RightParenthesisToken(0, 0),
+            RightParenthesisToken(lineNumber = 2, position = 14),
+            SemicolonToken(lineNumber = 2, position = 15)
+        )
+        val declarationParser = PrintScriptAstParser()
+        val doubleAst = declarationParser.parse(numberPrint)
+
+        assert(doubleAst is PrintlnAst)
     }
 
     @Test
