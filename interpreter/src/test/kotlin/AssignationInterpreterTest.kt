@@ -355,6 +355,8 @@ class AssignationInterpreterTest {
                 assert(false)
             }
     }
+
+    @Test
     fun testSetSumVariableNotDefinedResultToVariable() {
         val variableToBeSetName = "variableToBeSet"
         val variableToBeSet = VariableNameNode(variableToBeSetName)
