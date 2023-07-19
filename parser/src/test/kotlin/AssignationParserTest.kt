@@ -1,6 +1,7 @@
 
 import ast.AssignationAst
 import org.junit.jupiter.api.Test
+import parser.PrintScriptParser
 import parser.parserRespose.AstFound
 import parser.parserState.RegularParserState
 import parser.parserState.RegularParserStateParser
@@ -46,7 +47,7 @@ class AssignationParserTest {
                 SemicolonToken(0, 0)
             )
         )
-        val declarationParser = RegularParserStateParser()
+        val declarationParser = PrintScriptParser()
         val declarationAst = declarationParser.parse(declaration)
         when (declarationAst) {
             is AstFound -> assert(declarationAst.abstractSyntaxTree is AssignationAst)
