@@ -2,11 +2,12 @@ package formatter
 
 import token.AssignationToken
 import token.DeclarationToken
+import token.FalseLiteralToken
 import token.IntNumberLiteralToken
 import token.LeftParenthesisToken
-import token.MultToken
 import token.NumberTypeToken
 import token.PrintlnToken
+import token.ReadInputToken
 import token.RightParenthesisToken
 import token.SemicolonToken
 import token.StringLiteralToken
@@ -61,7 +62,7 @@ class EnterBeforePrintln(private val tokenListSpacingRule: TokenListSpacingRule,
                 is StringLiteralOrStringConcatValidListOfTokens -> printlnValidParameter.stringOrConcat
                 is VariableParameter -> listOf(printlnValidParameter.variableToken)
                 is BooleanLiteralParameter -> listOf(printlnValidParameter.booleanLiteralToken)
-                is ReadInputValidListOfTokens -> listOf(printlnValidParameter.readInputToken)
+                is ReadInputValidListOfTokens -> listOf(printlnValidParameter.readInputToken, printlnValidParameter.leftParenthesisToken, printlnValidParameter.stringLiteralToken, printlnValidParameter.rightParenthesisToken)
                 is OperationValidListOfConcatTokens -> printlnValidParameter.operationConcat
             }
         ).padStart(amount, '\n') + ");"
@@ -101,9 +102,10 @@ class TokenToString : Rule<Token> {
             is VariableNameToken -> listOfTokens.value
             is AssignationToken -> "="
             is DeclarationToken -> ":"
-            is MultToken -> "*"
+            is FalseLiteralToken -> "false"
             is SumToken -> "+"
             is SubToken -> "-"
+            is ReadInputToken -> "readInput"
             is NumberTypeToken -> "number"
             is StringTypeToken -> "string"
             is RightParenthesisToken -> ")"
