@@ -1,5 +1,6 @@
 
 import org.junit.jupiter.api.Test
+import parser.PrintScriptParser
 import parser.parserRespose.SendToken
 import parser.parserRespose.SentenceInvalid
 import parser.parserState.RegularParserState
@@ -35,7 +36,8 @@ class StateParserOtherTest {
                 DeclarationToken(0, 0)
             )
         )
-        val declarationParser = RegularParserStateParser()
+        assert(!declaration.hasEndedProperly())
+        val declarationParser = PrintScriptParser()
         val declarationAst = declarationParser.parse(declaration)
         assert(declarationAst is SendToken)
     }
